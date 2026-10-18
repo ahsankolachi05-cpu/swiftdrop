@@ -1,0 +1,1811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>SwiftDrop — Same-Day Courier Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#F4F6FB; --bg-2:#EDF1F8;
+        --surface:#FFFFFF; --surface-2:#F7F9FC; --surface-3:#EEF2F9;
+        --ink:#0A1E42; --ink-2:#3D5173; --muted:#7587A3; --faint:#9DB0C9;
+        --line:#E1E8F2; --line-2:#D2DCEC;
+        --blue:#1D6FF2; --blue-dark:#0B4CD0; --blue-soft:#E7F0FE; --cyan:#18B7E4;
+        --grad:linear-gradient(120deg,#1D6FF2 0%,#0E9BE8 100%);
+        --green:#0FA968; --green-soft:#E4F6EE;
+        --amber:#E8930C; --amber-soft:#FDF1DE;
+        --red:#E5484D; --red-soft:#FDECEC;
+        --violet:#7C5CFC; --violet-soft:#EFEBFE;
+        --shadow-sm:0 1px 2px rgba(10,30,66,.05),0 2px 8px rgba(10,30,66,.05);
+        --shadow-md:0 4px 14px rgba(10,30,66,.07),0 12px 32px rgba(10,30,66,.07);
+        --shadow-lg:0 24px 60px rgba(10,30,66,.16);
+        --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:26px;
+        --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+        --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#07122A; --bg-2:#0A1832;
+          --surface:#0D1D3C; --surface-2:#102447; --surface-3:#152C55;
+          --ink:#EDF3FD; --ink-2:#B4C6E2; --muted:#8498B8; --faint:#5E7498;
+          --line:#1D3560; --line-2:#274273;
+          --blue:#4C8DFF; --blue-dark:#2E6FE8; --blue-soft:#14305F; --cyan:#2FC4EE;
+          --green:#2BD389; --green-soft:#0E3B2C;
+          --amber:#F5B74C; --amber-soft:#463410;
+          --red:#FF7A7E; --red-soft:#4A2024;
+          --violet:#A48FFF; --violet-soft:#2B2456;
+          --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.25);
+          --shadow-md:0 4px 14px rgba(0,0,0,.35),0 12px 32px rgba(0,0,0,.3);
+          --shadow-lg:0 24px 60px rgba(0,0,0,.55);
+        }
+      }
+      *{box-sizing:border-box}
+      html{scroll-behavior:smooth}
+      body{margin:0;font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.5}
+      button{font-family:inherit;cursor:pointer}
+      input,select,textarea{font-family:inherit;font-size:1rem;color:var(--ink)}
+      a{color:var(--blue);text-decoration:none}
+      ::selection{background:var(--blue);color:#fff}
+      :focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+      .mono{font-family:var(--mono);letter-spacing:.02em}
+      svg.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      svg:not(.map){fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+      svg.ic.sm{width:16px;height:16px} svg.ic.lg{width:26px;height:26px}
+
+      /* ---------- global top bar ---------- */
+      .topbar{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+      .topbar-in{max-width:1440px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px}
+      .logo{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:800;font-size:1.22rem;letter-spacing:-.02em}
+      .logo-mark{width:38px;height:38px;border-radius:11px;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 6px 16px rgba(29,111,242,.35)}
+      .logo-mark svg{width:22px;height:22px;stroke:#fff}
+      .logo em{font-style:normal;color:var(--blue)}
+      .demo-chip{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 35%,transparent);padding:4px 9px;border-radius:99px;white-space:nowrap}
+      .role-switch{margin-left:auto;display:flex;background:var(--surface-3);border:1px solid var(--line);border-radius:99px;padding:4px;gap:2px}
+      .role-switch button{border:0;background:transparent;color:var(--ink-2);font-weight:700;font-size:.86rem;padding:8px 18px;border-radius:99px;display:flex;align-items:center;gap:7px;transition:all .2s}
+      .role-switch button svg{width:16px;height:16px}
+      .role-switch button:hover{color:var(--ink)}
+      .role-switch button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+      .role-switch button.on svg{color:var(--blue)}
+
+      main{max-width:1440px;margin:0 auto;padding:0 20px 70px}
+      .view{display:none}
+      .view.on{display:block;animation:viewIn .45s cubic-bezier(.22,.8,.3,1)}
+      @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+      /* ---------- buttons / inputs ---------- */
+      .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:12px;font-weight:700;font-size:.95rem;padding:12px 22px;transition:transform .15s,box-shadow .2s,background .2s,color .2s;background:var(--surface-3);color:var(--ink)}
+      .btn:active{transform:scale(.97)}
+      .btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(29,111,242,.32)}
+      .btn-primary:hover{box-shadow:0 12px 26px rgba(29,111,242,.42);transform:translateY(-1px)}
+      .btn-ghost{background:var(--surface);border-color:var(--line-2);color:var(--ink)}
+      .btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+      .btn-danger{background:var(--red-soft);color:var(--red)}
+      .btn-green{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(15,169,104,.3)}
+      .btn-block{width:100%}
+      .btn-lg{padding:16px 26px;font-size:1.02rem;border-radius:14px}
+      .btn-sm{padding:8px 14px;font-size:.84rem;border-radius:10px}
+      .btn[disabled]{opacity:.55;pointer-events:none}
+      .field{margin-bottom:14px}
+      .field label{display:block;font-size:.8rem;font-weight:700;color:var(--ink-2);margin-bottom:6px;letter-spacing:.01em}
+      .input,.select,textarea.input{width:100%;background:var(--surface);border:1.5px solid var(--line-2);border-radius:12px;padding:12px 14px;transition:border-color .2s,box-shadow .2s;appearance:none}
+      .input::placeholder{color:var(--faint)}
+      .input:focus,.select:focus,textarea.input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 18%,transparent)}
+      .input.err{border-color:var(--red);box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 14%,transparent)}
+      .err-msg{display:none;color:var(--red);font-size:.78rem;font-weight:600;margin-top:5px}
+      .err-msg.show{display:block}
+      .input-wrap{position:relative}
+      .input-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--faint);pointer-events:none}
+      .input-wrap .input{padding-left:40px}
+      .select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237587A3' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+      .seg{display:flex;background:var(--surface-3);border-radius:12px;padding:4px;gap:4px}
+      .seg button{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:9px;font-weight:700;font-size:.85rem;color:var(--ink-2);transition:all .18s}
+      .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+      .switch{position:relative;width:52px;height:30px;flex:none}
+      .switch input{opacity:0;width:100%;height:100%;position:absolute;margin:0;cursor:pointer;z-index:2}
+      .switch .track{position:absolute;inset:0;background:var(--line-2);border-radius:99px;transition:background .25s}
+      .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .25s cubic-bezier(.3,1.4,.5,1)}
+      .switch input:checked + .track{background:var(--green)}
+      .switch input:checked + .track::after{transform:translateX(22px)}
+      .switch input:focus-visible + .track{outline:2px solid var(--blue);outline-offset:2px}
+
+      /* ---------- badges / chips ---------- */
+      .badge{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+      .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+      .b-pending{background:var(--amber-soft);color:var(--amber)}
+      .b-assigned{background:var(--violet-soft);color:var(--violet)}
+      .b-pickup,.b-transit{background:var(--blue-soft);color:var(--blue)}
+      .b-delivered{background:var(--green-soft);color:var(--green)}
+      .b-cancelled{background:var(--red-soft);color:var(--red)}
+      .b-online{background:var(--green-soft);color:var(--green)}
+      .b-offline{background:var(--surface-3);color:var(--muted)}
+      .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-sm)}
+      .avatar{border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;flex:none;background:var(--grad)}
+      .avatar.a2{background:linear-gradient(120deg,#7C5CFC,#B45CFC)} .avatar.a3{background:linear-gradient(120deg,#0FA968,#37C978)}
+      .avatar.a4{background:linear-gradient(120deg,#E8930C,#F5B74C)} .avatar.a5{background:linear-gradient(120deg,#E5484D,#F27D7F)}
+      .avatar.a6{background:linear-gradient(120deg,#0E9BE8,#18B7E4)}
+
+      /* ---------- landing ---------- */
+      .hero{padding:56px 0 30px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+      .hero h1{font-size:clamp(2.5rem,5.2vw,4.1rem);line-height:1.04;letter-spacing:-.035em;margin:0 0 18px;font-weight:800}
+      .hero h1 .hl{background:linear-gradient(100deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+      .hero p.lede{font-size:1.16rem;color:var(--ink-2);max-width:34rem;margin:0 0 28px}
+      .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:30px}
+      .hero-stats{display:flex;gap:34px;flex-wrap:wrap}
+      .hero-stats .num{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+      .hero-stats .lbl{font-size:.8rem;color:var(--muted);font-weight:600}
+      .hero-visual{position:relative}
+      .map-card{border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg);background:var(--surface)}
+      .float-card{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-md);padding:12px 14px;display:flex;gap:11px;align-items:center;animation:floaty 5s ease-in-out infinite}
+      .float-card.fc1{left:-26px;bottom:64px}
+      .float-card.fc2{right:-14px;top:26px;animation-delay:1.4s}
+      @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+      .fc-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none}
+      .role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:44px 0 8px}
+      .role-card{padding:26px;text-align:left;transition:transform .2s,box-shadow .25s,border-color .2s;position:relative;overflow:hidden}
+      .role-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--blue)}
+      .role-card .rc-ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:16px}
+      .role-card h3{margin:0 0 6px;font-size:1.14rem;letter-spacing:-.01em}
+      .role-card p{margin:0 0 16px;color:var(--ink-2);font-size:.92rem}
+      .role-card .go{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:var(--blue);font-size:.9rem}
+      .role-card .go svg{transition:transform .2s}
+      .role-card:hover .go svg{transform:translateX(4px)}
+      .section-head{margin:56px 0 20px}
+      .section-head h2{font-size:1.7rem;letter-spacing:-.025em;margin:0 0 6px}
+      .section-head p{color:var(--ink-2);margin:0;max-width:44rem}
+      .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+      .how-card{padding:24px}
+      .how-card .step-num{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--blue);background:var(--blue-soft);display:inline-block;padding:4px 10px;border-radius:99px;margin-bottom:14px}
+      .how-card h3{margin:0 0 6px;font-size:1.05rem}
+      .how-card p{margin:0;color:var(--ink-2);font-size:.92rem}
+      .foot-note{margin-top:56px;padding:22px 26px;border-radius:var(--r-lg);background:var(--surface-2);border:1px dashed var(--line-2);color:var(--ink-2);font-size:.9rem;display:flex;gap:12px;align-items:flex-start}
+      .foot-note svg{color:var(--blue);margin-top:2px}
+
+      /* ---------- map placeholder ---------- */
+      .mapbox{position:relative;background:var(--surface-2);overflow:hidden}
+      .mapbox svg.map{position:absolute;inset:0;width:100%;height:100%}
+      .pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;z-index:3}
+      .pin .pin-dot{width:30px;height:30px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;color:#fff;box-shadow:0 6px 14px rgba(10,30,66,.3);border:2.5px solid #fff}
+      .pin .pin-dot svg{transform:rotate(45deg);width:15px;height:15px;stroke:#fff}
+      .pin .pin-tag{margin-top:5px;background:var(--ink);color:#fff;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:99px;white-space:nowrap}
+      .driver-marker{position:absolute;transform:translate(-50%,-50%);z-index:4;width:40px;height:40px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 8px 18px rgba(10,30,66,.35);display:grid;place-items:center;color:#fff;animation:driverMove 9s ease-in-out infinite}
+      .driver-marker svg{width:19px;height:19px;stroke:#fff}
+      .driver-marker::after{content:"";position:absolute;inset:-11px;border-radius:50%;border:2px solid color-mix(in srgb,var(--blue) 55%,transparent);animation:pulse 2.2s ease-out infinite}
+      @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.25);opacity:0}}
+      @keyframes driverMove{0%,100%{left:38%;top:58%}50%{left:47%;top:47%}}
+      .route-dash{stroke-dasharray:7 7;animation:dashmove 1.4s linear infinite}
+      @keyframes dashmove{to{stroke-dashoffset:-28}}
+
+      /* ---------- phone app shells ---------- */
+      .app-stage{display:flex;justify-content:center;padding:30px 0 10px}
+      .phone{width:100%;max-width:430px;background:var(--surface);border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;height:min(860px,calc(100dvh - 150px));min-height:560px;position:relative}
+      .phone-bar{padding:16px 20px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:var(--surface)}
+      .phone-body{flex:1;overflow-y:auto;padding:18px 18px 26px;scrollbar-width:thin}
+      .phone-nav{display:flex;border-top:1px solid var(--line);background:var(--surface);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+      .phone-nav button{flex:1;border:0;background:transparent;color:var(--muted);font-size:.68rem;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;transition:color .2s}
+      .phone-nav button svg{width:21px;height:21px}
+      .phone-nav button.on{color:var(--blue)}
+      .phone-nav button.center-fab{margin-top:-24px}
+      .fab{width:52px;height:52px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;box-shadow:0 10px 22px rgba(29,111,242,.4);border:3px solid var(--surface)}
+      .fab svg{stroke:#fff;width:24px;height:24px}
+      .screen{display:none}
+      .screen.on{display:block;animation:viewIn .35s cubic-bezier(.22,.8,.3,1)}
+      .screen h2.st{font-size:1.35rem;letter-spacing:-.02em;margin:2px 0 4px}
+      .screen .sub{color:var(--muted);font-size:.9rem;margin:0 0 18px}
+      .back-btn{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--ink-2);font-weight:700;font-size:.88rem;padding:4px 0;margin-bottom:8px}
+      .back-btn:hover{color:var(--blue)}
+
+      /* order / task cards */
+      .order-card{padding:16px;margin-bottom:12px;transition:transform .18s,box-shadow .2s,border-color .2s;width:100%;text-align:left}
+      button.order-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--line-2)}
+      .oc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+      .oc-id{font-family:var(--mono);font-weight:600;font-size:.86rem}
+      .route-line{display:flex;gap:12px}
+      .route-dots{display:flex;flex-direction:column;align-items:center;padding-top:3px}
+      .route-dots .d{width:9px;height:9px;border-radius:50%;flex:none}
+      .route-dots .d.from{background:var(--blue)} .route-dots .d.to{background:var(--ink);border-radius:3px}
+      .route-dots .bar{width:2px;flex:1;min-height:16px;background:repeating-linear-gradient(var(--line-2) 0 4px,transparent 4px 8px);margin:3px 0}
+      .route-addr{flex:1;min-width:0}
+      .route-addr .a{font-weight:700;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .route-addr .b{font-size:.8rem;color:var(--muted);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .oc-meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;padding-top:11px;border-top:1px dashed var(--line);font-size:.8rem;color:var(--ink-2);font-weight:600}
+      .oc-meta span{display:inline-flex;align-items:center;gap:5px}
+      .oc-meta svg{width:14px;height:14px;color:var(--faint)}
+
+      /* timeline */
+      .timeline{position:relative;padding-left:6px}
+      .tl-item{display:flex;gap:14px;position:relative;padding-bottom:20px}
+      .tl-item:last-child{padding-bottom:2px}
+      .tl-item::before{content:"";position:absolute;left:13px;top:30px;bottom:2px;width:2px;background:var(--line-2)}
+      .tl-item:last-child::before{display:none}
+      .tl-item.done::before{background:var(--green)}
+      .tl-ic{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--surface-3);color:var(--faint);border:2px solid var(--line);z-index:1}
+      .tl-ic svg{width:14px;height:14px}
+      .tl-item.done .tl-ic{background:var(--green);border-color:var(--green);color:#fff}
+      .tl-item.now .tl-ic{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 5px color-mix(in srgb,var(--blue) 18%,transparent)}
+      .tl-item .tt{font-weight:700;font-size:.92rem}
+      .tl-item .ts{font-size:.8rem;color:var(--muted)}
+      .tl-item.future{opacity:.55}
+
+      /* size picker */
+      .size-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+      .size-opt{border:1.5px solid var(--line-2);background:var(--surface);border-radius:13px;padding:11px 4px;text-align:center;transition:all .18s}
+      .size-opt svg{width:22px;height:22px;color:var(--ink-2);margin-bottom:3px}
+      .size-opt .sn{display:block;font-weight:800;font-size:.8rem}
+      .size-opt .sp{display:block;font-size:.7rem;color:var(--muted);font-weight:600}
+      .size-opt.on{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+      .size-opt.on svg{color:var(--blue)}
+      .quote-card{background:linear-gradient(135deg,var(--ink),#143064);color:#fff;border-radius:var(--r-lg);padding:20px;margin:16px 0;position:relative;overflow:hidden}
+      .quote-card::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(24,183,228,.35),transparent 70%)}
+      .quote-row{display:flex;justify-content:space-between;align-items:baseline;position:relative;z-index:1}
+      .quote-price{font-size:2rem;font-weight:800;letter-spacing:-.03em}
+      .quote-card .ql{font-size:.78rem;opacity:.75;font-weight:600}
+      .quote-card .qv{font-weight:700}
+      .success-hero{text-align:center;padding:22px 6px 8px}
+      .success-ring{width:82px;height:82px;margin:0 auto 16px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center;animation:pop .45s cubic-bezier(.3,1.5,.5,1)}
+      .success-ring svg{width:40px;height:40px;color:var(--green)}
+      @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+
+      /* list rows / settings */
+      .row-item{display:flex;align-items:center;gap:13px;padding:14px 4px;border-bottom:1px solid var(--line);width:100%;background:transparent;border-top:0;border-left:0;border-right:0;text-align:left;color:var(--ink)}
+      .row-item:last-child{border-bottom:0}
+      .row-item .ri-ic{width:40px;height:40px;border-radius:12px;background:var(--surface-3);display:grid;place-items:center;color:var(--ink-2);flex:none}
+      .row-item .ri-t{flex:1;min-width:0}
+      .row-item .ri-t b{display:block;font-size:.94rem}
+      .row-item .ri-t span{font-size:.8rem;color:var(--muted)}
+      .row-item > svg{color:var(--faint);width:17px;height:17px}
+      .notif-item{display:flex;gap:12px;padding:14px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface);margin-bottom:10px;text-align:left;width:100%;color:var(--ink)}
+      .notif-item.unread{border-color:color-mix(in srgb,var(--blue) 40%,var(--line));background:color-mix(in srgb,var(--blue-soft) 45%,var(--surface))}
+      .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);margin-top:7px;flex:none}
+      .empty-state{text-align:center;padding:38px 18px;color:var(--muted)}
+      .empty-state .es-ic{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;color:var(--faint)}
+      .empty-state h3{color:var(--ink);margin:0 0 5px;font-size:1rem}
+      .empty-state p{margin:0;font-size:.88rem}
+
+      /* driver specifics */
+      .avail-banner{border-radius:var(--r-lg);padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:16px;border:1px solid var(--line);transition:background .3s}
+      .avail-banner.online{background:linear-gradient(120deg,#0C3B2E,#0FA968);color:#fff;border-color:transparent}
+      .avail-banner.offline{background:var(--surface-2);color:var(--ink-2)}
+      .stat-mini{flex:1;padding:14px;text-align:center}
+      .stat-mini .n{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+      .stat-mini .l{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+      .progress-btn{width:100%;padding:18px;font-size:1.05rem;border-radius:16px}
+      .stage-track{display:flex;gap:5px;margin:16px 0}
+      .stage-track i{flex:1;height:6px;border-radius:99px;background:var(--surface-3)}
+      .stage-track i.done{background:var(--green)}
+      .stage-track i.now{background:var(--blue)}
+      .pod-box{border:2px dashed var(--line-2);border-radius:var(--r-md);padding:20px;text-align:center;color:var(--muted);background:var(--surface-2)}
+      .sig-pad{height:110px;border:1.5px dashed var(--line-2);border-radius:var(--r-md);background:var(--surface-2);display:grid;place-items:center;color:var(--faint);font-size:.85rem;font-weight:600;position:relative;overflow:hidden}
+      .sig-pad svg{position:absolute;inset:0;width:100%;height:100%}
+
+      /* skeleton */
+      .skl{border-radius:10px;background:linear-gradient(100deg,var(--surface-3) 40%,var(--line) 50%,var(--surface-3) 60%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+      @keyframes shimmer{to{background-position:-200% 0}}
+      .loading-wrap{padding:8px 2px}
+
+      /* ---------- admin ---------- */
+      .admin-shell{display:grid;grid-template-columns:248px 1fr;gap:0;margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow-md);overflow:hidden;min-height:760px;transition:grid-template-columns .25s}
+      .admin-shell.collapsed{grid-template-columns:76px 1fr}
+      .sidebar{border-right:1px solid var(--line);background:var(--surface-2);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+      .side-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;border:0;background:transparent;color:var(--ink-2);font-weight:700;font-size:.9rem;width:100%;text-align:left;transition:all .18s;white-space:nowrap}
+      .side-item svg{width:19px;height:19px;flex:none}
+      .side-item:hover{background:var(--surface-3);color:var(--ink)}
+      .side-item.on{background:var(--blue);color:#fff;box-shadow:0 6px 14px rgba(29,111,242,.3)}
+      .side-item .cnt{margin-left:auto;background:var(--red);color:#fff;font-size:.66rem;font-weight:800;padding:2px 7px;border-radius:99px}
+      .side-item.on .cnt{background:#fff;color:var(--blue)}
+      .admin-shell.collapsed .side-item span,.admin-shell.collapsed .side-item .cnt,.admin-shell.collapsed .side-user div{display:none}
+      .admin-shell.collapsed .side-item{justify-content:center;padding:12px 0}
+      .side-user{margin-top:auto;display:flex;gap:10px;align-items:center;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+      .admin-main{min-width:0;display:flex;flex-direction:column}
+      .admin-top{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+      .admin-top h2{margin:0;font-size:1.3rem;letter-spacing:-.02em}
+      .search-box{position:relative;margin-left:auto}
+      .search-box svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--faint)}
+      .search-box input{padding:10px 14px 10px 38px;border-radius:11px;border:1.5px solid var(--line-2);background:var(--surface);width:250px}
+      .search-box input:focus{outline:none;border-color:var(--blue)}
+      .icon-btn{position:relative;width:42px;height:42px;border-radius:12px;border:1.5px solid var(--line-2);background:var(--surface);display:grid;place-items:center;color:var(--ink-2);transition:all .18s}
+      .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+      .icon-btn .dot{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--surface)}
+      .admin-body{padding:24px;overflow-x:auto}
+      .apage{display:none}
+      .apage.on{display:block;animation:viewIn .35s cubic-bezier(.22,.8,.3,1)}
+      .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+      .kpi{padding:20px;position:relative;overflow:hidden}
+      .kpi .k-ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;margin-bottom:14px}
+      .kpi .k-n{font-size:1.9rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+      .kpi .k-l{color:var(--muted);font-size:.82rem;font-weight:700;margin-top:5px}
+      .kpi .k-d{font-size:.78rem;font-weight:800;margin-top:9px;display:inline-flex;gap:4px;align-items:center}
+      .up{color:var(--green)} .down{color:var(--red)}
+      .grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:18px}
+      .grid-2b{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+      .panel{padding:20px}
+      .panel h3{margin:0 0 4px;font-size:1.02rem;letter-spacing:-.01em}
+      .panel .p-sub{color:var(--muted);font-size:.84rem;margin:0 0 16px}
+      table.tbl{width:100%;border-collapse:collapse;font-size:.88rem;min-width:760px}
+      table.tbl th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);font-weight:800}
+      table.tbl td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+      table.tbl tbody tr{transition:background .15s;cursor:pointer}
+      table.tbl tbody tr:hover{background:var(--surface-2)}
+      .tbl-wrap{overflow-x:auto}
+      .driver-cell{display:flex;align-items:center;gap:9px;font-weight:700}
+      .filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+      .filter-row .select{width:auto;padding:9px 36px 9px 13px;font-size:.88rem;border-radius:10px}
+      .chip-tab{border:1.5px solid var(--line-2);background:var(--surface);padding:8px 15px;border-radius:99px;font-weight:700;font-size:.84rem;color:var(--ink-2);transition:all .18s}
+      .chip-tab:hover{border-color:var(--blue);color:var(--blue)}
+      .chip-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+      .donut-wrap{display:flex;align-items:center;gap:20px}
+      .legend{display:grid;gap:9px;font-size:.86rem;font-weight:600;color:var(--ink-2)}
+      .legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:8px}
+      .drv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+      .drv-card{padding:20px}
+      .drv-card .dc-top{display:flex;gap:13px;align-items:center;margin-bottom:14px}
+      .drv-card h4{margin:0;font-size:1rem}
+      .drv-card .dc-sub{color:var(--muted);font-size:.82rem}
+      .dc-stats{display:flex;gap:8px}
+      .dc-stats div{flex:1;background:var(--surface-2);border-radius:10px;padding:9px;text-align:center}
+      .dc-stats b{display:block;font-size:.95rem}
+      .dc-stats span{font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+      .stars{color:var(--amber);font-size:.85rem;letter-spacing:1px}
+
+      /* modal / toast */
+      .modal-veil{position:fixed;inset:0;background:rgba(6,17,38,.55);backdrop-filter:blur(4px);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0}
+      .modal-veil.open{display:flex}
+      .modal{background:var(--surface);width:100%;max-width:560px;max-height:92dvh;overflow-y:auto;border-radius:24px 24px 0 0;padding:26px;animation:sheetUp .35s cubic-bezier(.22,.9,.3,1)}
+      @keyframes sheetUp{from{transform:translateY(46px);opacity:0}to{transform:none;opacity:1}}
+      @media(min-width:640px){.modal-veil{align-items:center;padding:20px}.modal{border-radius:24px}}
+      .modal h3{margin:0 0 4px;font-size:1.25rem;letter-spacing:-.02em}
+      .modal .m-sub{color:var(--muted);font-size:.88rem;margin:0 0 18px}
+      .modal-x{position:absolute}
+      .toast-zone{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:min(92vw,430px)}
+      .toast{background:var(--ink);color:#fff;padding:13px 18px;border-radius:13px;font-weight:600;font-size:.9rem;box-shadow:var(--shadow-lg);display:flex;gap:10px;align-items:center;animation:toastIn .3s cubic-bezier(.2,1.2,.4,1);width:100%}
+      .toast svg{color:#4ADE80;flex:none}
+      @keyframes toastIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+      .notif-panel{position:absolute;top:calc(100% + 10px);right:0;width:340px;max-width:88vw;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);padding:8px;display:none;z-index:80}
+      .notif-panel.open{display:block;animation:viewIn .25s}
+      .notif-panel .np-item{padding:11px 12px;border-radius:11px;display:flex;gap:10px}
+      .notif-panel .np-item:hover{background:var(--surface-2)}
+      .notif-panel b{font-size:.86rem;display:block}
+      .notif-panel span{font-size:.78rem;color:var(--muted)}
+
+      .auth-wrap{padding:8px 2px}
+      .auth-logo{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px 0 22px}
+      .auth-tabs{display:flex;background:var(--surface-3);border-radius:12px;padding:4px;margin-bottom:20px}
+      .auth-tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:9px;font-weight:700;color:var(--ink-2)}
+      .auth-tabs button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+      .divider{display:flex;align-items:center;gap:12px;color:var(--faint);font-size:.78rem;font-weight:700;margin:18px 0}
+      .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+      @media (max-width:1020px){
+        .hero{grid-template-columns:1fr;gap:34px;padding-top:38px}
+        .float-card.fc1{left:6px}.float-card.fc2{right:6px}
+        .kpi-grid{grid-template-columns:repeat(2,1fr)}
+        .grid-2,.grid-2b{grid-template-columns:1fr}
+        .admin-shell{grid-template-columns:1fr}
+        .sidebar{flex-direction:row;overflow-x:auto;padding:10px;align-items:center}
+        .side-item{width:auto;padding:10px 13px}
+        .side-item span{display:inline!important}
+        .side-user{display:none}
+        .admin-shell.collapsed{grid-template-columns:1fr}
+        .admin-shell.collapsed .side-item{justify-content:flex-start}
+        #collapseBtn{display:none}
+      }
+      @media (max-width:640px){
+        .role-grid,.how-grid{grid-template-columns:1fr}
+        .topbar-in{flex-wrap:wrap}
+        .role-switch{margin-left:0;width:100%}
+        .role-switch button{flex:1;justify-content:center;padding:8px 6px;font-size:.8rem}
+        main{padding:0 14px 50px}
+        .phone{border-radius:0;border-left:0;border-right:0;height:calc(100dvh - 132px);min-height:520px}
+        .app-stage{padding-top:14px;margin:0 -14px}
+        .hero-stats{gap:22px}
+        .search-box{margin-left:0;width:100%}
+        .search-box input{width:100%}
+        .admin-body{padding:16px}
+        .kpi-grid{grid-template-columns:1fr 1fr}
+      }
+      @media (prefers-reduced-motion: reduce){
+        *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important;scroll-behavior:auto!important}
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+        <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z"/></symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+        <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-checkc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></symbol>
+        <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M17.5 14.9c2.3.7 4 2.3 4 5.1"/></symbol>
+        <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></symbol>
+        <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v11H2zM14 10h4l3 3v4h-7z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+        <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H15a3 3 0 0 0 0-6h-6a3 3 0 0 1 0-6h1.5"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+        <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></symbol>
+        <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+        <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9Z"/></symbol>
+        <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></symbol>
+        <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+        <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></symbol>
+        <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/></symbol>
+        <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+        <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+        <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.51 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.23.6.86 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9Z"/></symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10Z"/><path d="m9 11.5 2 2 4-4.5"/></symbol>
+        <symbol id="i-nav" viewBox="0 0 24 24"><path d="m3 11 19-8-8 19-2.5-8.5L3 11Z"/></symbol>
+        <symbol id="i-cam" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></symbol>
+        <symbol id="i-pen" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+        <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+        <symbol id="i-collapse" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></symbol>
+        <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+        <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+        <symbol id="i-pound" viewBox="0 0 24 24"><path d="M18 7c-.6-2.3-2.9-4-6-4a6 6 0 0 0-6 6c0 4 2 5.5 2 9H5v3h13M6 13h8"/></symbol>
+      </defs>
+    </svg>
+
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="logo" href="#" id="logoHome" aria-label="SwiftDrop home">
+          <span class="logo-mark"><svg><use href="#i-bolt"/></svg></span>
+          Swift<em>Drop</em>
+        </a>
+        <span class="demo-chip">Demo · Mock data</span>
+        <nav class="role-switch" aria-label="Choose experience">
+          <button data-role="customer" class="on"><svg><use href="#i-user"/></svg>Customer</button>
+          <button data-role="driver"><svg><use href="#i-truck"/></svg>Driver</button>
+          <button data-role="admin"><svg><use href="#i-grid"/></svg>Admin</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- ============ LANDING / ROLE SELECTOR ============ -->
+      <section class="view on" id="view-home">
+        <div class="hero">
+          <div>
+            <span class="badge b-transit" style="margin-bottom:18px">Same-day courier · City-wide network</span>
+            <h1>Your parcel.<br /><span class="hl">Delivered today.</span></h1>
+            <p class="lede">Book a courier in under a minute, get an instant quote, and follow your parcel door-to-door with live tracking — all in one place.</p>
+            <div class="hero-ctas">
+              <button class="btn btn-primary btn-lg" data-goto-role="customer" data-goto-screen="book">Book a Delivery <svg class="ic sm"><use href="#i-arrow"/></svg></button>
+              <button class="btn btn-ghost btn-lg" data-goto-role="customer" data-goto-screen="track">Track a parcel</button>
+            </div>
+            <div class="hero-stats">
+              <div><div class="num" data-count="42">0</div><div class="lbl">Avg. pickup time (min)</div></div>
+              <div><div class="num"><span data-count="98">0</span>%</div><div class="lbl">Delivered on time</div></div>
+              <div><div class="num"><span data-count="1200">0</span>+</div><div class="lbl">Parcels moved weekly</div></div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="map-card">
+              <div class="mapbox" style="height:380px" id="heroMap"></div>
+            </div>
+            <div class="float-card fc2">
+              <span class="fc-ic" style="background:var(--green-soft);color:var(--green)"><svg class="ic"><use href="#i-checkc"/></svg></span>
+              <div><b style="font-size:.9rem">Delivered · SWD-841206</b><div style="font-size:.78rem;color:var(--muted)">Signed by A. Rahman · 12:04</div></div>
+            </div>
+            <div class="float-card fc1">
+              <span class="avatar" style="width:42px;height:42px">MK</span>
+              <div><b style="font-size:.9rem">Marcus is on the way</b><div style="font-size:.78rem;color:var(--muted)">Arriving in <b style="color:var(--blue)">12 min</b> · Ford Transit</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="role-grid">
+          <button class="card role-card" data-goto-role="customer">
+            <span class="rc-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="ic lg"><use href="#i-box"/></svg></span>
+            <h3>Customer App</h3>
+            <p>Book deliveries, get instant quotes and track parcels live from your phone.</p>
+            <span class="go">Open customer app <svg class="ic sm"><use href="#i-arrow"/></svg></span>
+          </button>
+          <button class="card role-card" data-goto-role="driver">
+            <span class="rc-ic" style="background:var(--green-soft);color:var(--green)"><svg class="ic lg"><use href="#i-truck"/></svg></span>
+            <h3>Driver App</h3>
+            <p>Go online, accept jobs, follow the pickup workflow and track your earnings.</p>
+            <span class="go">Open driver app <svg class="ic sm"><use href="#i-arrow"/></svg></span>
+          </button>
+          <button class="card role-card" data-goto-role="admin">
+            <span class="rc-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="ic lg"><use href="#i-chart"/></svg></span>
+            <h3>Admin Dashboard</h3>
+            <p>Run the whole operation — live orders, drivers, assignments and analytics.</p>
+            <span class="go">Open dashboard <svg class="ic sm"><use href="#i-arrow"/></svg></span>
+          </button>
+        </div>
+
+        <div class="section-head">
+          <h2>How SwiftDrop works</h2>
+          <p>Three steps from booking to doorstep. The customer, driver and operations views below all run on the same live order data in this demo.</p>
+        </div>
+        <div class="how-grid">
+          <div class="card how-card"><span class="step-num">STEP 01</span><h3>Book &amp; get a quote</h3><p>Enter pickup and drop-off, pick a parcel size and timing — the price and ETA appear instantly, no account needed to check.</p></div>
+          <div class="card how-card"><span class="step-num">STEP 02</span><h3>A driver is assigned</h3><p>The nearest available driver accepts the job. You see who they are, what they drive and exactly where they are.</p></div>
+          <div class="card how-card"><span class="step-num">STEP 03</span><h3>Track to the door</h3><p>Follow each milestone — collected, in transit, delivered — with proof of delivery captured at the doorstep.</p></div>
+        </div>
+
+        <div class="foot-note">
+          <svg class="ic"><use href="#i-info"/></svg>
+          <div><b>About this demo.</b> SwiftDrop is a product concept. All names, orders, prices and locations are sample data, and no real GPS tracking, payments, authentication or notifications are connected. Every screen is interactive — try booking a delivery as a customer, then watch it appear in the driver app and admin dashboard.</div>
+        </div>
+      </section>
+
+      <!-- ============ CUSTOMER APP ============ -->
+      <section class="view" id="view-customer">
+        <div class="app-stage">
+          <div class="phone" id="custPhone">
+            <div class="phone-bar">
+              <span class="logo-mark" style="width:32px;height:32px;border-radius:9px"><svg style="width:18px;height:18px"><use href="#i-bolt"/></svg></span>
+              <div style="line-height:1.15"><b style="font-size:.95rem">SwiftDrop</b><div style="font-size:.7rem;color:var(--muted);font-weight:600">Customer app</div></div>
+              <button class="icon-btn" style="margin-left:auto;width:38px;height:38px" data-cust-nav="notifs" aria-label="Notifications"><svg class="ic sm"><use href="#i-bell"/></svg><span class="dot" id="custBellDot"></span></button>
+            </div>
+            <div class="phone-body" id="custBody">
+
+              <!-- customer: home -->
+              <div class="screen on" data-cscreen="home">
+                <h2 class="st">Hello, <span class="cust-name">Amelia</span> 👋</h2>
+                <p class="sub">Where is your parcel going today?</p>
+                <button class="btn btn-primary btn-lg btn-block" data-cust-nav="book" style="margin-bottom:18px"><svg class="ic"><use href="#i-plus"/></svg> Book a Delivery</button>
+                <div id="custActiveWrap"></div>
+                <h3 style="margin:20px 0 10px;font-size:1rem">Quick actions</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                  <button class="card" style="padding:16px;text-align:left" data-cust-nav="track"><svg class="ic" style="color:var(--blue);margin-bottom:8px"><use href="#i-route"/></svg><b style="display:block;font-size:.92rem">Track parcel</b><span style="font-size:.8rem;color:var(--muted)">Live driver location</span></button>
+                  <button class="card" style="padding:16px;text-align:left" data-cust-nav="orders"><svg class="ic" style="color:var(--violet);margin-bottom:8px"><use href="#i-list"/></svg><b style="display:block;font-size:.92rem">My orders</b><span style="font-size:.8rem;color:var(--muted)">History &amp; receipts</span></button>
+                  <button class="card" style="padding:16px;text-align:left" data-cust-nav="book"><svg class="ic" style="color:var(--green);margin-bottom:8px"><use href="#i-clock"/></svg><b style="display:block;font-size:.92rem">Scheduled</b><span style="font-size:.8rem;color:var(--muted)">Book for later today</span></button>
+                  <button class="card" style="padding:16px;text-align:left" data-cust-nav="profile"><svg class="ic" style="color:var(--amber);margin-bottom:8px"><use href="#i-user"/></svg><b style="display:block;font-size:.92rem">Account</b><span style="font-size:.8rem;color:var(--muted)">Addresses &amp; settings</span></button>
+                </div>
+                <h3 style="margin:22px 0 10px;font-size:1rem">Recent deliveries</h3>
+                <div id="custRecent"></div>
+              </div>
+
+              <!-- customer: book -->
+              <div class="screen" data-cscreen="book">
+                <button class="back-btn" data-cust-nav="home"><svg class="ic sm"><use href="#i-back"/></svg> Back</button>
+                <h2 class="st">Book a delivery</h2>
+                <p class="sub">Instant quote — no hidden fees.</p>
+                <form id="bookForm" novalidate>
+                  <div class="field"><label for="bkFrom">Pickup address</label>
+                    <div class="input-wrap"><svg><use href="#i-pin"/></svg><input class="input" id="bkFrom" placeholder="e.g. 14 King Street, City Centre" autocomplete="off" /></div>
+                    <div class="err-msg" id="errFrom">Please enter a pickup address.</div></div>
+                  <div class="field"><label for="bkTo">Drop-off address</label>
+                    <div class="input-wrap"><svg><use href="#i-pin"/></svg><input class="input" id="bkTo" placeholder="e.g. 208 Oxford Road, Fallowfield" autocomplete="off" /></div>
+                    <div class="err-msg" id="errTo">Please enter a drop-off address.</div></div>
+                  <div class="field"><label>Parcel size</label>
+                    <div class="size-grid" id="sizeGrid">
+                      <button type="button" class="size-opt" data-size="Document" data-mult="1"><svg><use href="#i-list"/></svg><span class="sn">Document</span><span class="sp">up to 1 kg</span></button>
+                      <button type="button" class="size-opt on" data-size="Small" data-mult="1.35"><svg><use href="#i-box"/></svg><span class="sn">Small</span><span class="sp">up to 5 kg</span></button>
+                      <button type="button" class="size-opt" data-size="Medium" data-mult="1.8"><svg><use href="#i-box"/></svg><span class="sn">Medium</span><span class="sp">up to 15 kg</span></button>
+                      <button type="button" class="size-opt" data-size="Large" data-mult="2.6"><svg><use href="#i-truck"/></svg><span class="sn">Large</span><span class="sp">up to 30 kg</span></button>
+                    </div></div>
+                  <div class="field"><label>Preferred timing</label>
+                    <div class="seg" id="timingSeg">
+                      <button type="button" class="on" data-timing="ASAP">ASAP</button>
+                      <button type="button" data-timing="Within 2 hours">Within 2 hrs</button>
+                      <button type="button" data-timing="Scheduled">Scheduled</button>
+                    </div></div>
+                  <div class="field" id="schedField" style="display:none"><label for="bkTime">Pickup time</label>
+                    <input class="input" id="bkTime" type="time" value="16:30" /></div>
+                  <div class="field"><label for="bkNotes">Delivery instructions <span style="color:var(--faint);font-weight:600">(optional)</span></label>
+                    <textarea class="input" id="bkNotes" rows="2" placeholder="Gate code, floor, leave with reception…"></textarea></div>
+                  <div class="quote-card" id="quoteCard">
+                    <div class="quote-row"><span class="ql">ESTIMATED PRICE</span><span class="ql" id="qEtaTop">ETA —</span></div>
+                    <div class="quote-row" style="margin:6px 0 12px"><span class="quote-price" id="qPrice">£0.00</span></div>
+                    <div class="quote-row"><span class="ql">Distance</span><span class="qv" id="qDist">—</span></div>
+                    <div class="quote-row" style="margin-top:4px"><span class="ql">Estimated delivery</span><span class="qv" id="qEta">—</span></div>
+                    <div class="quote-row" style="margin-top:4px"><span class="ql">Service</span><span class="qv" id="qSvc">Same-day · Small parcel</span></div>
+                  </div>
+                  <button class="btn btn-primary btn-lg btn-block" type="submit" id="bookSubmit">Confirm booking</button>
+                  <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:12px 0 0">Demo checkout — no payment is taken.</p>
+                </form>
+              </div>
+
+              <!-- customer: confirmation -->
+              <div class="screen" data-cscreen="confirm">
+                <div class="success-hero">
+                  <div class="success-ring"><svg><use href="#i-check"/></svg></div>
+                  <h2 class="st">Booking confirmed</h2>
+                  <p class="sub" style="margin-bottom:0">Your courier is being assigned now.</p>
+                </div>
+                <div class="card" style="padding:18px;margin:18px 0">
+                  <div style="text-align:center;padding-bottom:14px;border-bottom:1px dashed var(--line)">
+                    <div style="font-size:.74rem;font-weight:800;letter-spacing:.1em;color:var(--muted)">TRACKING NUMBER</div>
+                    <div class="mono" id="cfId" style="font-size:1.5rem;font-weight:600;margin-top:4px">SWD-000000</div>
+                  </div>
+                  <div id="cfRoute" style="padding-top:14px"></div>
+                  <div class="oc-meta"><span><svg><use href="#i-clock"/></svg><span id="cfEta">—</span></span><span><svg><use href="#i-pound"/></svg><span id="cfPrice">—</span></span><span><svg><use href="#i-box"/></svg><span id="cfSize">—</span></span></div>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" data-cust-nav="track">Track my parcel</button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px" data-cust-nav="home">Back to home</button>
+              </div>
+
+              <!-- customer: tracking -->
+              <div class="screen" data-cscreen="track">
+                <button class="back-btn" data-cust-nav="home"><svg class="ic sm"><use href="#i-back"/></svg> Back</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                  <h2 class="st" style="margin:0">Live tracking</h2><span class="badge b-transit" id="trkBadge">In transit</span>
+                </div>
+                <p class="sub mono" id="trkId" style="margin-top:4px">SWD-739214</p>
+                <div class="card" style="overflow:hidden;margin-bottom:14px">
+                  <div class="mapbox" style="height:250px" id="trackMap"></div>
+                  <div style="padding:14px 16px;display:flex;align-items:center;gap:12px">
+                    <svg class="ic" style="color:var(--blue)"><use href="#i-clock"/></svg>
+                    <div><b id="trkEtaBig">Arriving by 14:35</b><div style="font-size:.8rem;color:var(--muted)" id="trkEtaSub">Driver is 2.1 miles away</div></div>
+                    <span class="badge b-transit" style="margin-left:auto" id="trkMins">12 min</span>
+                  </div>
+                </div>
+                <div class="card" style="padding:16px;margin-bottom:14px;display:flex;gap:13px;align-items:center">
+                  <span class="avatar" style="width:50px;height:50px;font-size:1rem">MK</span>
+                  <div style="flex:1;min-width:0"><b>Marcus Kane</b><div style="font-size:.8rem;color:var(--muted)">Ford Transit · <span class="stars">★★★★★</span> 4.9 (312 trips)</div></div>
+                  <button class="icon-btn" data-toast="Calling Marcus… (demo)" aria-label="Call driver"><svg class="ic sm"><use href="#i-phone"/></svg></button>
+                  <button class="icon-btn" data-toast="Message sent to Marcus (demo)" aria-label="Message driver"><svg class="ic sm"><use href="#i-msg"/></svg></button>
+                </div>
+                <h3 style="margin:18px 0 12px;font-size:1rem">Delivery progress</h3>
+                <div class="card" style="padding:18px"><div class="timeline" id="trkTimeline"></div></div>
+                <div class="card" style="padding:16px;margin-top:14px"><div id="trkRoute"></div></div>
+              </div>
+
+              <!-- customer: orders -->
+              <div class="screen" data-cscreen="orders">
+                <h2 class="st">My orders</h2>
+                <p class="sub">Active deliveries and your full history.</p>
+                <div class="seg" id="ordersSeg" style="margin-bottom:16px">
+                  <button class="on" data-ofilter="active">Active</button>
+                  <button data-ofilter="completed">Completed</button>
+                  <button data-ofilter="all">All</button>
+                </div>
+                <div id="custOrders"></div>
+              </div>
+
+              <!-- customer: notifications -->
+              <div class="screen" data-cscreen="notifs">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <h2 class="st" style="margin:0">Notifications</h2>
+                  <button class="btn btn-ghost btn-sm" id="markReadBtn">Mark all read</button>
+                </div>
+                <p class="sub">Updates about your deliveries.</p>
+                <div id="custNotifs"></div>
+              </div>
+
+              <!-- customer: profile -->
+              <div class="screen" data-cscreen="profile">
+                <h2 class="st">Account</h2>
+                <p class="sub">Profile, addresses and settings.</p>
+                <div class="card" style="padding:18px;display:flex;gap:14px;align-items:center;margin-bottom:16px">
+                  <span class="avatar a2" style="width:56px;height:56px;font-size:1.15rem" id="custAvatar">AC</span>
+                  <div><b style="font-size:1.05rem" class="cust-name-full">Amelia Carter</b><div style="font-size:.84rem;color:var(--muted)" id="custEmailLbl">amelia.carter@example.co.uk</div><span class="badge b-delivered" style="margin-top:6px">Verified account</span></div>
+                </div>
+                <div class="card" style="padding:6px 16px;margin-bottom:14px">
+                  <button class="row-item" data-cust-nav="auth"><span class="ri-ic"><svg class="ic sm"><use href="#i-user"/></svg></span><span class="ri-t"><b>Personal details</b><span>Name, email and phone</span></span><svg><use href="#i-chev"/></svg></button>
+                  <button class="row-item" data-toast="Saved addresses opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-pin"/></svg></span><span class="ri-t"><b>Saved addresses</b><span>Home · Office · 2 saved</span></span><svg><use href="#i-chev"/></svg></button>
+                  <button class="row-item" data-toast="Payment methods opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-card"/></svg></span><span class="ri-t"><b>Payment methods</b><span>Visa •••• 4242</span></span><svg><use href="#i-chev"/></svg></button>
+                </div>
+                <div class="card" style="padding:6px 16px;margin-bottom:14px">
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-bell"/></svg></span><span class="ri-t"><b>Delivery updates</b><span>Push &amp; email notifications</span></span><label class="switch"><input type="checkbox" checked data-pref /><span class="track"></span></label></div>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-shield"/></svg></span><span class="ri-t"><b>Require signature</b><span>Ask for a signature on delivery</span></span><label class="switch"><input type="checkbox" data-pref /><span class="track"></span></label></div>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-msg"/></svg></span><span class="ri-t"><b>Offers &amp; news</b><span>Occasional product emails</span></span><label class="switch"><input type="checkbox" checked data-pref /><span class="track"></span></label></div>
+                </div>
+                <button class="btn btn-danger btn-block" data-cust-nav="auth"><svg class="ic sm"><use href="#i-out"/></svg> Sign out</button>
+              </div>
+
+              <!-- customer: auth -->
+              <div class="screen" data-cscreen="auth">
+                <div class="auth-wrap">
+                  <div class="auth-logo">
+                    <span class="logo-mark" style="width:54px;height:54px;border-radius:15px;margin-bottom:12px"><svg style="width:30px;height:30px"><use href="#i-bolt"/></svg></span>
+                    <h2 class="st" style="margin:0">Welcome to SwiftDrop</h2>
+                    <p class="sub" style="margin:4px 0 0">Sign in to book and track deliveries.</p>
+                  </div>
+                  <div class="auth-tabs"><button class="on" id="tabLogin">Log in</button><button id="tabSignup">Sign up</button></div>
+                  <form id="custAuthForm" novalidate>
+                    <div class="field" id="authNameField" style="display:none"><label for="caName">Full name</label><input class="input" id="caName" placeholder="Your full name" autocomplete="name" /><div class="err-msg" id="errCaName">Please enter your name.</div></div>
+                    <div class="field"><label for="caEmail">Email address</label><input class="input" id="caEmail" type="email" placeholder="you@example.co.uk" autocomplete="email" /><div class="err-msg" id="errCaEmail">Enter a valid email address.</div></div>
+                    <div class="field"><label for="caPass">Password</label><input class="input" id="caPass" type="password" placeholder="••••••••" autocomplete="current-password" /><div class="err-msg" id="errCaPass">Password must be at least 6 characters.</div></div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" id="custAuthBtn">Log in</button>
+                  </form>
+                  <div class="divider">OR</div>
+                  <button class="btn btn-ghost btn-block" data-auth-skip>Continue as guest · Amelia</button>
+                  <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:16px">Demo sign-in — any details work, nothing is stored or sent.</p>
+                </div>
+              </div>
+
+            </div>
+            <nav class="phone-nav" id="custNav" aria-label="Customer navigation">
+              <button data-cust-nav="home" class="on"><svg><use href="#i-home"/></svg>Home</button>
+              <button data-cust-nav="orders"><svg><use href="#i-list"/></svg>Orders</button>
+              <button data-cust-nav="book" class="center-fab" aria-label="Book a delivery"><span class="fab"><svg><use href="#i-plus"/></svg></span>Book</button>
+              <button data-cust-nav="notifs"><svg><use href="#i-bell"/></svg>Alerts</button>
+              <button data-cust-nav="profile"><svg><use href="#i-user"/></svg>Profile</button>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DRIVER APP ============ -->
+      <section class="view" id="view-driver">
+        <div class="app-stage">
+          <div class="phone" id="drvPhone">
+            <div class="phone-bar">
+              <span class="avatar a3" style="width:34px;height:34px;font-size:.8rem">MK</span>
+              <div style="line-height:1.15"><b style="font-size:.95rem">Marcus Kane</b><div style="font-size:.7rem;color:var(--muted);font-weight:600">Driver · Ford Transit · DK24 SWD</div></div>
+              <span class="badge b-online" id="drvStatusBadge" style="margin-left:auto">Online</span>
+            </div>
+            <div class="phone-body" id="drvBody">
+
+              <!-- driver: login / onboarding -->
+              <div class="screen" data-dscreen="auth">
+                <div class="auth-wrap">
+                  <div class="auth-logo">
+                    <span class="logo-mark" style="width:54px;height:54px;border-radius:15px;margin-bottom:12px;background:linear-gradient(120deg,#0FA968,#37C978)"><svg style="width:30px;height:30px"><use href="#i-truck"/></svg></span>
+                    <h2 class="st" style="margin:0">Driver sign in</h2>
+                    <p class="sub" style="margin:4px 0 0">Access your tasks, routes and earnings.</p>
+                  </div>
+                  <form id="drvAuthForm" novalidate>
+                    <div class="field"><label for="daEmail">Driver email</label><input class="input" id="daEmail" type="email" placeholder="marcus@swiftdrop.example" /><div class="err-msg" id="errDaEmail">Enter a valid email address.</div></div>
+                    <div class="field"><label for="daPass">Password</label><input class="input" id="daPass" type="password" placeholder="••••••••" /><div class="err-msg" id="errDaPass">Password must be at least 6 characters.</div></div>
+                    <button class="btn btn-green btn-lg btn-block" type="submit">Sign in &amp; go online</button>
+                  </form>
+                  <div class="divider">NEW TO SWIFT DROP?</div>
+                  <div class="card" style="padding:16px">
+                    <b style="display:block;margin-bottom:10px">Driver onboarding</b>
+                    <div class="timeline">
+                      <div class="tl-item done"><span class="tl-ic"><svg><use href="#i-check"/></svg></span><div><div class="tt" style="font-size:.88rem">Application approved</div><div class="ts">Documents &amp; licence verified</div></div></div>
+                      <div class="tl-item done"><span class="tl-ic"><svg><use href="#i-check"/></svg></span><div><div class="tt" style="font-size:.88rem">Vehicle check passed</div><div class="ts">Ford Transit · DK24 SWD</div></div></div>
+                      <div class="tl-item now"><span class="tl-ic"><svg><use href="#i-bolt"/></svg></span><div><div class="tt" style="font-size:.88rem">First shift briefing</div><div class="ts">Tap sign in to complete onboarding</div></div></div>
+                    </div>
+                  </div>
+                  <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:14px">Demo sign-in — no real account is accessed.</p>
+                </div>
+              </div>
+
+              <!-- driver: home -->
+              <div class="screen on" data-dscreen="home">
+                <div class="avail-banner online" id="availBanner">
+                  <div style="flex:1"><b style="font-size:1.05rem" id="availTitle">You're online</b><div style="font-size:.82rem;opacity:.85" id="availSub">Receiving jobs near City Centre</div></div>
+                  <label class="switch" aria-label="Toggle availability"><input type="checkbox" id="availToggle" checked /><span class="track"></span></label>
+                </div>
+                <div style="display:flex;gap:10px;margin-bottom:18px">
+                  <div class="card stat-mini"><div class="n" id="drvTodayEarn">£86.40</div><div class="l">Earned today</div></div>
+                  <div class="card stat-mini"><div class="n" id="drvTodayJobs">7</div><div class="l">Jobs done</div></div>
+                  <div class="card stat-mini"><div class="n">4.9 ★</div><div class="l">Rating</div></div>
+                </div>
+                <h3 style="margin:0 0 4px;font-size:1.05rem">Assigned to you</h3>
+                <p style="color:var(--muted);font-size:.85rem;margin:0 0 14px">Tap a job to view the route and start the pickup workflow.</p>
+                <div id="drvTasks"></div>
+                <div id="drvOfflineState" class="empty-state" style="display:none">
+                  <span class="es-ic"><svg class="ic lg"><use href="#i-truck"/></svg></span>
+                  <h3>You're offline</h3><p>Go online using the switch above to start receiving delivery jobs.</p>
+                </div>
+              </div>
+
+              <!-- driver: job detail -->
+              <div class="screen" data-dscreen="job">
+                <button class="back-btn" data-drv-nav="home"><svg class="ic sm"><use href="#i-back"/></svg> All tasks</button>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                  <h2 class="st mono" style="margin:0;font-size:1.2rem" id="jobId">SWD-739214</h2><span class="badge b-assigned" id="jobBadge">Accepted</span>
+                </div>
+                <p class="sub" id="jobCust" style="margin-top:4px">For Amelia Carter · Small parcel</p>
+                <div class="card" style="overflow:hidden;margin-bottom:14px">
+                  <div class="mapbox" style="height:210px" id="jobMap"></div>
+                  <div style="padding:12px 16px;display:flex;gap:16px;font-size:.84rem;font-weight:700">
+                    <span style="display:inline-flex;gap:6px;align-items:center"><svg class="ic sm" style="color:var(--blue)"><use href="#i-route"/></svg><span id="jobDist">3.4 mi route</span></span>
+                    <span style="display:inline-flex;gap:6px;align-items:center"><svg class="ic sm" style="color:var(--blue)"><use href="#i-clock"/></svg><span id="jobEta">~18 min</span></span>
+                    <button class="btn btn-ghost btn-sm" style="margin-left:auto" data-toast="Opening navigation… (demo)"><svg class="ic sm"><use href="#i-nav"/></svg> Navigate</button>
+                  </div>
+                </div>
+                <div class="card" style="padding:16px;margin-bottom:14px"><div id="jobRoute"></div>
+                  <div class="oc-meta"><span><svg><use href="#i-user"/></svg><span id="jobContact">Amelia Carter · 07700 900 412</span></span></div>
+                  <div style="display:flex;gap:8px;margin-top:12px">
+                    <button class="btn btn-ghost btn-sm" style="flex:1" data-toast="Calling customer… (demo)"><svg class="ic sm"><use href="#i-phone"/></svg> Call</button>
+                    <button class="btn btn-ghost btn-sm" style="flex:1" data-toast="Message sent (demo)"><svg class="ic sm"><use href="#i-msg"/></svg> Message</button>
+                  </div>
+                </div>
+                <div class="stage-track" id="stageTrack"><i></i><i></i><i></i><i></i><i></i></div>
+                <div id="jobActionWrap">
+                  <button class="btn btn-primary progress-btn" id="jobProgressBtn">Arrived at Pickup</button>
+                  <p style="text-align:center;font-size:.8rem;color:var(--muted);margin:10px 0 0" id="jobHint">Head to the pickup address, then confirm arrival.</p>
+                </div>
+                <div id="pickupConfirm" style="display:none">
+                  <div class="card" style="padding:16px;margin-bottom:12px;border-color:var(--green)">
+                    <b style="display:flex;gap:8px;align-items:center"><svg class="ic sm" style="color:var(--green)"><use href="#i-box"/></svg> Confirm parcel collection</b>
+                    <p style="font-size:.86rem;color:var(--ink-2);margin:8px 0 14px" id="pickupCheck">Check the parcel matches the order — <b>Small parcel, up to 5 kg</b>, sealed and labelled <span class="mono" id="pickupLbl">SWD-739214</span>.</p>
+                    <button class="btn btn-green btn-block" id="confirmPickupBtn" style="padding:15px">Parcel collected — confirm</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- driver: completion -->
+              <div class="screen" data-dscreen="complete">
+                <h2 class="st">Complete delivery</h2>
+                <p class="sub">Capture proof of delivery for <span class="mono" id="podId">SWD-739214</span>.</p>
+                <div class="field"><label>Recipient name</label><input class="input" id="podName" placeholder="Who received the parcel?" /><div class="err-msg" id="errPodName">Enter the recipient's name.</div></div>
+                <div class="field"><label>Signature</label>
+                  <div class="sig-pad" id="sigPad"><svg viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><path d="M30 78 C 60 20, 90 95, 120 55 S 190 25, 215 70 S 265 60, 278 45" fill="none" stroke="var(--ink-2)" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg><span style="position:relative">Signed on screen (demo)</span></div></div>
+                <div class="field"><label>Photo proof</label>
+                  <div class="pod-box"><svg class="ic lg" style="margin-bottom:6px"><use href="#i-cam"/></svg><div style="font-weight:700;color:var(--ink-2)">Photo captured</div><div style="font-size:.8rem">Parcel at front door · 14:32 (demo placeholder)</div></div></div>
+                <button class="btn btn-green btn-lg btn-block" id="confirmDeliveryBtn" style="margin-top:6px">Confirm delivery</button>
+              </div>
+
+              <!-- driver: done -->
+              <div class="screen" data-dscreen="done">
+                <div class="success-hero">
+                  <div class="success-ring"><svg><use href="#i-check"/></svg></div>
+                  <h2 class="st">Delivery complete</h2>
+                  <p class="sub" style="margin-bottom:0">Nice work — proof of delivery saved.</p>
+                </div>
+                <div class="card" style="padding:18px;margin:18px 0">
+                  <div class="quote-row" style="color:var(--ink)"><span style="color:var(--muted);font-weight:700;font-size:.82rem">YOU EARNED</span><b style="font-size:1.4rem" id="doneEarn">£12.60</b></div>
+                  <div class="oc-meta"><span><svg><use href="#i-box"/></svg><span class="mono" id="doneId">SWD-739214</span></span><span><svg><use href="#i-clock"/></svg>Completed in 26 min</span><span><svg><use href="#i-star"/></svg>Rated 5.0</span></div>
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" data-drv-nav="home">Back to tasks</button>
+                <button class="btn btn-ghost btn-block" style="margin-top:10px" data-drv-nav="earnings">View earnings</button>
+              </div>
+
+              <!-- driver: earnings -->
+              <div class="screen" data-dscreen="earnings">
+                <h2 class="st">Earnings</h2>
+                <p class="sub">This week at a glance.</p>
+                <div class="quote-card" style="margin-top:0">
+                  <div class="quote-row"><span class="ql">TOTAL THIS WEEK</span><span class="ql">Payout Fri</span></div>
+                  <div class="quote-price" style="margin:6px 0" id="weekTotal">£412.80</div>
+                  <div class="quote-row"><span class="ql">Jobs completed</span><span class="qv">38</span></div>
+                  <div class="quote-row" style="margin-top:4px"><span class="ql">Avg. per job</span><span class="qv">£10.86</span></div>
+                </div>
+                <div class="card" style="padding:16px;margin-bottom:16px"><b style="display:block;margin-bottom:12px;font-size:.92rem">Daily earnings</b><div id="earnChart"></div></div>
+                <h3 style="margin:0 0 10px;font-size:1rem">Completed today</h3>
+                <div id="drvCompleted"></div>
+              </div>
+
+              <!-- driver: profile -->
+              <div class="screen" data-dscreen="dprofile">
+                <h2 class="st">Driver profile</h2>
+                <p class="sub">Your details and vehicle.</p>
+                <div class="card" style="padding:18px;display:flex;gap:14px;align-items:center;margin-bottom:16px">
+                  <span class="avatar a3" style="width:56px;height:56px;font-size:1.1rem">MK</span>
+                  <div><b style="font-size:1.05rem">Marcus Kane</b><div style="font-size:.84rem;color:var(--muted)">Driver since Mar 2025 · ID DRV-1042</div><span class="stars">★★★★★</span> <span style="font-size:.82rem;color:var(--muted)">4.9 · 1,204 deliveries</span></div>
+                </div>
+                <div class="card" style="padding:6px 16px;margin-bottom:14px">
+                  <button class="row-item" data-toast="Vehicle details opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-truck"/></svg></span><span class="ri-t"><b>Vehicle</b><span>Ford Transit · DK24 SWD · Insured</span></span><svg><use href="#i-chev"/></svg></button>
+                  <button class="row-item" data-toast="Documents opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-shield"/></svg></span><span class="ri-t"><b>Documents</b><span>Licence &amp; insurance verified</span></span><svg><use href="#i-chev"/></svg></button>
+                  <button class="row-item" data-toast="Payout settings opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-wallet"/></svg></span><span class="ri-t"><b>Payout method</b><span>Bank •••• 3817 · Weekly</span></span><svg><use href="#i-chev"/></svg></button>
+                  <button class="row-item" data-toast="Working area opened (demo)"><span class="ri-ic"><svg class="ic sm"><use href="#i-pin"/></svg></span><span class="ri-t"><b>Working area</b><span>City Centre + 8 mile radius</span></span><svg><use href="#i-chev"/></svg></button>
+                </div>
+                <button class="btn btn-danger btn-block" data-drv-nav="auth"><svg class="ic sm"><use href="#i-out"/></svg> Sign out</button>
+              </div>
+
+            </div>
+            <nav class="phone-nav" id="drvNav" aria-label="Driver navigation">
+              <button data-drv-nav="home" class="on"><svg><use href="#i-home"/></svg>Tasks</button>
+              <button data-drv-nav="job"><svg><use href="#i-route"/></svg>Active job</button>
+              <button data-drv-nav="earnings"><svg><use href="#i-wallet"/></svg>Earnings</button>
+              <button data-drv-nav="dprofile"><svg><use href="#i-user"/></svg>Profile</button>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ADMIN DASHBOARD ============ -->
+      <section class="view" id="view-admin">
+        <div class="admin-shell" id="adminShell">
+          <aside class="sidebar" aria-label="Admin navigation">
+            <button class="side-item on" data-apage="overview"><svg><use href="#i-grid"/></svg><span>Overview</span></button>
+            <button class="side-item" data-apage="orders"><svg><use href="#i-list"/></svg><span>Orders</span><span class="cnt" id="sideOrderCnt">3</span></button>
+            <button class="side-item" data-apage="drivers"><svg><use href="#i-truck"/></svg><span>Drivers</span></button>
+            <button class="side-item" data-apage="customers"><svg><use href="#i-users"/></svg><span>Customers</span></button>
+            <button class="side-item" data-apage="assign"><svg><use href="#i-route"/></svg><span>Assignments</span></button>
+            <button class="side-item" data-apage="analytics"><svg><use href="#i-chart"/></svg><span>Analytics</span></button>
+            <button class="side-item" data-apage="anotifs"><svg><use href="#i-bell"/></svg><span>Notifications</span></button>
+            <button class="side-item" data-apage="settings"><svg><use href="#i-gear"/></svg><span>Settings</span></button>
+            <div class="side-user">
+              <span class="avatar a4" style="width:38px;height:38px;font-size:.78rem">OP</span>
+              <div style="min-width:0"><b style="font-size:.86rem;display:block">Ops Manager</b><span style="font-size:.74rem;color:var(--muted)">admin@swiftdrop.example</span></div>
+            </div>
+          </aside>
+          <div class="admin-main">
+            <div class="admin-top">
+              <button class="icon-btn" id="collapseBtn" aria-label="Collapse sidebar"><svg class="ic sm"><use href="#i-collapse"/></svg></button>
+              <h2 id="adminTitle">Operations overview</h2>
+              <div class="search-box"><svg><use href="#i-search"/></svg><input id="adminSearch" type="search" placeholder="Search orders, drivers, customers…" aria-label="Search" /></div>
+              <select class="select" id="dateSel" style="width:auto;padding:10px 36px 10px 13px;border-radius:11px;font-size:.88rem" aria-label="Date range">
+                <option>Today</option><option>Yesterday</option><option>Last 7 days</option><option>Last 30 days</option>
+              </select>
+              <div style="position:relative">
+                <button class="icon-btn" id="adminBell" aria-label="Notifications"><svg class="ic sm"><use href="#i-bell"/></svg><span class="dot"></span></button>
+                <div class="notif-panel" id="adminNotifPanel">
+                  <div style="padding:10px 12px 4px"><b>Notification centre</b></div>
+                  <div class="np-item"><span class="fc-ic" style="width:34px;height:34px;background:var(--blue-soft);color:var(--blue)"><svg class="ic sm"><use href="#i-box"/></svg></span><div><b>New order SWD-902317</b><span>Pickup in Northern Quarter · unassigned</span></div></div>
+                  <div class="np-item"><span class="fc-ic" style="width:34px;height:34px;background:var(--amber-soft);color:var(--amber)"><svg class="ic sm"><use href="#i-clock"/></svg></span><div><b>Delivery running late</b><span>SWD-884120 is 6 min behind ETA</span></div></div>
+                  <div class="np-item"><span class="fc-ic" style="width:34px;height:34px;background:var(--green-soft);color:var(--green)"><svg class="ic sm"><use href="#i-truck"/></svg></span><div><b>Driver came online</b><span>Priya Shah is now available in Didsbury</span></div></div>
+                  <button class="btn btn-ghost btn-sm btn-block" style="margin-top:6px" data-apage-go="anotifs">View all notifications</button>
+                </div>
+              </div>
+              <span class="avatar a4" style="width:42px;height:42px">OP</span>
+            </div>
+            <div class="admin-body">
+
+              <!-- admin: overview -->
+              <div class="apage on" data-apage-panel="overview">
+                <div class="kpi-grid">
+                  <div class="card kpi"><span class="k-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="ic"><use href="#i-box"/></svg></span><div class="k-n" data-count="1284">0</div><div class="k-l">Total Orders</div><span class="k-d up">▲ 12.4% vs yesterday</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="ic"><use href="#i-truck"/></svg></span><div class="k-n" data-count="37" id="kpiActive">0</div><div class="k-l">Active Deliveries</div><span class="k-d up">▲ 5 in the last hour</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--green-soft);color:var(--green)"><svg class="ic"><use href="#i-users"/></svg></span><div class="k-n"><span data-count="18">0</span><span style="color:var(--muted);font-size:1.1rem"> / 24</span></div><div class="k-l">Available Drivers</div><span class="k-d up">▲ 3 came online</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="ic"><use href="#i-checkc"/></svg></span><div class="k-n" data-count="212" id="kpiDone">0</div><div class="k-l">Completed Today</div><span class="k-d up">▲ 98.1% success rate</span></div>
+                </div>
+                <div class="grid-2">
+                  <div class="card panel">
+                    <h3>Live delivery map</h3><p class="p-sub">Driver and order positions across the city · demo map</p>
+                    <div class="mapbox" style="height:320px;border-radius:14px" id="adminMap"></div>
+                  </div>
+                  <div>
+                    <div class="card panel" style="margin-bottom:16px">
+                      <h3>Completion rate</h3><p class="p-sub">Today's outcomes</p>
+                      <div class="donut-wrap">
+                        <svg width="128" height="128" viewBox="0 0 120 120" role="img" aria-label="Completion rate 96 percent">
+                          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--surface-3)" stroke-width="14"/>
+                          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--green)" stroke-width="14" stroke-linecap="round" stroke-dasharray="301.6 314.2" transform="rotate(-90 60 60)"/>
+                          <text x="60" y="57" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)" font-family="inherit">96%</text>
+                          <text x="60" y="75" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="inherit">completed</text>
+                        </svg>
+                        <div class="legend">
+                          <span><i style="background:var(--green)"></i>Delivered · 212</span>
+                          <span><i style="background:var(--blue)"></i>In progress · 37</span>
+                          <span><i style="background:var(--red)"></i>Failed · 4</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card panel">
+                      <h3>Revenue today</h3><p class="p-sub">Gross delivery revenue</p>
+                      <div style="font-size:1.9rem;font-weight:800;letter-spacing:-.03em">£2,847.60</div>
+                      <div class="k-d up" style="font-size:.8rem;font-weight:800">▲ 8.2% vs yesterday</div>
+                      <div style="display:flex;gap:8px;margin-top:14px">
+                        <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:10px;text-align:center"><b style="display:block">£13.42</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">AVG ORDER</span></div>
+                        <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:10px;text-align:center"><b style="display:block">£412.80</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">DRIVER PAYOUTS</span></div>
+                        <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:10px;text-align:center"><b style="display:block">31 min</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">AVG DELIVERY</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card panel">
+                  <h3>Deliveries by hour</h3><p class="p-sub">Orders completed per hour, today</p>
+                  <div id="hourChart"></div>
+                </div>
+                <div class="card panel" style="margin-top:16px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h3>Latest orders</h3><p class="p-sub" style="margin-bottom:0">Most recent activity across the network</p></div><button class="btn btn-ghost btn-sm" data-apage-go="orders">View all orders <svg class="ic sm"><use href="#i-arrow"/></svg></button></div>
+                  <div class="tbl-wrap"><table class="tbl" style="min-width:680px"><thead><tr><th>Tracking ID</th><th>Customer</th><th>Driver</th><th>Status</th><th>ETA</th><th>Price</th></tr></thead><tbody id="recentOrdersBody"></tbody></table></div>
+                </div>
+              </div>
+
+              <!-- admin: orders -->
+              <div class="apage" data-apage-panel="orders">
+                <div class="filter-row">
+                  <button class="chip-tab on" data-ostatus="all">All orders</button>
+                  <button class="chip-tab" data-ostatus="Pending">Pending</button>
+                  <button class="chip-tab" data-ostatus="Assigned">Assigned</button>
+                  <button class="chip-tab" data-ostatus="In Transit">In transit</button>
+                  <button class="chip-tab" data-ostatus="Delivered">Delivered</button>
+                  <button class="chip-tab" data-ostatus="Cancelled">Cancelled</button>
+                  <span style="margin-left:auto;font-size:.84rem;color:var(--muted);font-weight:600" id="ordersCount"></span>
+                </div>
+                <div class="card panel" style="padding:8px 8px 4px">
+                  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tracking ID</th><th>Customer</th><th>Driver</th><th>Pickup</th><th>Destination</th><th>Status</th><th>ETA</th><th>Price</th></tr></thead><tbody id="ordersBody"></tbody></table></div>
+                  <div class="empty-state" id="ordersEmpty" style="display:none"><span class="es-ic"><svg class="ic lg"><use href="#i-search"/></svg></span><h3>No orders match</h3><p>Try a different search or status filter.</p></div>
+                </div>
+              </div>
+
+              <!-- admin: drivers -->
+              <div class="apage" data-apage-panel="drivers">
+                <div class="filter-row">
+                  <button class="chip-tab on" data-dfilter="all">All drivers</button>
+                  <button class="chip-tab" data-dfilter="online">Online</button>
+                  <button class="chip-tab" data-dfilter="busy">On a job</button>
+                  <button class="chip-tab" data-dfilter="offline">Offline</button>
+                </div>
+                <div class="drv-grid" id="driversGrid"></div>
+              </div>
+
+              <!-- admin: customers -->
+              <div class="apage" data-apage-panel="customers">
+                <div class="card panel" style="padding:8px 8px 4px">
+                  <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Customer</th><th>Contact</th><th>Orders</th><th>Total spent</th><th>Last order</th><th>Status</th></tr></thead><tbody id="customersBody"></tbody></table></div>
+                </div>
+              </div>
+
+              <!-- admin: assignments -->
+              <div class="apage" data-apage-panel="assign">
+                <div class="grid-2b" style="align-items:start">
+                  <div class="card panel">
+                    <h3>Unassigned orders</h3><p class="p-sub">Orders waiting for a driver. Pick a driver and allocate.</p>
+                    <div id="assignList"></div>
+                  </div>
+                  <div class="card panel">
+                    <h3>Available drivers</h3><p class="p-sub">Online and free to take a job right now.</p>
+                    <div id="assignDrivers"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- admin: analytics -->
+              <div class="apage" data-apage-panel="analytics">
+                <div class="kpi-grid">
+                  <div class="card kpi"><span class="k-ic" style="background:var(--blue-soft);color:var(--blue)"><svg class="ic"><use href="#i-pound"/></svg></span><div class="k-n">£18,240</div><div class="k-l">Revenue · last 7 days</div><span class="k-d up">▲ 11.6% week on week</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--green-soft);color:var(--green)"><svg class="ic"><use href="#i-checkc"/></svg></span><div class="k-n">97.8%</div><div class="k-l">Completion rate</div><span class="k-d up">▲ 0.6 pts</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--amber-soft);color:var(--amber)"><svg class="ic"><use href="#i-clock"/></svg></span><div class="k-n">31 min</div><div class="k-l">Avg. delivery time</div><span class="k-d up">▼ 3 min faster</span></div>
+                  <div class="card kpi"><span class="k-ic" style="background:var(--violet-soft);color:var(--violet)"><svg class="ic"><use href="#i-star"/></svg></span><div class="k-n">4.9 / 5</div><div class="k-l">Customer rating</div><span class="k-d up">▲ from 2,140 reviews</span></div>
+                </div>
+                <div class="grid-2b">
+                  <div class="card panel"><h3>Order trend</h3><p class="p-sub">Orders per day, last 7 days</p><div id="trendChart"></div></div>
+                  <div class="card panel"><h3>Deliveries by day</h3><p class="p-sub">Completed deliveries, last 7 days</p><div id="weekChart"></div></div>
+                </div>
+                <div class="card panel">
+                  <h3>Top performing drivers</h3><p class="p-sub">By completed deliveries this week</p>
+                  <div class="tbl-wrap"><table class="tbl" style="min-width:560px"><thead><tr><th>Driver</th><th>Deliveries</th><th>On-time</th><th>Rating</th><th>Earnings</th></tr></thead><tbody id="topDriversBody"></tbody></table></div>
+                </div>
+              </div>
+
+              <!-- admin: notifications -->
+              <div class="apage" data-apage-panel="anotifs">
+                <div class="card panel" style="max-width:720px">
+                  <h3>Notification centre</h3><p class="p-sub">Operational alerts for the dispatch team.</p>
+                  <div id="adminNotifs"></div>
+                </div>
+              </div>
+
+              <!-- admin: settings -->
+              <div class="apage" data-apage-panel="settings">
+                <div class="card panel" style="max-width:720px">
+                  <h3>Platform settings</h3><p class="p-sub">Demo settings — changes apply to this session only.</p>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-bolt"/></svg></span><span class="ri-t"><b>Auto-assign drivers</b><span>Automatically offer new orders to the nearest driver</span></span><label class="switch"><input type="checkbox" checked data-pref /><span class="track"></span></label></div>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-bell"/></svg></span><span class="ri-t"><b>Late-delivery alerts</b><span>Notify ops when a job runs 5+ minutes late</span></span><label class="switch"><input type="checkbox" checked data-pref /><span class="track"></span></label></div>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-msg"/></svg></span><span class="ri-t"><b>Customer SMS updates</b><span>Send text updates at each delivery milestone</span></span><label class="switch"><input type="checkbox" data-pref /><span class="track"></span></label></div>
+                  <div class="row-item"><span class="ri-ic"><svg class="ic sm"><use href="#i-shield"/></svg></span><span class="ri-t"><b>Proof of delivery required</b><span>Signature or photo needed to complete a job</span></span><label class="switch"><input type="checkbox" checked data-pref /><span class="track"></span></label></div>
+                  <div class="field" style="margin-top:18px;max-width:340px"><label for="baseFare">Base fare (£)</label><input class="input" id="baseFare" type="number" step="0.10" value="4.50" /></div>
+                  <div class="field" style="max-width:340px"><label for="perMile">Per-mile rate (£)</label><input class="input" id="perMile" type="number" step="0.05" value="1.85" /></div>
+                  <button class="btn btn-primary" id="saveSettingsBtn">Save settings</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- order detail modal -->
+    <div class="modal-veil" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="omTitle">
+      <div class="modal">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:1"><h3 id="omTitle">Order <span class="mono" id="omId">SWD-000000</span></h3><p class="m-sub" id="omSub">—</p></div>
+          <button class="icon-btn" data-close-modal aria-label="Close"><svg class="ic sm"><use href="#i-x"/></svg></button>
+        </div>
+        <div id="omBody"></div>
+      </div>
+    </div>
+
+    <div class="toast-zone" id="toastZone" aria-live="polite"></div>
+
+    <script>
+      const $ = (s, r) => (r || document).querySelector(s);
+      const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+      const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const icon = (n, cls) => '<svg class="' + (cls || 'ic') + '"><use href="#i-' + n + '"/></svg>';
+
+      /* ---------------- sample data ---------------- */
+      const DRIVERS = [
+        { id:'DRV-MK', name:'Marcus Kane', initials:'MK', ac:'', vehicle:'Ford Transit · DK24 SWD', rating:'4.9', trips:1204, state:'busy', job:'SWD-739214', jobsToday:7, earned:86.40, zone:'City Centre' },
+        { id:'DRV-PS', name:'Priya Shah', initials:'PS', ac:'a2', vehicle:'VW Caddy · PS23 KLM', rating:'5.0', trips:986, state:'busy', job:'SWD-884120', jobsToday:6, earned:74.20, zone:'Didsbury' },
+        { id:'DRV-TA', name:'Tom Alvarez', initials:'TA', ac:'a6', vehicle:'Mercedes Sprinter · TA22 BNE', rating:'4.8', trips:764, state:'busy', job:'SWD-881077', jobsToday:5, earned:63.55, zone:'Salford Quays' },
+        { id:'DRV-LD', name:'Liam Doyle', initials:'LD', ac:'a3', vehicle:'Peugeot Partner · LD24 FGH', rating:'4.9', trips:1102, state:'busy', job:'SWD-879340', jobsToday:8, earned:92.10, zone:'Chorlton' },
+        { id:'DRV-SL', name:'Sara Lindqvist', initials:'SL', ac:'a5', vehicle:'Toyota Proace · SL23 QWE', rating:'5.0', trips:845, state:'online', job:null, jobsToday:4, earned:48.90, zone:'Northern Quarter' },
+        { id:'DRV-JW', name:'Jack Wright', initials:'JW', ac:'a4', vehicle:'Ford Connect · JW24 ZXC', rating:'4.7', trips:432, state:'online', job:null, jobsToday:3, earned:36.75, zone:'Ancoats' },
+        { id:'DRV-BO', name:'Ben Osei', initials:'BO', ac:'a2', vehicle:'Nissan NV200 · BO22 TYU', rating:'4.8', trips:657, state:'offline', job:null, jobsToday:0, earned:0, zone:'Withington' }
+      ];
+      const driverById = id => DRIVERS.find(d => d.id === id);
+      const driverByJob = jid => DRIVERS.find(d => d.job === jid);
+
+      const STAGE_IDX = { 'Pending':0, 'Assigned':1, 'Picked Up':2, 'In Transit':3, 'Delivered':4, 'Cancelled':0 };
+      const STATUS_CLS = { 'Pending':'b-pending', 'Assigned':'b-assigned', 'Picked Up':'b-pickup', 'In Transit':'b-transit', 'Delivered':'b-delivered', 'Cancelled':'b-cancelled' };
+      const badge = s => '<span class="badge ' + (STATUS_CLS[s] || 'b-assigned') + '">' + s + '</span>';
+
+      let ORDERS = [
+        { id:'SWD-902317', customer:'Noah Williams', phone:'07700 900 831', driverId:null, from:'Unit 4, Northern Quarter', to:'88 Deansgate, City Centre', size:'Medium', price:14.20, status:'Pending', eta:'Awaiting driver', dist:'2.8 mi', timing:'ASAP', times:['13:58','','','',''] },
+        { id:'SWD-895204', customer:'Sofia Reyes', phone:'07700 900 274', driverId:null, from:'221 Wilmslow Road, Rusholme', to:'9 Canal Street, City Centre', size:'Small', price:9.85, status:'Pending', eta:'Awaiting driver', dist:'3.1 mi', timing:'Within 2 hours', times:['13:41','','','',''] },
+        { id:'SWD-739214', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-MK', from:'14 King Street, City Centre', to:'208 Oxford Road, Fallowfield', size:'Small', price:12.60, status:'In Transit', eta:'14:35', dist:'3.4 mi', timing:'ASAP', times:['13:52','13:57','14:06','14:11',''] },
+        { id:'SWD-884120', customer:"James O'Brien", phone:'07700 900 655', driverId:'DRV-PS', from:'Media City, Salford Quays', to:'402 Wilmslow Road, Didsbury', size:'Medium', price:11.40, status:'Picked Up', eta:'14:52', dist:'6.2 mi', timing:'ASAP', times:['13:20','13:26','13:44','',''] },
+        { id:'SWD-881077', customer:'Chen Wei', phone:'07700 900 193', driverId:'DRV-TA', from:'55 Whitworth Street, City Centre', to:'17 Lapwing Lane, West Didsbury', size:'Document', price:8.90, status:'Assigned', eta:'15:05', dist:'4.6 mi', timing:'Scheduled 14:30', times:['13:12','13:19','','',''] },
+        { id:'SWD-879340', customer:'Fatima Noor', phone:'07700 900 508', driverId:'DRV-LD', from:'730 Wilmslow Road, Didsbury', to:'28 Burton Road, Withington', size:'Large', price:16.75, status:'In Transit', eta:'14:41', dist:'2.2 mi', timing:'ASAP', times:['12:58','13:03','13:15','13:22',''] },
+        { id:'SWD-875512', customer:'Olivia Grant', phone:'07700 900 726', driverId:'DRV-SL', from:'3 Exchange Square, City Centre', to:'119 Palatine Road, Didsbury', size:'Small', price:12.30, status:'Delivered', eta:'Delivered 12:04', dist:'5.1 mi', timing:'ASAP', times:['11:12','11:18','11:29','11:38','12:04'] },
+        { id:'SWD-872290', customer:'Noah Williams', phone:'07700 900 831', driverId:'DRV-TA', from:'88 Deansgate, City Centre', to:'Unit 4, Northern Quarter', size:'Document', price:7.65, status:'Delivered', eta:'Delivered 11:47', dist:'1.9 mi', timing:'Within 2 hours', times:['10:52','10:57','11:08','11:19','11:47'] },
+        { id:'SWD-868914', customer:"James O'Brien", phone:'07700 900 655', driverId:'DRV-PS', from:'9 St Ann\'s Square, City Centre', to:'Media City, Salford Quays', size:'Small', price:10.05, status:'Delivered', eta:'Delivered 10:58', dist:'3.8 mi', timing:'ASAP', times:['10:02','10:08','10:17','10:31','10:58'] },
+        { id:'SWD-861003', customer:'Chen Wei', phone:'07700 900 193', driverId:null, from:'55 Whitworth Street, City Centre', to:'2 Spinningfields, City Centre', size:'Small', price:9.40, status:'Cancelled', eta:'Cancelled', dist:'0.8 mi', timing:'ASAP', times:['09:14','','','',''] },
+        { id:'SWD-730455', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-LD', from:'14 King Street, City Centre', to:'6 Lapwing Lane, West Didsbury', size:'Medium', price:15.20, status:'Delivered', eta:'Delivered yesterday', dist:'5.4 mi', timing:'ASAP', times:['16:02','16:09','16:21','16:33','16:58'] },
+        { id:'SWD-715508', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-SL', from:'208 Oxford Road, Fallowfield', to:'14 King Street, City Centre', size:'Document', price:8.40, status:'Delivered', eta:'Delivered Mon', dist:'3.4 mi', timing:'Within 2 hours', times:['09:31','09:36','09:48','10:02','10:26'] }
+      ];
+      const orderById = id => ORDERS.find(o => o.id === id);
+
+      const CUSTOMERS = [
+        { name:'Amelia Carter', initials:'AC', ac:'a2', email:'amelia.carter@example.co.uk', phone:'07700 900 412', orders:12, spent:186.40, last:'Today, 13:52', status:'Active' },
+        { name:"James O'Brien", initials:'JO', ac:'a6', email:'j.obrien@example.co.uk', phone:'07700 900 655', orders:15, spent:232.75, last:'Today, 13:20', status:'Active' },
+        { name:'Noah Williams', initials:'NW', ac:'a4', email:'noah.w@example.co.uk', phone:'07700 900 831', orders:8, spent:124.90, last:'Today, 13:58', status:'Active' },
+        { name:'Fatima Noor', initials:'FN', ac:'a5', email:'fatima.noor@example.co.uk', phone:'07700 900 508', orders:9, spent:141.60, last:'Today, 12:58', status:'Active' },
+        { name:'Chen Wei', initials:'CW', ac:'a3', email:'chen.wei@example.co.uk', phone:'07700 900 193', orders:6, spent:88.30, last:'Today, 13:12', status:'Active' },
+        { name:'Sofia Reyes', initials:'SR', ac:'', email:'sofia.reyes@example.co.uk', phone:'07700 900 274', orders:3, spent:41.20, last:'Today, 13:41', status:'New' },
+        { name:'Olivia Grant', initials:'OG', ac:'a2', email:'olivia.grant@example.co.uk', phone:'07700 900 726', orders:4, spent:52.45, last:'Today, 11:12', status:'Active' }
+      ];
+
+      let CUST_NOTIFS = [
+        { icon:'truck', color:'var(--blue)', bg:'var(--blue-soft)', title:'Your driver is on the way', body:'Marcus Kane is heading to 208 Oxford Road · SWD-739214', time:'4 min ago', unread:true },
+        { icon:'box', color:'var(--violet)', bg:'var(--violet-soft)', title:'Parcel collected', body:'Your parcel was picked up from 14 King Street at 14:06', time:'26 min ago', unread:true },
+        { icon:'checkc', color:'var(--green)', bg:'var(--green-soft)', title:'Delivered · SWD-730455', body:'Signed for by A. Carter yesterday at 16:58', time:'Yesterday', unread:false },
+        { icon:'bolt', color:'var(--amber)', bg:'var(--amber-soft)', title:'Weekend offer', body:'20% off scheduled deliveries this Saturday (demo offer)', time:'Yesterday', unread:false }
+      ];
+      const ADMIN_NOTIFS = [
+        { icon:'box', color:'var(--blue)', bg:'var(--blue-soft)', title:'New order received', body:'SWD-902317 · Northern Quarter → Deansgate · unassigned', time:'12 min ago' },
+        { icon:'clock', color:'var(--amber)', bg:'var(--amber-soft)', title:'Delivery running late', body:'SWD-884120 is 6 minutes behind its ETA', time:'18 min ago' },
+        { icon:'truck', color:'var(--green)', bg:'var(--green-soft)', title:'Driver came online', body:'Sara Lindqvist is available in the Northern Quarter', time:'32 min ago' },
+        { icon:'checkc', color:'var(--green)', bg:'var(--green-soft)', title:'Milestone reached', body:'200 deliveries completed today', time:'1 hr ago' },
+        { icon:'user', color:'var(--violet)', bg:'var(--violet-soft)', title:'New customer signup', body:'Sofia Reyes created an account', time:'2 hrs ago' }
+      ];
+
+      /* ---------------- toast ---------------- */
+      function toast(msg) {
+        const z = $('#toastZone');
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = icon('checkc') + '<span>' + msg + '</span>';
+        z.appendChild(t);
+        setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 320); }, 3200);
+      }
+
+      /* ---------------- maps (SVG placeholders) ---------------- */
+      function streetSVG(route) {
+        return '<svg class="map" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">' +
+          '<rect width="400" height="300" fill="var(--surface-2)"/>' +
+          '<rect x="252" y="16" width="120" height="84" rx="12" fill="var(--green-soft)"/>' +
+          '<rect x="20" y="200" width="106" height="80" rx="12" fill="var(--green-soft)" opacity=".65"/>' +
+          '<path d="M-10 252 C 90 222, 150 288, 250 248 S 380 212, 420 238" stroke="var(--blue-soft)" stroke-width="22" fill="none"/>' +
+          '<g stroke="var(--line)" stroke-width="5"><path d="M64 0V300M168 0V300M336 0V300M0 62H400M0 168H400M0 236H400"/></g>' +
+          '<g stroke="var(--surface)" stroke-width="13"><path d="M0 112H400M116 0V300M282 0V300"/></g>' +
+          '<g stroke="var(--line-2)" stroke-width="1.6" stroke-dasharray="7 7"><path d="M0 112H400M116 0V300M282 0V300"/></g>' +
+          (route ? '<path d="' + route + '" fill="none" stroke="var(--blue)" stroke-width="4.5" stroke-linecap="round" class="route-dash"/>' : '') +
+          '</svg>';
+      }
+      function pinHTML(x, y, color, ic, label) {
+        return '<div class="pin" style="left:' + x + '%;top:' + y + '%"><span class="pin-dot" style="background:' + color + '"><svg><use href="#i-' + ic + '"/></svg></span>' + (label ? '<span class="pin-tag">' + label + '</span>' : '') + '</div>';
+      }
+      function driverMarker(x, y, animated) {
+        return '<div class="driver-marker" style="left:' + x + '%;top:' + y + '%' + (animated ? '' : ';animation:none') + '">' + icon('truck') + '</div>';
+      }
+      function renderMaps() {
+        $('#heroMap').innerHTML = streetSVG('M104 186 C 150 165, 175 150, 214 130 S 280 112, 296 102') +
+          pinHTML(26, 62, 'var(--blue)', 'pin', '') + pinHTML(74, 34, 'var(--ink)', 'check', '') + driverMarker(43, 52, true);
+        $('#trackMap').innerHTML = streetSVG('M58 232 C 120 196, 148 156, 214 130 S 316 84, 344 58') +
+          pinHTML(14, 78, 'var(--blue)', 'pin', 'Pickup') + pinHTML(86, 19, 'var(--ink)', 'check', 'Drop-off') + driverMarker(43, 52, true);
+        $('#jobMap').innerHTML = streetSVG('M58 232 C 120 196, 148 156, 214 130 S 316 84, 344 58') +
+          pinHTML(14, 78, 'var(--blue)', 'pin', 'Pickup') + pinHTML(86, 19, 'var(--ink)', 'check', 'Drop-off') + driverMarker(30, 66, false);
+        $('#adminMap').innerHTML = streetSVG('M40 250 C 130 200, 210 190, 268 130 S 340 70, 362 50') +
+          pinHTML(10, 84, 'var(--blue)', 'pin', '') + pinHTML(90, 16, 'var(--ink)', 'check', '') +
+          pinHTML(64, 62, 'var(--amber)', 'box', '') + pinHTML(30, 30, 'var(--violet)', 'box', '') +
+          driverMarker(46, 55, true) +
+          '<div class="driver-marker" style="left:72%;top:30%;animation:none;background:var(--violet)"><b style="font-size:.72rem">PS</b></div>' +
+          '<div class="driver-marker" style="left:20%;top:48%;animation:none;background:var(--green)"><b style="font-size:.72rem">LD</b></div>';
+      }
+
+      /* ---------------- charts ---------------- */
+      function barChart(el, data, opts) {
+        opts = opts || {};
+        const w = opts.w || 560, h = opts.h || 180, color = opts.color || 'var(--blue)', money = !!opts.money;
+        const max = Math.max.apply(null, data.map(d => d.v)) * 1.18;
+        const bw = w / data.length;
+        let s = '';
+        data.forEach((d, i) => {
+          const bh = Math.max(4, (d.v / max) * (h - 48));
+          const x = i * bw + bw * 0.24, y = h - 28 - bh;
+          s += '<rect x="' + x + '" y="' + y + '" width="' + bw * 0.52 + '" height="' + bh + '" rx="5" fill="' + (d.c || color) + '"/>' +
+            '<text x="' + (x + bw * 0.26) + '" y="' + (y - 7) + '" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-2)">' + (money ? '£' + d.v : d.v) + '</text>' +
+            '<text x="' + (x + bw * 0.26) + '" y="' + (h - 9) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + d.l + '</text>';
+        });
+        el.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;height:auto;display:block" role="img">' + s + '</svg>';
+      }
+      function lineChart(el, data) {
+        const w = 560, h = 200, pad = 30;
+        const max = Math.max.apply(null, data.map(d => d.v)) * 1.15;
+        const step = (w - pad * 2) / (data.length - 1);
+        const pts = data.map((d, i) => [pad + i * step, h - 32 - (d.v / max) * (h - 64)]);
+        const line = pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+        let s = '<defs><linearGradient id="lgFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--blue)" stop-opacity=".22"/><stop offset="1" stop-color="var(--blue)" stop-opacity="0"/></linearGradient></defs>';
+        s += '<polygon points="' + pad + ',' + (h - 32) + ' ' + line + ' ' + (w - pad) + ',' + (h - 32) + '" fill="url(#lgFill)"/>';
+        s += '<polyline points="' + line + '" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+        pts.forEach((p, i) => {
+          s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="4.5" fill="var(--surface)" stroke="var(--blue)" stroke-width="2.5"/>' +
+            '<text x="' + p[0] + '" y="' + (p[1] - 12) + '" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink-2)">' + data[i].v + '</text>' +
+            '<text x="' + p[0] + '" y="' + (h - 10) + '" text-anchor="middle" font-size="11" fill="var(--muted)">' + data[i].l + '</text>';
+        });
+        el.innerHTML = '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;height:auto;display:block" role="img">' + s + '</svg>';
+      }
+
+      /* ---------------- counters ---------------- */
+      function animateCounters(scope) {
+        $$('[data-count]', scope).forEach(el => {
+          if (el.dataset.done) return; el.dataset.done = '1';
+          const target = parseInt(el.dataset.count, 10);
+          if (REDUCED) { el.textContent = target.toLocaleString('en-GB'); return; }
+          const t0 = performance.now(), dur = 1100;
+          (function tick(t) {
+            const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * e).toLocaleString('en-GB');
+            if (p < 1) requestAnimationFrame(tick);
+          })(t0);
+        });
+      }
+
+      /* ---------------- view / role switching ---------------- */
+      const TITLES = { overview:'Operations overview', orders:'Order management', drivers:'Driver management', customers:'Customer management', assign:'Delivery assignments', analytics:'Analytics & revenue', anotifs:'Notification centre', settings:'Platform settings' };
+      function showView(name) {
+        $$('.view').forEach(v => v.classList.toggle('on', v.id === 'view-' + name));
+        $$('.role-switch button').forEach(b => b.classList.toggle('on', b.dataset.role === name));
+        window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+        if (name === 'home') animateCounters($('#view-home'));
+        if (name === 'admin') { animateCounters($('#view-admin')); }
+      }
+      function fakeLoad(phoneEl, done) {
+        if (REDUCED) { done(); return; }
+        const sk = document.createElement('div');
+        sk.className = 'loading-wrap';
+        sk.style.cssText = 'position:absolute;inset:52px 0 60px;padding:22px 18px;background:var(--surface);z-index:5';
+        sk.innerHTML = '<div class="skl" style="height:26px;width:55%;margin-bottom:12px"></div><div class="skl" style="height:15px;width:80%;margin-bottom:22px"></div><div class="skl" style="height:110px;margin-bottom:14px"></div><div class="skl" style="height:110px;margin-bottom:14px"></div><div class="skl" style="height:64px"></div>';
+        phoneEl.appendChild(sk);
+        setTimeout(() => { sk.remove(); done(); }, 480);
+      }
+      const loadedOnce = {};
+      function goRole(role, screen) {
+        showView(role);
+        const first = !loadedOnce[role]; loadedOnce[role] = true;
+        if (role === 'customer') {
+          const go = () => { if (screen) custGo(screen); };
+          if (first) fakeLoad($('#custPhone'), go); else go();
+        }
+        if (role === 'driver') {
+          const go = () => { if (screen) drvGo(screen); };
+          if (first) fakeLoad($('#drvPhone'), go); else go();
+        }
+      }
+
+      /* ---------------- shared builders ---------------- */
+      function routeHTML(o) {
+        return '<div class="route-line"><div class="route-dots"><span class="d from"></span><span class="bar"></span><span class="d to"></span></div>' +
+          '<div class="route-addr"><div class="a">' + o.from + '</div><div class="b">Pickup</div>' +
+          '<div class="a">' + o.to + '</div><div class="b" style="margin-bottom:0">Drop-off</div></div></div>';
+      }
+      const STEP_DEFS = [
+        { t:'Order confirmed', icon:'checkc' }, { t:'Driver assigned', icon:'user' }, { t:'Parcel collected', icon:'box' },
+        { t:'In transit', icon:'truck' }, { t:'Delivered', icon:'check' }
+      ];
+      function timelineHTML(o) {
+        if (o.status === 'Cancelled') {
+          return '<div class="tl-item"><span class="tl-ic" style="background:var(--red-soft);border-color:var(--red-soft);color:var(--red)">' + icon('x', 'ic sm') + '</span><div><div class="tt">Order cancelled</div><div class="ts">Cancelled at ' + (o.times[0] || '—') + ' · refund issued (demo)</div></div></div>';
+        }
+        const idx = STAGE_IDX[o.status];
+        return STEP_DEFS.map((s, i) => {
+          let cls = 'future', sub = 'Pending';
+          if (o.status === 'Delivered' || i < idx) { cls = 'done'; sub = o.times[i] ? 'Completed · ' + o.times[i] : 'Completed'; }
+          else if (i === idx) { cls = 'now'; sub = o.status === 'Pending' ? 'Waiting for a driver' : 'In progress'; }
+          return '<div class="tl-item ' + cls + '"><span class="tl-ic">' + icon(cls === 'done' ? 'check' : s.icon, 'ic sm') + '</span><div><div class="tt">' + s.t + '</div><div class="ts">' + sub + '</div></div></div>';
+        }).join('');
+      }
+
+      /* ================= CUSTOMER APP ================= */
+      let custName = 'Amelia Carter';
+      let trackId = 'SWD-739214';
+      let ordersFilter = 'active';
+
+      function custGo(screen) {
+        $$('#custBody .screen').forEach(s => s.classList.toggle('on', s.dataset.cscreen === screen));
+        $$('#custNav button').forEach(b => b.classList.toggle('on', b.dataset.custNav === screen));
+        $('#custBody').scrollTop = 0;
+        if (screen === 'track') renderTracking();
+        if (screen === 'orders') renderCustOrders();
+        if (screen === 'home') renderCustHome();
+        if (screen === 'notifs') renderCustNotifs();
+      }
+      function custOrderCard(o) {
+        return '<button class="card order-card" data-track-open="' + o.id + '">' +
+          '<span class="oc-top"><span class="oc-id">' + o.id + '</span>' + badge(o.status) + '</span>' +
+          routeHTML(o) +
+          '<span class="oc-meta"><span>' + icon('clock', 'ic sm') + o.eta + '</span><span>' + icon('pound', 'ic sm') + '£' + o.price.toFixed(2) + '</span><span>' + icon('box', 'ic sm') + o.size + '</span></span></button>';
+      }
+      function renderCustHome() {
+        const mine = ORDERS.filter(o => o.customer === 'Amelia Carter');
+        const active = mine.find(o => ['Pending','Assigned','Picked Up','In Transit'].includes(o.status));
+        $('#custActiveWrap').innerHTML = active ?
+          '<h3 style="margin:0 0 10px;font-size:1rem">Active delivery</h3>' + custOrderCard(active) : '';
+        $('#custRecent').innerHTML = mine.slice(0, 3).map(custOrderCard).join('');
+        $$('.cust-name').forEach(e => e.textContent = custName.split(' ')[0]);
+        $$('.cust-name-full').forEach(e => e.textContent = custName);
+      }
+      function renderCustOrders() {
+        const mine = ORDERS.filter(o => o.customer === 'Amelia Carter');
+        let list = mine;
+        if (ordersFilter === 'active') list = mine.filter(o => ['Pending','Assigned','Picked Up','In Transit'].includes(o.status));
+        if (ordersFilter === 'completed') list = mine.filter(o => ['Delivered','Cancelled'].includes(o.status));
+        $('#custOrders').innerHTML = list.length ? list.map(custOrderCard).join('') :
+          '<div class="empty-state"><span class="es-ic">' + icon('box', 'ic lg') + '</span><h3>No deliveries here yet</h3><p>When you book a delivery it will appear in this list.</p></div>';
+      }
+      function renderCustNotifs() {
+        $('#custNotifs').innerHTML = CUST_NOTIFS.map(n =>
+          '<div class="notif-item' + (n.unread ? ' unread' : '') + '"><span class="fc-ic" style="width:40px;height:40px;background:' + n.bg + ';color:' + n.color + '">' + icon(n.icon) + '</span><div style="flex:1"><b style="font-size:.92rem">' + n.title + '</b><div style="font-size:.82rem;color:var(--ink-2)">' + n.body + '</div><div style="font-size:.74rem;color:var(--muted);margin-top:2px">' + n.time + '</div></div>' + (n.unread ? '<span class="notif-dot"></span>' : '') + '</div>'
+        ).join('');
+        $('#custBellDot').style.display = CUST_NOTIFS.some(n => n.unread) ? '' : 'none';
+      }
+      function renderTracking() {
+        const o = orderById(trackId) || orderById('SWD-739214');
+        const d = o.driverId ? driverById(o.driverId) : null;
+        $('#trkId').textContent = o.id;
+        const b = $('#trkBadge'); b.textContent = o.status; b.className = 'badge ' + (STATUS_CLS[o.status] || 'b-assigned');
+        $('#trkTimeline').innerHTML = timelineHTML(o);
+        $('#trkRoute').innerHTML = routeHTML(o) + '<div class="oc-meta"><span>' + icon('box', 'ic sm') + o.size + ' parcel</span><span>' + icon('pound', 'ic sm') + '£' + o.price.toFixed(2) + '</span><span>' + icon('route', 'ic sm') + o.dist + '</span></div>';
+        if (o.status === 'Delivered') { $('#trkEtaBig').textContent = 'Delivered'; $('#trkEtaSub').textContent = 'This parcel has been delivered'; $('#trkMins').textContent = 'Done'; }
+        else if (o.status === 'Pending') { $('#trkEtaBig').textContent = 'Finding your driver…'; $('#trkEtaSub').textContent = 'We are matching you with a nearby courier'; $('#trkMins').textContent = '—'; }
+        else { $('#trkEtaBig').textContent = 'Arriving by ' + o.eta; $('#trkEtaSub').textContent = (d ? d.name.split(' ')[0] : 'Your driver') + ' is on the way · ' + o.dist + ' route'; $('#trkMins').textContent = '12 min'; }
+      }
+
+      /* booking + quote */
+      let bkSize = { name:'Small', mult:1.35 }, bkTiming = 'ASAP';
+      function quoteCalc() {
+        const from = $('#bkFrom').value.trim(), to = $('#bkTo').value.trim();
+        if (from.length < 4 || to.length < 4) {
+          $('#qPrice').textContent = '£0.00'; $('#qDist').textContent = '—'; $('#qEta').textContent = '—'; $('#qEtaTop').textContent = 'ETA —';
+          $('#qSvc').textContent = 'Same-day · ' + bkSize.name + ' parcel'; return null;
+        }
+        let hash = 0; const s = (from + '|' + to).toLowerCase();
+        for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) >>> 0;
+        const dist = 1.6 + (hash % 82) / 10;
+        let price = (4.50 + dist * 1.85) * bkSize.mult;
+        if (bkTiming === 'ASAP') price *= 1.12;
+        const mins = Math.round(24 + dist * 4.4 + (bkTiming === 'Within 2 hours' ? 55 : 0));
+        const etaTxt = bkTiming === 'Scheduled' ? 'Pickup at ' + ($('#bkTime').value || '16:30') : 'Delivered in ~' + mins + ' min';
+        $('#qPrice').textContent = '£' + price.toFixed(2);
+        $('#qDist').textContent = dist.toFixed(1) + ' miles';
+        $('#qEta').textContent = etaTxt;
+        $('#qEtaTop').textContent = bkTiming === 'Scheduled' ? 'SCHEDULED' : 'ETA ~' + mins + ' MIN';
+        $('#qSvc').textContent = 'Same-day · ' + bkSize.name + ' parcel · ' + bkTiming;
+        return { dist, price, etaTxt };
+      }
+      function fieldValid(input, errEl, ok) {
+        input.classList.toggle('err', !ok);
+        if (errEl) errEl.classList.toggle('show', !ok);
+        return ok;
+      }
+
+      /* ================= DRIVER APP ================= */
+      let drvOnline = true, currentJobId = 'SWD-739214', jobStage = 3, todayEarned = 86.40, todayJobs = 7;
+      const DRIVER_STAGES = ['Accepted', 'Arrived at Pickup', 'Picked Up', 'In Transit', 'Delivered'];
+
+      function drvGo(screen) {
+        $$('#drvBody .screen').forEach(s => s.classList.toggle('on', s.dataset.dscreen === screen));
+        const navMap = { home:'home', job:'job', complete:'job', earnings:'earnings', dprofile:'dprofile', done:'home', auth:'home' };
+        $$('#drvNav button').forEach(b => b.classList.toggle('on', b.dataset.drvNav === navMap[screen]));
+        $('#drvBody').scrollTop = 0;
+        if (screen === 'home') renderTasks();
+        if (screen === 'earnings') renderEarnings();
+      }
+      function taskCard(o, offer) {
+        const d = o.dist || '—';
+        return '<div class="card order-card" style="cursor:default">' +
+          '<span class="oc-top"><span class="oc-id">' + o.id + '</span>' + (offer ? '<span class="badge b-pending">New offer</span>' : badge(o.status)) + '</span>' +
+          routeHTML(o) +
+          '<span class="oc-meta"><span>' + icon('route', 'ic sm') + d + '</span><span>' + icon('pound', 'ic sm') + 'You earn £' + (o.price * 0.7).toFixed(2) + '</span><span>' + icon('box', 'ic sm') + o.size + '</span></span>' +
+          '<span style="display:flex;gap:8px;margin-top:13px">' +
+          (offer ? '<button class="btn btn-green" style="flex:1;padding:13px" data-accept-job="' + o.id + '">Accept job</button><button class="btn btn-ghost" style="flex:1;padding:13px" data-decline-job="' + o.id + '">Decline</button>'
+                 : '<button class="btn btn-primary" style="flex:1;padding:13px" data-open-job="' + o.id + '">View job &amp; route</button>') +
+          '</span></div>';
+      }
+      function renderTasks() {
+        $('#drvOfflineState').style.display = drvOnline ? 'none' : 'block';
+        if (!drvOnline) { $('#drvTasks').innerHTML = ''; return; }
+        const mine = ORDERS.filter(o => o.driverId === 'DRV-MK' && ['Assigned','Picked Up','In Transit'].includes(o.status));
+        const offers = ORDERS.filter(o => !o.driverId && o.status === 'Pending');
+        $('#drvTasks').innerHTML =
+          offers.map(o => taskCard(o, true)).join('') +
+          (mine.length ? mine.map(o => taskCard(o, false)).join('') : (offers.length ? '' : '<div class="empty-state"><span class="es-ic">' + icon('checkc', 'ic lg') + '</span><h3>All caught up</h3><p>No jobs assigned right now. New offers will appear here.</p></div>'));
+      }
+      function stageFromStatus(o) {
+        if (o.status === 'Assigned') return 0;
+        if (o.status === 'Picked Up') return 2;
+        if (o.status === 'In Transit') return 3;
+        if (o.status === 'Delivered') return 4;
+        return 0;
+      }
+      function openJob(id) {
+        currentJobId = id;
+        const o = orderById(id);
+        jobStage = stageFromStatus(o);
+        $('#jobId').textContent = o.id;
+        $('#jobCust').textContent = 'For ' + o.customer + ' · ' + o.size + ' parcel · ' + o.timing;
+        $('#jobRoute').innerHTML = routeHTML(o);
+        $('#jobContact').textContent = o.customer + ' · ' + o.phone;
+        $('#jobDist').textContent = o.dist + ' route';
+        $('#jobEta').textContent = '~' + Math.round(10 + parseFloat(o.dist) * 3) + ' min';
+        $('#pickupLbl').textContent = o.id;
+        const sizeKg = { 'Document':'up to 1 kg', 'Small':'up to 5 kg', 'Medium':'up to 15 kg', 'Large':'up to 30 kg' };
+        $('#pickupCheck').innerHTML = 'Check the parcel matches the order — <b>' + o.size + ' parcel, ' + (sizeKg[o.size] || '') + '</b>, sealed and labelled <span class="mono">' + o.id + '</span>.';
+        updateJobUI();
+        drvGo('job');
+      }
+      function updateJobUI() {
+        const o = orderById(currentJobId);
+        const b = $('#jobBadge'); b.textContent = DRIVER_STAGES[jobStage]; b.className = 'badge ' + (jobStage >= 4 ? 'b-delivered' : jobStage >= 2 ? 'b-transit' : 'b-assigned');
+        $$('#stageTrack i').forEach((seg, i) => { seg.className = i < jobStage ? 'done' : i === jobStage ? 'now' : ''; });
+        const btn = $('#jobProgressBtn'), hint = $('#jobHint');
+        $('#pickupConfirm').style.display = jobStage === 1 ? 'block' : 'none';
+        $('#jobActionWrap').style.display = jobStage === 1 ? 'none' : 'block';
+        if (jobStage === 0) { btn.textContent = 'Arrived at Pickup'; hint.textContent = 'Head to the pickup address, then confirm arrival.'; }
+        if (jobStage === 2) { btn.textContent = 'Start Delivery — In Transit'; hint.textContent = 'Parcel collected. Start the trip to the drop-off address.'; }
+        if (jobStage === 3) { btn.textContent = 'Arrived — Complete Delivery'; hint.textContent = 'You are in transit. Complete the delivery at the doorstep.'; }
+        if (jobStage >= 4) { btn.textContent = 'Delivered ✓'; btn.disabled = true; hint.textContent = 'This job is complete.'; } else btn.disabled = false;
+        if (o) { /* keep customer/admin views in sync */ }
+      }
+      function syncOrderStatus() {
+        const o = orderById(currentJobId);
+        if (!o) return;
+        if (jobStage === 2 && o.status !== 'Delivered') o.status = 'Picked Up';
+        if (jobStage === 3) o.status = 'In Transit';
+        if (jobStage >= 4) { o.status = 'Delivered'; o.eta = 'Delivered'; }
+        renderAdminAll();
+        renderCustHome();
+      }
+      function renderEarnings() {
+        $('#weekTotal').textContent = '£' + (412.80 + Math.max(0, todayEarned - 86.40)).toFixed(2);
+        barChart($('#earnChart'), [
+          { l:'Mon', v:52 }, { l:'Tue', v:61 }, { l:'Wed', v:48 }, { l:'Thu', v:70 }, { l:'Fri', v:57 }, { l:'Sat', v:72 }, { l:'Sun', v:Math.round(todayEarned) }
+        ], { w:340, h:150, money:true, color:'var(--green)' });
+        const done = ORDERS.filter(o => o.driverId === 'DRV-MK' && o.status === 'Delivered');
+        $('#drvCompleted').innerHTML = done.length ? done.map(o =>
+          '<div class="card" style="padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:11px"><span class="fc-ic" style="width:36px;height:36px;background:var(--green-soft);color:var(--green)">' + icon('checkc', 'ic sm') + '</span><div style="flex:1;min-width:0"><b style="font-size:.88rem" class="mono">' + o.id + '</b><div style="font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + o.to + '</div></div><b style="color:var(--green)">+£' + (o.price * 0.7).toFixed(2) + '</b></div>'
+        ).join('') : '<div class="empty-state"><span class="es-ic">' + icon('wallet', 'ic lg') + '</span><h3>No completed jobs yet</h3><p>Finished deliveries will show up here.</p></div>';
+        $('#drvTodayEarn').textContent = '£' + todayEarned.toFixed(2);
+        $('#drvTodayJobs').textContent = todayJobs;
+      }
+
+      /* ================= ADMIN ================= */
+      let oStatusFilter = 'all', oSearch = '', dFilter = 'all';
+      function orderRow(o, full) {
+        const d = o.driverId ? driverById(o.driverId) : null;
+        const driverCell = d ? '<span class="driver-cell"><span class="avatar ' + d.ac + '" style="width:30px;height:30px;font-size:.62rem">' + d.initials + '</span>' + d.name + '</span>' : '<span style="color:var(--amber);font-weight:700">Unassigned</span>';
+        if (!full) return '<tr data-order-row="' + o.id + '"><td class="mono" style="font-weight:600">' + o.id + '</td><td>' + o.customer + '</td><td>' + (d ? d.name : '—') + '</td><td>' + badge(o.status) + '</td><td>' + o.eta + '</td><td style="font-weight:700">£' + o.price.toFixed(2) + '</td></tr>';
+        return '<tr data-order-row="' + o.id + '"><td class="mono" style="font-weight:600">' + o.id + '</td><td style="font-weight:600">' + o.customer + '</td><td>' + driverCell + '</td><td>' + o.from + '</td><td>' + o.to + '</td><td>' + badge(o.status) + '</td><td>' + o.eta + '</td><td style="font-weight:700">£' + o.price.toFixed(2) + '</td></tr>';
+      }
+      function renderOrdersTable() {
+        let list = ORDERS.slice();
+        if (oStatusFilter !== 'all') list = list.filter(o => o.status === oStatusFilter);
+        if (oSearch) { const q = oSearch.toLowerCase(); list = list.filter(o => (o.id + o.customer + o.from + o.to + (o.driverId ? driverById(o.driverId).name : '')).toLowerCase().includes(q)); }
+        $('#ordersBody').innerHTML = list.map(o => orderRow(o, true)).join('');
+        $('#ordersEmpty').style.display = list.length ? 'none' : 'block';
+        $('#ordersCount').textContent = 'Showing ' + list.length + ' of ' + ORDERS.length + ' orders';
+        $('#recentOrdersBody').innerHTML = ORDERS.slice(0, 6).map(o => orderRow(o, false)).join('');
+        $('#sideOrderCnt').textContent = ORDERS.filter(o => o.status === 'Pending').length;
+      }
+      function renderDrivers() {
+        let list = DRIVERS.slice();
+        if (dFilter !== 'all') list = list.filter(d => d.state === dFilter);
+        $('#driversGrid').innerHTML = list.length ? list.map(d => {
+          const stBadge = d.state === 'busy' ? '<span class="badge b-transit">On a job</span>' : d.state === 'online' ? '<span class="badge b-online">Online</span>' : '<span class="badge b-offline">Offline</span>';
+          return '<div class="card drv-card"><div class="dc-top"><span class="avatar ' + d.ac + '" style="width:50px;height:50px">' + d.initials + '</span><div style="flex:1;min-width:0"><h4>' + d.name + '</h4><div class="dc-sub">' + d.vehicle + '</div><span class="stars">★★★★★</span> <span style="font-size:.8rem;color:var(--muted)">' + d.rating + ' · ' + d.trips + ' trips</span></div>' + stBadge + '</div>' +
+            '<div class="dc-stats"><div><b>' + d.jobsToday + '</b><span>Jobs today</span></div><div><b>£' + d.earned.toFixed(2) + '</b><span>Earned</span></div><div><b>' + d.zone + '</b><span>Zone</span></div></div>' +
+            '<div style="display:flex;gap:8px;margin-top:14px;align-items:center"><span style="font-size:.84rem;color:var(--ink-2);font-weight:600;flex:1">' + (d.job ? 'Current job: <span class="mono">' + d.job + '</span>' : 'No active job') + '</span>' +
+            (d.state === 'busy' ? '<button class="btn btn-ghost btn-sm" data-view-job="' + d.job + '">View job</button>' : '<button class="btn ' + (d.state === 'online' ? 'btn-danger' : 'btn-green') + ' btn-sm" data-toggle-driver="' + d.id + '">' + (d.state === 'online' ? 'Set offline' : 'Set online') + '</button>') +
+            '</div></div>';
+        }).join('') : '<div class="empty-state" style="grid-column:1/-1"><span class="es-ic">' + icon('truck', 'ic lg') + '</span><h3>No drivers in this state</h3><p>Try another availability filter.</p></div>';
+      }
+      function renderCustomers() {
+        $('#customersBody').innerHTML = CUSTOMERS.map((c, i) =>
+          '<tr data-customer-row="' + i + '"><td><span class="driver-cell"><span class="avatar ' + c.ac + '" style="width:32px;height:32px;font-size:.68rem">' + c.initials + '</span>' + c.name + '</span></td><td>' + c.email + '<br/><span style="color:var(--muted);font-size:.8rem">' + c.phone + '</span></td><td style="font-weight:700">' + c.orders + '</td><td style="font-weight:700">£' + c.spent.toFixed(2) + '</td><td>' + c.last + '</td><td>' + (c.status === 'New' ? '<span class="badge b-assigned">New</span>' : '<span class="badge b-delivered">Active</span>') + '</td></tr>'
+        ).join('');
+      }
+      function renderAssign() {
+        const unassigned = ORDERS.filter(o => !o.driverId && o.status === 'Pending');
+        const free = DRIVERS.filter(d => d.state === 'online');
+        $('#assignList').innerHTML = unassigned.length ? unassigned.map(o =>
+          '<div style="border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px"><div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:8px"><span class="mono" style="font-weight:600">' + o.id + '</span>' + badge(o.status) + '</div>' + routeHTML(o) +
+          '<div class="oc-meta"><span>' + icon('box', 'ic sm') + o.size + '</span><span>' + icon('pound', 'ic sm') + '£' + o.price.toFixed(2) + '</span><span>' + icon('user', 'ic sm') + o.customer + '</span></div>' +
+          '<div style="display:flex;gap:8px;margin-top:12px"><select class="select" id="assign-sel-' + o.id + '" style="flex:1;padding:10px 36px 10px 12px;font-size:.88rem">' + free.map(d => '<option value="' + d.id + '">' + d.name + ' · ' + d.zone + '</option>').join('') + '</select><button class="btn btn-primary btn-sm" style="padding:10px 18px" data-assign-btn="' + o.id + '">Assign</button></div></div>'
+        ).join('') : '<div class="empty-state"><span class="es-ic">' + icon('checkc', 'ic lg') + '</span><h3>All orders assigned</h3><p>There is nothing waiting in the queue.</p></div>';
+        $('#assignDrivers').innerHTML = free.length ? free.map(d =>
+          '<div style="display:flex;gap:11px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)"><span class="avatar ' + d.ac + '" style="width:40px;height:40px;font-size:.78rem">' + d.initials + '</span><div style="flex:1"><b style="font-size:.92rem">' + d.name + '</b><div style="font-size:.78rem;color:var(--muted)">' + d.vehicle + ' · ' + d.zone + '</div></div><span class="badge b-online">Available</span></div>'
+        ).join('') : '<p style="color:var(--muted);font-size:.9rem">No drivers are currently free.</p>';
+        const top = DRIVERS.slice().sort((a, b) => b.jobsToday - a.jobsToday).slice(0, 5);
+        $('#topDriversBody').innerHTML = top.map(d => '<tr style="cursor:default"><td><span class="driver-cell"><span class="avatar ' + d.ac + '" style="width:30px;height:30px;font-size:.62rem">' + d.initials + '</span>' + d.name + '</span></td><td style="font-weight:700">' + (d.jobsToday * 5 + 3) + '</td><td>98%</td><td>' + d.rating + ' ★</td><td style="font-weight:700">£' + (d.earned * 5).toFixed(2) + '</td></tr>').join('');
+      }
+      function renderAdminNotifs() {
+        $('#adminNotifs').innerHTML = ADMIN_NOTIFS.map(n =>
+          '<div class="notif-item"><span class="fc-ic" style="width:40px;height:40px;background:' + n.bg + ';color:' + n.color + '">' + icon(n.icon) + '</span><div><b style="font-size:.92rem">' + n.title + '</b><div style="font-size:.82rem;color:var(--ink-2)">' + n.body + '</div><div style="font-size:.74rem;color:var(--muted);margin-top:2px">' + n.time + '</div></div></div>'
+        ).join('');
+      }
+      function renderAdminAll() { renderOrdersTable(); renderDrivers(); renderCustomers(); renderAssign(); }
+
+      function apageGo(page) {
+        $$('.side-item[data-apage]').forEach(b => b.classList.toggle('on', b.dataset.apage === page));
+        $$('.apage').forEach(p => p.classList.toggle('on', p.dataset.apagePanel === page));
+        $('#adminTitle').textContent = TITLES[page] || 'Dashboard';
+        $('#adminNotifPanel').classList.remove('open');
+        $('.admin-body').scrollTop = 0;
+      }
+
+      /* order / customer modal */
+      function openModal(html) { $('#omBody').innerHTML = html; $('#orderModal').classList.add('open'); }
+      function openOrderModal(id) {
+        const o = orderById(id); if (!o) return;
+        const d = o.driverId ? driverById(o.driverId) : null;
+        $('#omId').textContent = o.id;
+        $('#omSub').textContent = 'Booked by ' + o.customer + ' · ' + o.timing + ' · ' + o.dist;
+        let driverBlock;
+        if (d) {
+          driverBlock = '<div style="display:flex;gap:12px;align-items:center;background:var(--surface-2);border-radius:13px;padding:13px"><span class="avatar ' + d.ac + '" style="width:44px;height:44px">' + d.initials + '</span><div style="flex:1"><b>' + d.name + '</b><div style="font-size:.8rem;color:var(--muted)">' + d.vehicle + ' · ★ ' + d.rating + '</div></div><span class="badge ' + (d.state === 'busy' ? 'b-transit' : 'b-online') + '">' + (d.state === 'busy' ? 'On this job' : 'Online') + '</span></div>';
+        } else if (o.status === 'Pending') {
+          const free = DRIVERS.filter(x => x.state === 'online');
+          driverBlock = '<label style="font-size:.8rem;font-weight:700;color:var(--ink-2);display:block;margin-bottom:6px">Assign a driver</label><div style="display:flex;gap:8px"><select class="select" id="omAssignSel" style="flex:1">' + free.map(x => '<option value="' + x.id + '">' + x.name + ' · ' + x.zone + '</option>').join('') + '</select><button class="btn btn-primary" data-assign-btn="' + o.id + '" data-assign-sel="omAssignSel">Assign</button></div>';
+        } else {
+          driverBlock = '<p style="color:var(--muted);font-size:.9rem;margin:0">No driver was assigned to this order.</p>';
+        }
+        openModal(
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">' + badge(o.status) + '<span class="badge b-assigned">' + o.size + ' parcel</span><span class="badge b-transit">£' + o.price.toFixed(2) + '</span><span class="badge b-pending">ETA ' + o.eta + '</span></div>' +
+          '<div class="card" style="padding:16px;margin-bottom:14px;box-shadow:none">' + routeHTML(o) + '</div>' +
+          '<h4 style="margin:0 0 8px;font-size:.95rem">Customer</h4><p style="margin:0 0 16px;color:var(--ink-2);font-size:.9rem">' + o.customer + ' · ' + o.phone + '</p>' +
+          '<h4 style="margin:0 0 8px;font-size:.95rem">Driver</h4><div style="margin-bottom:16px">' + driverBlock + '</div>' +
+          '<h4 style="margin:0 0 12px;font-size:.95rem">Delivery timeline</h4><div class="timeline">' + timelineHTML(o) + '</div>'
+        );
+      }
+      function openCustomerModal(i) {
+        const c = CUSTOMERS[i]; if (!c) return;
+        $('#omId').textContent = c.name;
+        $('#omSub').textContent = 'Customer since 2025 · ' + c.status;
+        const theirs = ORDERS.filter(o => o.customer === c.name);
+        openModal(
+          '<div style="display:flex;gap:13px;align-items:center;margin-bottom:16px"><span class="avatar ' + c.ac + '" style="width:52px;height:52px;font-size:1rem">' + c.initials + '</span><div><b>' + c.name + '</b><div style="font-size:.84rem;color:var(--muted)">' + c.email + ' · ' + c.phone + '</div></div></div>' +
+          '<div style="display:flex;gap:8px;margin-bottom:18px"><div style="flex:1;background:var(--surface-2);border-radius:11px;padding:12px;text-align:center"><b style="display:block;font-size:1.05rem">' + c.orders + '</b><span style="font-size:.72rem;color:var(--muted);font-weight:700">TOTAL ORDERS</span></div><div style="flex:1;background:var(--surface-2);border-radius:11px;padding:12px;text-align:center"><b style="display:block;font-size:1.05rem">£' + c.spent.toFixed(2) + '</b><span style="font-size:.72rem;color:var(--muted);font-weight:700">TOTAL SPENT</span></div><div style="flex:1;background:var(--surface-2);border-radius:11px;padding:12px;text-align:center"><b style="display:block;font-size:1.05rem">' + c.last + '</b><span style="font-size:.72rem;color:var(--muted);font-weight:700">LAST ORDER</span></div></div>' +
+          '<h4 style="margin:0 0 10px;font-size:.95rem">Recent orders</h4>' +
+          (theirs.length ? theirs.map(o => '<button class="card order-card" data-order-row="' + o.id + '"><span class="oc-top"><span class="oc-id">' + o.id + '</span>' + badge(o.status) + '</span><span class="oc-meta" style="border:0;padding:0;margin:0"><span>' + icon('pin', 'ic sm') + o.to + '</span><span>£' + o.price.toFixed(2) + '</span></span></button>').join('') : '<p style="color:var(--muted);font-size:.9rem">No orders in the current demo data.</p>')
+        );
+      }
+      function doAssign(orderId, selId) {
+        const sel = document.getElementById(selId || ('assign-sel-' + orderId));
+        if (!sel) { toast('No driver selected'); return; }
+        const o = orderById(orderId), d = driverById(sel.value);
+        if (!o || !d) return;
+        o.driverId = d.id; o.status = 'Assigned'; o.eta = 'Within the hour'; o.times[1] = 'Now';
+        d.state = 'busy'; d.job = o.id;
+        renderAdminAll();
+        if ($('#orderModal').classList.contains('open')) openOrderModal(orderId);
+        if (o.customer === 'Amelia Carter') renderCustHome();
+        toast(o.id + ' assigned to ' + d.name);
+      }
+
+      /* ================= events ================= */
+      document.addEventListener('click', e => {
+        const roleBtn = e.target.closest('.role-switch button');
+        if (roleBtn) { goRole(roleBtn.dataset.role); return; }
+        const gotoRole = e.target.closest('[data-goto-role]');
+        if (gotoRole) { goRole(gotoRole.dataset.gotoRole, gotoRole.dataset.gotoScreen); return; }
+        const toastBtn = e.target.closest('[data-toast]');
+        if (toastBtn) { toast(toastBtn.dataset.toast); return; }
+        const cn = e.target.closest('[data-cust-nav]');
+        if (cn) { custGo(cn.dataset.custNav); return; }
+        const dn = e.target.closest('[data-drv-nav]');
+        if (dn) { drvGo(dn.dataset.drvNav); return; }
+        const to = e.target.closest('[data-track-open]');
+        if (to) { trackId = to.dataset.trackOpen; custGo('track'); return; }
+        const oj = e.target.closest('[data-open-job]');
+        if (oj) { openJob(oj.dataset.openJob); return; }
+        const aj = e.target.closest('[data-accept-job]');
+        if (aj) {
+          const o = orderById(aj.dataset.acceptJob), me = driverById('DRV-MK');
+          o.driverId = 'DRV-MK'; o.status = 'Assigned'; o.times[1] = 'Now'; o.eta = 'Within the hour';
+          me.state = 'busy'; me.job = o.id;
+          renderTasks(); renderAdminAll(); toast('Job ' + o.id + ' accepted — nice one!');
+          return;
+        }
+        const dj = e.target.closest('[data-decline-job]');
+        if (dj) { const card = dj.closest('.order-card'); if (card) card.remove(); toast('Offer declined — it will be reassigned'); return; }
+        const ab = e.target.closest('[data-assign-btn]');
+        if (ab) { doAssign(ab.dataset.assignBtn, ab.dataset.assignSel); return; }
+        const td = e.target.closest('[data-toggle-driver]');
+        if (td) {
+          const d = driverById(td.dataset.toggleDriver);
+          d.state = d.state === 'online' ? 'offline' : 'online';
+          renderDrivers(); renderAssign(); toast(d.name + ' is now ' + d.state);
+          return;
+        }
+        const vj = e.target.closest('[data-view-job]');
+        if (vj) { const o = orderById(vj.dataset.viewJob); if (o) openOrderModal(o.id); return; }
+        const orow = e.target.closest('[data-order-row]');
+        if (orow) { openOrderModal(orow.dataset.orderRow); return; }
+        const crow = e.target.closest('[data-customer-row]');
+        if (crow) { openCustomerModal(parseInt(crow.dataset.customerRow, 10)); return; }
+        const ap = e.target.closest('.side-item[data-apage]');
+        if (ap) { apageGo(ap.dataset.apage); return; }
+        const apg = e.target.closest('[data-apage-go]');
+        if (apg) { apageGo(apg.dataset.apageGo); return; }
+        const cm = e.target.closest('[data-close-modal]');
+        if (cm) { $('#orderModal').classList.remove('open'); return; }
+        if (e.target.id === 'orderModal') { $('#orderModal').classList.remove('open'); return; }
+        if (!e.target.closest('#adminBell') && !e.target.closest('#adminNotifPanel')) $('#adminNotifPanel').classList.remove('open');
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('#orderModal').classList.remove('open'); $('#adminNotifPanel').classList.remove('open'); } });
+
+      $('#logoHome').addEventListener('click', e => { e.preventDefault(); showView('home'); });
+
+      /* customer: booking */
+      $$('#sizeGrid .size-opt').forEach(b => b.addEventListener('click', () => {
+        $$('#sizeGrid .size-opt').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        bkSize = { name: b.dataset.size, mult: parseFloat(b.dataset.mult) }; quoteCalc();
+      }));
+      $$('#timingSeg button').forEach(b => b.addEventListener('click', () => {
+        $$('#timingSeg button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        bkTiming = b.dataset.timing; $('#schedField').style.display = bkTiming === 'Scheduled' ? 'block' : 'none'; quoteCalc();
+      }));
+      ['bkFrom', 'bkTo', 'bkTime'].forEach(id => $('#' + id).addEventListener('input', quoteCalc));
+      $('#bookForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const okFrom = fieldValid($('#bkFrom'), $('#errFrom'), $('#bkFrom').value.trim().length >= 4);
+        const okTo = fieldValid($('#bkTo'), $('#errTo'), $('#bkTo').value.trim().length >= 4);
+        if (!okFrom || !okTo) { toast('Please check the highlighted fields'); return; }
+        const q = quoteCalc(); if (!q) return;
+        const btn = $('#bookSubmit'); btn.disabled = true; btn.textContent = 'Booking your courier…';
+        setTimeout(() => {
+          btn.disabled = false; btn.textContent = 'Confirm booking';
+          let num; do { num = 'SWD-' + Math.floor(100000 + Math.random() * 900000); } while (orderById(num));
+          const o = { id: num, customer: 'Amelia Carter', phone: '07700 900 412', driverId: null, from: $('#bkFrom').value.trim(), to: $('#bkTo').value.trim(), size: bkSize.name, price: Math.round(q.price * 100) / 100, status: 'Pending', eta: 'Awaiting driver', dist: q.dist.toFixed(1) + ' mi', timing: bkTiming === 'Scheduled' ? 'Scheduled ' + ($('#bkTime').value || '16:30') : bkTiming, times: ['Now', '', '', '', ''] };
+          ORDERS.unshift(o);
+          trackId = num;
+          $('#cfId').textContent = num;
+          $('#cfRoute').innerHTML = routeHTML(o);
+          $('#cfEta').textContent = q.etaTxt; $('#cfPrice').textContent = '£' + o.price.toFixed(2); $('#cfSize').textContent = o.size + ' parcel';
+          $('#bkNotes').value = '';
+          CUST_NOTIFS.unshift({ icon:'box', color:'var(--blue)', bg:'var(--blue-soft)', title:'Booking confirmed · ' + num, body:'We are finding a driver for your ' + o.size.toLowerCase() + ' parcel', time:'Just now', unread:true });
+          renderAdminAll(); renderCustHome();
+          custGo('confirm');
+          toast('Booking confirmed — ' + num);
+        }, REDUCED ? 60 : 900);
+      });
+
+      /* customer: orders filter */
+      $$('#ordersSeg button').forEach(b => b.addEventListener('click', () => {
+        $$('#ordersSeg button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        ordersFilter = b.dataset.ofilter; renderCustOrders();
+      }));
+      $('#markReadBtn').addEventListener('click', () => { CUST_NOTIFS.forEach(n => n.unread = false); renderCustNotifs(); toast('All notifications marked as read'); });
+
+      /* customer: auth */
+      let authMode = 'login';
+      function setAuthMode(m) {
+        authMode = m;
+        $('#tabLogin').classList.toggle('on', m === 'login');
+        $('#tabSignup').classList.toggle('on', m === 'signup');
+        $('#authNameField').style.display = m === 'signup' ? 'block' : 'none';
+        $('#custAuthBtn').textContent = m === 'signup' ? 'Create account' : 'Log in';
+      }
+      $('#tabLogin').addEventListener('click', () => setAuthMode('login'));
+      $('#tabSignup').addEventListener('click', () => setAuthMode('signup'));
+      $('#custAuthForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('#caEmail').value.trim());
+        const passOk = $('#caPass').value.length >= 6;
+        const nameOk = authMode === 'login' || $('#caName').value.trim().length >= 2;
+        fieldValid($('#caEmail'), $('#errCaEmail'), emailOk);
+        fieldValid($('#caPass'), $('#errCaPass'), passOk);
+        if (authMode === 'signup') fieldValid($('#caName'), $('#errCaName'), nameOk);
+        if (!emailOk || !passOk || !nameOk) return;
+        if (authMode === 'signup' && $('#caName').value.trim()) custName = $('#caName').value.trim();
+        if (authMode === 'login') {
+          const n = $('#caEmail').value.split('@')[0].replace(/[._-]+/g, ' ').trim();
+          if (n) custName = n.replace(/\b\w/g, c => c.toUpperCase());
+        }
+        $('#custEmailLbl').textContent = $('#caEmail').value.trim();
+        const init = custName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        $('#custAvatar').textContent = init;
+        renderCustHome(); custGo('home');
+        toast(authMode === 'signup' ? 'Account created — welcome to SwiftDrop!' : 'Welcome back, ' + custName.split(' ')[0] + '!');
+      });
+      $$('[data-auth-skip]').forEach(b => b.addEventListener('click', () => { custName = 'Amelia Carter'; renderCustHome(); custGo('home'); toast('Continuing as Amelia (demo account)'); }));
+
+      /* settings toggles */
+      $$('[data-pref]').forEach(t => t.addEventListener('change', () => toast('Preference updated (demo)')));
+
+      /* driver: auth */
+      $('#drvAuthForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('#daEmail').value.trim());
+        const passOk = $('#daPass').value.length >= 6;
+        fieldValid($('#daEmail'), $('#errDaEmail'), emailOk);
+        fieldValid($('#daPass'), $('#errDaPass'), passOk);
+        if (!emailOk || !passOk) return;
+        if (!drvOnline) { $('#availToggle').checked = true; setAvailability(true); }
+        drvGo('home'); toast('Signed in — onboarding complete. You\'re online!');
+      });
+
+      /* driver: availability */
+      function setAvailability(on) {
+        drvOnline = on;
+        const banner = $('#availBanner');
+        banner.classList.toggle('online', on); banner.classList.toggle('offline', !on);
+        $('#availTitle').textContent = on ? "You're online" : "You're offline";
+        $('#availSub').textContent = on ? 'Receiving jobs near City Centre' : 'You won\'t receive new jobs';
+        const badgeEl = $('#drvStatusBadge');
+        badgeEl.textContent = on ? 'Online' : 'Offline'; badgeEl.className = 'badge ' + (on ? 'b-online' : 'b-offline');
+        if (!on) badgeEl.style.marginLeft = 'auto';
+        renderTasks();
+      }
+      $('#availToggle').addEventListener('change', e => { setAvailability(e.target.checked); toast(e.target.checked ? 'You are now online' : 'You are now offline'); });
+
+      /* driver: job workflow */
+      $('#jobProgressBtn').addEventListener('click', () => {
+        if (jobStage === 0) { jobStage = 1; updateJobUI(); toast('Arrival confirmed — collect the parcel'); }
+        else if (jobStage === 2) { jobStage = 3; syncOrderStatus(); updateJobUI(); toast('In transit — head to the drop-off'); }
+        else if (jobStage === 3) { $('#podId').textContent = currentJobId; drvGo('complete'); }
+      });
+      $('#confirmPickupBtn').addEventListener('click', () => {
+        jobStage = 2; syncOrderStatus(); updateJobUI(); toast('Parcel collected ✓');
+      });
+      $('#confirmDeliveryBtn').addEventListener('click', () => {
+        if (!fieldValid($('#podName'), $('#errPodName'), $('#podName').value.trim().length >= 2)) return;
+        const o = orderById(currentJobId);
+        jobStage = 4; syncOrderStatus(); updateJobUI();
+        const earn = o.price * 0.7;
+        todayEarned += earn; todayJobs += 1;
+        const me = driverById('DRV-MK'); me.state = 'online'; me.job = null; me.earned = todayEarned; me.jobsToday = todayJobs;
+        $('#doneEarn').textContent = '£' + earn.toFixed(2);
+        $('#doneId').textContent = o.id;
+        if (o.customer === 'Amelia Carter') CUST_NOTIFS.unshift({ icon:'checkc', color:'var(--green)', bg:'var(--green-soft)', title:'Delivered · ' + o.id, body:'Signed for by ' + $('#podName').value.trim(), time:'Just now', unread:true });
+        renderAdminAll(); drvGo('done');
+        toast('Delivery completed — £' + earn.toFixed(2) + ' earned');
+      });
+
+      /* admin */
+      $$('.chip-tab[data-ostatus]').forEach(b => b.addEventListener('click', () => {
+        $$('.chip-tab[data-ostatus]').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        oStatusFilter = b.dataset.ostatus; renderOrdersTable();
+      }));
+      $$('.chip-tab[data-dfilter]').forEach(b => b.addEventListener('click', () => {
+        $$('.chip-tab[data-dfilter]').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        dFilter = b.dataset.dfilter; renderDrivers();
+      }));
+      $('#adminSearch').addEventListener('input', e => {
+        oSearch = e.target.value.trim();
+        if (oSearch) apageGo('orders');
+        renderOrdersTable();
+      });
+      $('#dateSel').addEventListener('change', e => toast('Showing data for: ' + e.target.value + ' (demo)'));
+      $('#collapseBtn').addEventListener('click', () => $('#adminShell').classList.toggle('collapsed'));
+      $('#adminBell').addEventListener('click', () => $('#adminNotifPanel').classList.toggle('open'));
+      $('#saveSettingsBtn').addEventListener('click', () => toast('Settings saved for this demo session'));
+
+      /* ================= init ================= */
+      renderMaps();
+      renderCustHome(); renderCustOrders(); renderCustNotifs();
+      renderTasks(); renderEarnings();
+      renderAdminAll(); renderAdminNotifs();
+      barChart($('#hourChart'), [
+        { l:'7a', v:8 }, { l:'8a', v:14 }, { l:'9a', v:22 }, { l:'10a', v:31 }, { l:'11a', v:38 }, { l:'12p', v:34 },
+        { l:'1p', v:28 }, { l:'2p', v:41 }, { l:'3p', v:47 }, { l:'4p', v:39 }, { l:'5p', v:26 }, { l:'6p', v:18 }
+      ], {});
+      barChart($('#weekChart'), [
+        { l:'Mon', v:186 }, { l:'Tue', v:204 }, { l:'Wed', v:178 }, { l:'Thu', v:221 }, { l:'Fri', v:240 }, { l:'Sat', v:196 }, { l:'Sun', v:212 }
+      ], { color:'var(--violet)' });
+      lineChart($('#trendChart'), [
+        { l:'Mon', v:142 }, { l:'Tue', v:168 }, { l:'Wed', v:155 }, { l:'Thu', v:189 }, { l:'Fri', v:204 }, { l:'Sat', v:178 }, { l:'Sun', v:221 }
+      ]);
+      quoteCalc();
+      animateCounters($('#view-home'));
+    </script>
+  </body>
+</html>
