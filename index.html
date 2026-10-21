@@ -282,6 +282,56 @@
       .sig-pad{height:110px;border:1.5px dashed var(--line-2);border-radius:var(--r-md);background:var(--surface-2);display:grid;place-items:center;color:var(--faint);font-size:.85rem;font-weight:600;position:relative;overflow:hidden}
       .sig-pad svg{position:absolute;inset:0;width:100%;height:100%}
 
+      /* ---------- tiers / booking v2 ---------- */
+      .tier-list{display:grid;gap:8px}
+      .tier-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1.5px solid var(--line-2);background:var(--surface);border-radius:14px;padding:13px 14px;transition:all .18s;color:var(--ink)}
+      .tier-row:hover{border-color:var(--blue)}
+      .tier-row.on{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 14%,transparent)}
+      .tier-row .t-ic{width:42px;height:42px;border-radius:12px;background:var(--surface-3);display:grid;place-items:center;color:var(--ink-2);flex:none}
+      .tier-row.on .t-ic{background:var(--surface);color:var(--blue)}
+      .tier-row .t-main{flex:1;min-width:0}
+      .tier-row .t-name{font-weight:800;font-size:.94rem;display:block}
+      .tier-row .t-sub{font-size:.76rem;color:var(--muted);font-weight:600;display:block}
+      .tier-row .t-price{font-weight:800;font-size:1.02rem;white-space:nowrap;display:block;text-align:right}
+      .tier-row .t-eta{font-size:.74rem;color:var(--muted);font-weight:700;text-align:right;display:block}
+      .no-hidden{display:flex;gap:8px;align-items:flex-start;font-size:.8rem;color:var(--ink-2);background:var(--green-soft);border-radius:11px;padding:10px 12px;margin-top:10px;font-weight:600}
+      .no-hidden svg{color:var(--green);flex:none;margin-top:1px}
+      .svc-desc{font-size:.8rem;color:var(--muted);margin:8px 2px 0}
+      .stop-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+      .stop-row .stop-n{width:26px;height:26px;border-radius:50%;background:var(--violet-soft);color:var(--violet);font-size:.74rem;font-weight:800;display:grid;place-items:center;flex:none}
+      .stop-row .input{flex:1}
+      .stop-del{width:42px;height:46px;border-radius:10px;border:1.5px solid var(--line-2);background:var(--surface);color:var(--muted);display:grid;place-items:center;flex:none}
+      .route-order{font-size:.78rem;color:var(--ink-2);font-weight:600;background:var(--surface-2);border:1px dashed var(--line-2);border-radius:10px;padding:9px 11px;margin-top:8px}
+      .radar{position:relative;width:92px;height:92px;margin:4px auto 14px}
+      .radar::before,.radar::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid color-mix(in srgb,var(--blue) 55%,transparent);animation:radarPulse 1.8s ease-out infinite}
+      .radar::after{animation-delay:.9s}
+      @keyframes radarPulse{0%{transform:scale(.35);opacity:1}100%{transform:scale(1.15);opacity:0}}
+      .radar .r-core{position:absolute;inset:26px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;box-shadow:0 10px 22px rgba(29,111,242,.4)}
+      .radar .r-core svg{stroke:#fff;width:22px;height:22px}
+      .rate-stars{display:flex;gap:6px;justify-content:center;margin:8px 0 12px}
+      .rate-stars button{border:0;background:transparent;font-size:1.9rem;line-height:1;color:var(--line-2);padding:2px;transition:transform .15s,color .15s;font-family:inherit}
+      .rate-stars button.on{color:var(--amber)}
+      .rate-stars button:active{transform:scale(1.2)}
+      .tip-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+      .tip-chip{border:1.5px solid var(--line-2);background:var(--surface);border-radius:99px;padding:8px 16px;font-weight:800;font-size:.86rem;color:var(--ink-2)}
+      .tip-chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+      .pod-photo{border-radius:14px;overflow:hidden;border:1px solid var(--line);position:relative;background:var(--surface-2)}
+      .pin-show{display:flex;gap:8px;align-items:center;background:var(--amber-soft);border:1px dashed color-mix(in srgb,var(--amber) 55%,transparent);border-radius:12px;padding:11px 13px;font-size:.84rem;font-weight:700;color:var(--ink-2)}
+      .pin-show svg{color:var(--amber);flex:none}
+      .pin-show .pin-code{font-family:var(--mono);font-size:1.15rem;letter-spacing:.35em;color:var(--ink);margin-left:auto}
+      .earn-hero{background:linear-gradient(135deg,#0C3B2E,#0FA968);color:#fff;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:12px;margin-top:12px}
+      .earn-hero .eh-l{font-size:.68rem;font-weight:800;letter-spacing:.09em;opacity:.85}
+      .earn-hero .eh-v{font-size:1.45rem;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+      .share-link{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px dashed var(--line-2);border-radius:11px;padding:8px 8px 8px 12px;font-size:.8rem;font-weight:600;color:var(--ink-2);overflow:hidden}
+      .share-link span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+      .eta-split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .eta-cell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:11px 13px;box-shadow:var(--shadow-sm)}
+      .eta-cell .el{font-size:.68rem;font-weight:800;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
+      .eta-cell .ev{font-weight:800;font-size:1rem;margin-top:2px}
+      .eta-cell .es{font-size:.76rem;color:var(--muted);font-weight:600}
+      .biz-row{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+      .biz-row:last-child{border-bottom:0}
+
       /* skeleton */
       .skl{border-radius:10px;background:linear-gradient(100deg,var(--surface-3) 40%,var(--line) 50%,var(--surface-3) 60%);background-size:200% 100%;animation:shimmer 1.2s infinite}
       @keyframes shimmer{to{background-position:-200% 0}}
@@ -536,6 +586,18 @@
           <div class="card how-card"><span class="step-num">STEP 03</span><h3>Track to the door</h3><p>Follow each milestone — collected, in transit, delivered — with proof of delivery captured at the doorstep.</p></div>
         </div>
 
+        <div class="section-head">
+          <h2>One upfront price per vehicle — no surprises</h2>
+          <p>Pay only for the space you need. Every price below is the final price: no fuel, early or late surcharges, ever. Multi-drop routes and scheduled pickups are priced before you book.</p>
+        </div>
+        <div class="how-grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+          <div class="card how-card"><span class="step-num">BIKE</span><h3>£7.50</h3><p>Small parcels up to 40 × 30 × 30 cm. The fastest way across the city centre.</p></div>
+          <div class="card how-card"><span class="step-num">MOTORBIKE</span><h3>£7.85</h3><p>Parcels up to 50 × 40 × 40 cm, weaving through traffic for urgent drops.</p></div>
+          <div class="card how-card"><span class="step-num">CAR / SMALL VAN</span><h3>£10.20 – £12.25</h3><p>Everyday workhorse for boxes up to 120 × 80 × 80 cm.</p></div>
+          <div class="card how-card"><span class="step-num">LARGE VAN</span><h3>£19.00</h3><p>Bulkier loads up to 300 × 180 × 160 cm — furniture, stock and kit.</p></div>
+          <div class="card how-card"><span class="step-num">LUTON VAN</span><h3>£26.50</h3><p>Full loads up to 400 × 200 × 200 cm with a tail lift for heavy items.</p></div>
+        </div>
+
         <div class="foot-note">
           <svg class="ic"><use href="#i-info"/></svg>
           <div><b>About this demo.</b> SwiftDrop is a product concept. All names, orders, prices and locations are sample data, and no real GPS tracking, payments, authentication or notifications are connected. Every screen is interactive — try booking a delivery as a customer, then watch it appear in the driver app and admin dashboard.</div>
@@ -574,28 +636,37 @@
               <div class="screen" data-cscreen="book">
                 <button class="back-btn" data-cust-nav="home"><svg class="ic sm"><use href="#i-back"/></svg> Back</button>
                 <h2 class="st">Book a delivery</h2>
-                <p class="sub">Instant quote — no hidden fees.</p>
+                <p class="sub">Upfront price per vehicle — the price you see is the price you pay.</p>
+                <div class="card" style="overflow:hidden;margin-bottom:16px"><div class="mapbox" style="height:170px" id="bookMap"></div></div>
                 <form id="bookForm" novalidate>
-                  <div class="field"><label for="bkFrom">Pickup address</label>
+                  <div class="field"><label for="bkFrom">Where from?</label>
                     <div class="input-wrap"><svg><use href="#i-pin"/></svg><input class="input" id="bkFrom" placeholder="e.g. 14 King Street, City Centre" autocomplete="off" /></div>
                     <div class="err-msg" id="errFrom">Please enter a pickup address.</div></div>
-                  <div class="field"><label for="bkTo">Drop-off address</label>
+                  <div class="field"><label for="bkTo">Where to?</label>
                     <div class="input-wrap"><svg><use href="#i-pin"/></svg><input class="input" id="bkTo" placeholder="e.g. 208 Oxford Road, Fallowfield" autocomplete="off" /></div>
                     <div class="err-msg" id="errTo">Please enter a drop-off address.</div></div>
-                  <div class="field"><label>Parcel size</label>
-                    <div class="size-grid" id="sizeGrid">
-                      <button type="button" class="size-opt" data-size="Document" data-mult="1"><svg><use href="#i-list"/></svg><span class="sn">Document</span><span class="sp">up to 1 kg</span></button>
-                      <button type="button" class="size-opt on" data-size="Small" data-mult="1.35"><svg><use href="#i-box"/></svg><span class="sn">Small</span><span class="sp">up to 5 kg</span></button>
-                      <button type="button" class="size-opt" data-size="Medium" data-mult="1.8"><svg><use href="#i-box"/></svg><span class="sn">Medium</span><span class="sp">up to 15 kg</span></button>
-                      <button type="button" class="size-opt" data-size="Large" data-mult="2.6"><svg><use href="#i-truck"/></svg><span class="sn">Large</span><span class="sp">up to 30 kg</span></button>
-                    </div></div>
-                  <div class="field"><label>Preferred timing</label>
-                    <div class="seg" id="timingSeg">
-                      <button type="button" class="on" data-timing="ASAP">ASAP</button>
-                      <button type="button" data-timing="Within 2 hours">Within 2 hrs</button>
-                      <button type="button" data-timing="Scheduled">Scheduled</button>
-                    </div></div>
-                  <div class="field" id="schedField" style="display:none"><label for="bkTime">Pickup time</label>
+                  <div id="stopsWrap" style="display:none">
+                    <div class="field" style="margin-bottom:6px"><label>Extra stops (multi-drop)</label>
+                      <div id="stopsList"></div>
+                      <button type="button" class="btn btn-ghost btn-sm" id="addStopBtn"><svg class="ic sm"><use href="#i-plus"/></svg> Add a stop</button>
+                      <div class="route-order" id="routeOrder" style="display:none"></div>
+                      <p class="svc-desc">+£3.50 per extra stop · stops are visited in the optimised order shown above.</p>
+                    </div>
+                  </div>
+                  <div class="field"><label>Service type</label>
+                    <div class="seg" id="svcSeg">
+                      <button type="button" class="on" data-service="Direct">Direct</button>
+                      <button type="button" data-service="Multi-drop">Multi-drop</button>
+                      <button type="button" data-service="Scheduled">Scheduled</button>
+                    </div>
+                    <p class="svc-desc" id="svcDesc">Point-to-point — your courier travels straight from pickup to drop-off.</p></div>
+                  <div class="field"><label>Choose your vehicle</label>
+                    <div class="tier-list" id="tierList"></div>
+                    <div class="no-hidden"><svg class="ic sm"><use href="#i-shield"/></svg><span>No hidden charges — the price you see is the price you pay. No fuel, early or late surcharges.</span></div></div>
+                  <div class="field"><label for="bkValue">Parcel value (£)</label>
+                    <input class="input" id="bkValue" type="number" min="0" step="1" placeholder="e.g. 45 — used for cover &amp; security" />
+                    <div class="pin-show" id="pinNote" style="display:none;margin-top:9px"><svg class="ic sm"><use href="#i-shield"/></svg><span>Over £100: we add a collection photo and a delivery PIN the recipient must give the courier. Your PIN appears on the tracking screen after booking.</span></div></div>
+                  <div class="field" id="schedField" style="display:none"><label for="bkTime">Pickup time slot</label>
                     <input class="input" id="bkTime" type="time" value="16:30" /></div>
                   <div class="field"><label for="bkNotes">Delivery instructions <span style="color:var(--faint);font-weight:600">(optional)</span></label>
                     <textarea class="input" id="bkNotes" rows="2" placeholder="Gate code, floor, leave with reception…"></textarea></div>
@@ -603,8 +674,9 @@
                     <div class="quote-row"><span class="ql">ESTIMATED PRICE</span><span class="ql" id="qEtaTop">ETA —</span></div>
                     <div class="quote-row" style="margin:6px 0 12px"><span class="quote-price" id="qPrice">£0.00</span></div>
                     <div class="quote-row"><span class="ql">Distance</span><span class="qv" id="qDist">—</span></div>
+                    <div class="quote-row" style="margin-top:4px"><span class="ql">Courier pickup</span><span class="qv" id="qEtaPickup">—</span></div>
                     <div class="quote-row" style="margin-top:4px"><span class="ql">Estimated delivery</span><span class="qv" id="qEta">—</span></div>
-                    <div class="quote-row" style="margin-top:4px"><span class="ql">Service</span><span class="qv" id="qSvc">Same-day · Small parcel</span></div>
+                    <div class="quote-row" style="margin-top:4px"><span class="ql">Vehicle &amp; service</span><span class="qv" id="qSvc">—</span></div>
                   </div>
                   <button class="btn btn-primary btn-lg btn-block" type="submit" id="bookSubmit">Confirm booking</button>
                   <p style="text-align:center;font-size:.78rem;color:var(--muted);margin:12px 0 0">Demo checkout — no payment is taken.</p>
@@ -617,6 +689,21 @@
                   <div class="success-ring"><svg><use href="#i-check"/></svg></div>
                   <h2 class="st">Booking confirmed</h2>
                   <p class="sub" style="margin-bottom:0">Your courier is being assigned now.</p>
+                </div>
+                <div class="card" style="padding:18px;margin:18px 0 0" id="matchCard">
+                  <div id="matchSearching" style="text-align:center;padding:6px 0 2px">
+                    <div class="radar"><span class="r-core"><svg><use href="#i-truck"/></svg></span></div>
+                    <b style="font-size:1.02rem">Finding your courier…</b>
+                    <p style="color:var(--muted);font-size:.85rem;margin:5px 0 0">Matching you with a nearby vetted courier.<br/>Demo tip: open the Driver app and accept the job offer to complete the match.</p>
+                  </div>
+                  <div id="matchFound" style="display:none">
+                    <div style="display:flex;gap:13px;align-items:center">
+                      <span class="avatar" id="mfAvatar" style="width:52px;height:52px;font-size:1rem">MK</span>
+                      <div style="flex:1;min-width:0"><b id="mfName" style="font-size:1rem">Courier assigned</b><div style="font-size:.8rem;color:var(--muted)" id="mfMeta">—</div></div>
+                      <span class="badge b-assigned">Assigned</span>
+                    </div>
+                    <button class="btn btn-primary btn-block" style="margin-top:14px" data-cust-nav="track">Track live</button>
+                  </div>
                 </div>
                 <div class="card" style="padding:18px;margin:18px 0">
                   <div style="text-align:center;padding-bottom:14px;border-bottom:1px dashed var(--line)">
@@ -637,7 +724,7 @@
                   <h2 class="st" style="margin:0">Live tracking</h2><span class="badge b-transit" id="trkBadge">In transit</span>
                 </div>
                 <p class="sub mono" id="trkId" style="margin-top:4px">SWD-739214</p>
-                <div class="card" style="overflow:hidden;margin-bottom:14px">
+                <div class="card" style="overflow:hidden;margin-bottom:12px">
                   <div class="mapbox" style="height:250px" id="trackMap"></div>
                   <div style="padding:14px 16px;display:flex;align-items:center;gap:12px">
                     <svg class="ic" style="color:var(--blue)"><use href="#i-clock"/></svg>
@@ -645,15 +732,55 @@
                     <span class="badge b-transit" style="margin-left:auto" id="trkMins">12 min</span>
                   </div>
                 </div>
-                <div class="card" style="padding:16px;margin-bottom:14px;display:flex;gap:13px;align-items:center">
-                  <span class="avatar" style="width:50px;height:50px;font-size:1rem">MK</span>
-                  <div style="flex:1;min-width:0"><b>Marcus Kane</b><div style="font-size:.8rem;color:var(--muted)">Ford Transit · <span class="stars">★★★★★</span> 4.9 (312 trips)</div></div>
-                  <button class="icon-btn" data-toast="Calling Marcus… (demo)" aria-label="Call driver"><svg class="ic sm"><use href="#i-phone"/></svg></button>
-                  <button class="icon-btn" data-toast="Message sent to Marcus (demo)" aria-label="Message driver"><svg class="ic sm"><use href="#i-msg"/></svg></button>
+                <div class="eta-split" style="margin-bottom:12px">
+                  <div class="eta-cell"><div class="el">Pickup ETA</div><div class="ev" id="trkEtaPickup">—</div><div class="es" id="trkEtaPickupSub">Courier to pickup</div></div>
+                  <div class="eta-cell"><div class="el">Drop-off ETA</div><div class="ev" id="trkEtaDrop">—</div><div class="es" id="trkEtaDropSub">Parcel to recipient</div></div>
+                </div>
+                <div class="card" style="padding:16px;margin-bottom:12px" id="trkDriverCard">
+                  <div style="display:flex;gap:13px;align-items:center">
+                    <span class="avatar" id="trkDrvAvatar" style="width:50px;height:50px;font-size:1rem">?</span>
+                    <div style="flex:1;min-width:0"><b id="trkDrvName">Finding your courier…</b><div style="font-size:.8rem;color:var(--muted)" id="trkDrvMeta">Your courier will appear here as soon as one accepts.</div></div>
+                    <button class="icon-btn" id="trkCallBtn" data-toast="Calling your courier… (demo)" aria-label="Call courier"><svg class="ic sm"><use href="#i-phone"/></svg></button>
+                    <button class="icon-btn" id="trkMsgBtn" data-toast="Message sent (demo)" aria-label="Message courier"><svg class="ic sm"><use href="#i-msg"/></svg></button>
+                  </div>
+                </div>
+                <div class="pin-show" id="trkPin" style="display:none;margin-bottom:12px"><svg class="ic sm"><use href="#i-shield"/></svg><span>Delivery PIN — the recipient gives this to the courier on arrival.</span><span class="pin-code" id="trkPinCode"></span></div>
+                <div class="card" style="padding:16px;margin-bottom:14px">
+                  <b style="display:block;font-size:.92rem;margin-bottom:4px">Share live tracking</b>
+                  <p style="font-size:.8rem;color:var(--muted);margin:0 0 10px">Anyone with this link can follow the delivery live — no account needed.</p>
+                  <div class="share-link"><svg class="ic sm" style="color:var(--blue);flex:none"><use href="#i-route"/></svg><span id="trkShareLink">swiftdrop.example/track/SWD-000000</span><button class="btn btn-ghost btn-sm" id="trkCopyBtn" type="button">Copy</button></div>
                 </div>
                 <h3 style="margin:18px 0 12px;font-size:1rem">Delivery progress</h3>
                 <div class="card" style="padding:18px"><div class="timeline" id="trkTimeline"></div></div>
                 <div class="card" style="padding:16px;margin-top:14px"><div id="trkRoute"></div></div>
+                <div class="card" style="padding:16px;margin-top:14px;display:none" id="trkPod">
+                  <b style="display:flex;gap:8px;align-items:center;font-size:.95rem"><svg class="ic sm" style="color:var(--green)"><use href="#i-cam"/></svg> Photo proof of delivery</b>
+                  <div class="pod-photo" style="margin:12px 0 10px">
+                    <svg viewBox="0 0 400 170" style="display:block;width:100%;height:auto" role="img" aria-label="Photo of the parcel at the recipient's front door (demo placeholder)">
+                      <rect width="400" height="170" fill="var(--surface-3)"/>
+                      <rect x="150" y="18" width="120" height="152" rx="6" fill="var(--ink-2)"/>
+                      <rect x="162" y="30" width="96" height="60" rx="4" fill="var(--surface-2)"/>
+                      <circle cx="252" cy="105" r="5" fill="var(--amber)"/>
+                      <rect x="196" y="118" width="72" height="40" rx="4" fill="var(--amber)"/>
+                      <path d="M196 128h72" stroke="rgba(0,0,0,.25)" stroke-width="4"/>
+                      <rect x="222" y="106" width="20" height="12" rx="2" fill="var(--surface)"/>
+                      <rect x="0" y="158" width="400" height="12" fill="var(--line-2)"/>
+                    </svg>
+                  </div>
+                  <div class="oc-meta" style="border:0;padding:0;margin:0"><span><svg><use href="#i-clock"/></svg><span id="podWhen">—</span></span><span><svg><use href="#i-user"/></svg><span id="podWho">—</span></span><span id="podPinOk" style="display:none"><svg><use href="#i-shield"/></svg>PIN verified</span></div>
+                  <p style="font-size:.76rem;color:var(--muted);margin:9px 0 0">Demo placeholder photo — on a live delivery, the courier's doorstep photo appears here.</p>
+                </div>
+                <div class="card" style="padding:18px;margin-top:14px;text-align:center;display:none" id="trkRate">
+                  <b style="font-size:1rem">How was your delivery?</b>
+                  <p style="font-size:.82rem;color:var(--muted);margin:4px 0 0">Rate your courier and add an optional tip.</p>
+                  <div class="rate-stars" id="rateStars"><button type="button" data-star="1" aria-label="1 star">★</button><button type="button" data-star="2" aria-label="2 stars">★</button><button type="button" data-star="3" aria-label="3 stars">★</button><button type="button" data-star="4" aria-label="4 stars">★</button><button type="button" data-star="5" aria-label="5 stars">★</button></div>
+                  <div class="tip-row" id="tipRow"><button type="button" class="tip-chip on" data-tip="0">No tip</button><button type="button" class="tip-chip" data-tip="1">£1</button><button type="button" class="tip-chip" data-tip="2">£2</button><button type="button" class="tip-chip" data-tip="5">£5</button></div>
+                  <button class="btn btn-primary btn-block" id="rateSubmit" style="margin-top:14px">Submit rating</button>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px;display:none" id="trkRated">
+                  <b style="display:flex;gap:8px;align-items:center"><svg class="ic sm" style="color:var(--green)"><use href="#i-checkc"/></svg> Thanks for your feedback</b>
+                  <p style="font-size:.86rem;color:var(--ink-2);margin:6px 0 0" id="trkRatedTxt"></p>
+                </div>
               </div>
 
               <!-- customer: orders -->
@@ -820,6 +947,7 @@
                   <div class="card" style="padding:16px;margin-bottom:12px;border-color:var(--green)">
                     <b style="display:flex;gap:8px;align-items:center"><svg class="ic sm" style="color:var(--green)"><use href="#i-box"/></svg> Confirm parcel collection</b>
                     <p style="font-size:.86rem;color:var(--ink-2);margin:8px 0 14px" id="pickupCheck">Check the parcel matches the order — <b>Small parcel, up to 5 kg</b>, sealed and labelled <span class="mono" id="pickupLbl">SWD-739214</span>.</p>
+                    <div class="pod-box" style="margin-bottom:12px"><svg class="ic lg" style="margin-bottom:6px"><use href="#i-cam"/></svg><div id="collectPhotoTxt"><b style="color:var(--ink-2)">Collection photo</b><div style="font-size:.8rem">Tap to capture the parcel at pickup (demo placeholder).</div></div><button type="button" class="btn btn-ghost btn-sm" id="collectPhotoBtn" style="margin-top:10px">Take collection photo (demo)</button></div>
                     <button class="btn btn-green btn-block" id="confirmPickupBtn" style="padding:15px">Parcel collected — confirm</button>
                   </div>
                 </div>
@@ -830,10 +958,14 @@
                 <h2 class="st">Complete delivery</h2>
                 <p class="sub">Capture proof of delivery for <span class="mono" id="podId">SWD-739214</span>.</p>
                 <div class="field"><label>Recipient name</label><input class="input" id="podName" placeholder="Who received the parcel?" /><div class="err-msg" id="errPodName">Enter the recipient's name.</div></div>
-                <div class="field"><label>Signature</label>
+                <div class="field" id="podPinField" style="display:none"><label>Delivery PIN</label>
+                  <input class="input mono" id="podPin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN from the recipient" autocomplete="off" />
+                  <div class="err-msg" id="errPodPin">That PIN doesn't match — check with the recipient.</div>
+                  <p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">Required for parcels over £100. Demo PIN for this job: <b class="mono" id="podPinHint"></b></p></div>
+                <div class="field"><label>Photo proof of delivery</label>
+                  <div class="pod-box"><svg class="ic lg" style="margin-bottom:6px"><use href="#i-cam"/></svg><div id="podPhotoTxt"><b style="color:var(--ink-2)">No photo yet</b><div style="font-size:.8rem">A doorstep photo is required to complete the job.</div></div><button type="button" class="btn btn-ghost btn-sm" id="podPhotoBtn" style="margin-top:10px">Take photo (demo)</button></div></div>
+                <div class="field"><label>Signature <span style="color:var(--faint);font-weight:600">(optional)</span></label>
                   <div class="sig-pad" id="sigPad"><svg viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><path d="M30 78 C 60 20, 90 95, 120 55 S 190 25, 215 70 S 265 60, 278 45" fill="none" stroke="var(--ink-2)" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg><span style="position:relative">Signed on screen (demo)</span></div></div>
-                <div class="field"><label>Photo proof</label>
-                  <div class="pod-box"><svg class="ic lg" style="margin-bottom:6px"><use href="#i-cam"/></svg><div style="font-weight:700;color:var(--ink-2)">Photo captured</div><div style="font-size:.8rem">Parcel at front door · 14:32 (demo placeholder)</div></div></div>
                 <button class="btn btn-green btn-lg btn-block" id="confirmDeliveryBtn" style="margin-top:6px">Confirm delivery</button>
               </div>
 
@@ -861,6 +993,7 @@
                   <div class="quote-price" style="margin:6px 0" id="weekTotal">£412.80</div>
                   <div class="quote-row"><span class="ql">Jobs completed</span><span class="qv">38</span></div>
                   <div class="quote-row" style="margin-top:4px"><span class="ql">Avg. per job</span><span class="qv">£10.86</span></div>
+                  <div class="quote-row" style="margin-top:4px"><span class="ql">Tips included</span><span class="qv" id="weekTips">£6.50</span></div>
                 </div>
                 <div class="card" style="padding:16px;margin-bottom:16px"><b style="display:block;margin-bottom:12px;font-size:.92rem">Daily earnings</b><div id="earnChart"></div></div>
                 <h3 style="margin:0 0 10px;font-size:1rem">Completed today</h3>
@@ -903,6 +1036,7 @@
             <button class="side-item" data-apage="orders"><svg><use href="#i-list"/></svg><span>Orders</span><span class="cnt" id="sideOrderCnt">3</span></button>
             <button class="side-item" data-apage="drivers"><svg><use href="#i-truck"/></svg><span>Drivers</span></button>
             <button class="side-item" data-apage="customers"><svg><use href="#i-users"/></svg><span>Customers</span></button>
+            <button class="side-item" data-apage="business"><svg><use href="#i-card"/></svg><span>Business</span></button>
             <button class="side-item" data-apage="assign"><svg><use href="#i-route"/></svg><span>Assignments</span></button>
             <button class="side-item" data-apage="analytics"><svg><use href="#i-chart"/></svg><span>Analytics</span></button>
             <button class="side-item" data-apage="anotifs"><svg><use href="#i-bell"/></svg><span>Notifications</span></button>
@@ -1021,6 +1155,38 @@
                 </div>
               </div>
 
+              <!-- admin: business accounts -->
+              <div class="apage" data-apage-panel="business">
+                <div class="grid-2b" style="align-items:start">
+                  <div class="card panel">
+                    <h3>Business accounts</h3><p class="p-sub">Sample business customers on account billing — monthly invoicing, team logins and volume discounts. Demo information only.</p>
+                    <div class="biz-row"><span class="avatar" style="width:44px;height:44px;font-size:.8rem">BC</span><div style="flex:1;min-width:0"><b>Bloom &amp; Co Florists</b><div style="font-size:.8rem;color:var(--muted)">Growth plan · 6 team logins · Net-30 monthly invoice</div></div><div style="text-align:right"><b>£486.20</b><div style="font-size:.76rem;color:var(--muted)">Oct invoice · 10% volume discount</div></div></div>
+                    <div class="biz-row"><span class="avatar a2" style="width:44px;height:44px;font-size:.8rem">TF</span><div style="flex:1;min-width:0"><b>TechFix Repairs Ltd</b><div style="font-size:.8rem;color:var(--muted)">Growth plan · 3 team logins · Net-30 monthly invoice</div></div><div style="text-align:right"><b>£312.40</b><div style="font-size:.76rem;color:var(--muted)">Oct invoice · 5% volume discount</div></div></div>
+                    <div class="biz-row"><span class="avatar a6" style="width:44px;height:44px;font-size:.8rem">HL</span><div style="flex:1;min-width:0"><b>Hartley Legal LLP</b><div style="font-size:.8rem;color:var(--muted)">Scale plan · 12 team logins · Net-30 monthly invoice</div></div><div style="text-align:right"><b>£764.90</b><div style="font-size:.76rem;color:var(--muted)">Oct invoice · 15% volume discount</div></div></div>
+                    <div class="biz-row"><span class="avatar a4" style="width:44px;height:44px;font-size:.8rem">CB</span><div style="flex:1;min-width:0"><b>The Corner Bakery</b><div style="font-size:.8rem;color:var(--muted)">Starter plan · 2 team logins · Net-14 monthly invoice</div></div><div style="text-align:right"><b>£158.75</b><div style="font-size:.76rem;color:var(--muted)">Oct invoice · standard rates</div></div></div>
+                    <div style="display:flex;gap:8px;margin-top:16px">
+                      <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:11px;text-align:center"><b style="display:block">£1,722.25</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">INVOICED THIS MONTH</span></div>
+                      <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:11px;text-align:center"><b style="display:block">23</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">TEAM LOGINS</span></div>
+                      <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:11px;text-align:center"><b style="display:block">50+</b><span style="font-size:.7rem;color:var(--muted);font-weight:700">DELIVERIES / MO FOR 5% OFF</span></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="card panel" style="margin-bottom:16px">
+                      <h3>Integrations</h3><p class="p-sub">Connect a store or system and bookings flow in automatically. Demo information only — nothing is connected.</p>
+                      <div class="biz-row"><span class="fc-ic" style="width:42px;height:42px;background:var(--green-soft);color:var(--green)"><svg class="ic"><use href="#i-box"/></svg></span><div style="flex:1;min-width:0"><b>Shopify</b><div style="font-size:.8rem;color:var(--muted)">Orders become deliveries automatically at checkout</div></div><span class="badge b-delivered">Connected · demo</span></div>
+                      <div class="biz-row"><span class="fc-ic" style="width:42px;height:42px;background:var(--blue-soft);color:var(--blue)"><svg class="ic"><use href="#i-bolt"/></svg></span><div style="flex:1;min-width:0"><b>SwiftDrop API</b><div style="font-size:.8rem;color:var(--muted)">REST API keys, webhooks and tracking widgets for your own checkout</div></div><button class="btn btn-ghost btn-sm" data-toast="API documentation opened (demo)">View docs</button></div>
+                      <div class="biz-row"><span class="fc-ic" style="width:42px;height:42px;background:var(--violet-soft);color:var(--violet)"><svg class="ic"><use href="#i-grid"/></svg></span><div style="flex:1;min-width:0"><b>WooCommerce</b><div style="font-size:.8rem;color:var(--muted)">Plugin for WordPress stores — quotes at checkout</div></div><button class="btn btn-ghost btn-sm" data-toast="WooCommerce connection started (demo)">Connect</button></div>
+                    </div>
+                    <div class="card panel">
+                      <h3>Volume pricing</h3><p class="p-sub" style="margin-bottom:10px">How business discounts are applied (demo terms).</p>
+                      <div class="biz-row"><div style="flex:1"><b>50+ deliveries / month</b><div style="font-size:.8rem;color:var(--muted)">Applied automatically to the monthly invoice</div></div><b style="color:var(--green)">5% off</b></div>
+                      <div class="biz-row"><div style="flex:1"><b>150+ deliveries / month</b><div style="font-size:.8rem;color:var(--muted)">Plus a named account manager</div></div><b style="color:var(--green)">10% off</b></div>
+                      <div class="biz-row"><div style="flex:1"><b>400+ deliveries / month</b><div style="font-size:.8rem;color:var(--muted)">Custom rates and priority courier pool</div></div><b style="color:var(--green)">15% off</b></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- admin: assignments -->
               <div class="apage" data-apage-panel="assign">
                 <div class="grid-2b" style="align-items:start">
@@ -1118,20 +1284,22 @@
       const badge = s => '<span class="badge ' + (STATUS_CLS[s] || 'b-assigned') + '">' + s + '</span>';
 
       let ORDERS = [
-        { id:'SWD-902317', customer:'Noah Williams', phone:'07700 900 831', driverId:null, from:'Unit 4, Northern Quarter', to:'88 Deansgate, City Centre', size:'Medium', price:14.20, status:'Pending', eta:'Awaiting driver', dist:'2.8 mi', timing:'ASAP', times:['13:58','','','',''] },
-        { id:'SWD-895204', customer:'Sofia Reyes', phone:'07700 900 274', driverId:null, from:'221 Wilmslow Road, Rusholme', to:'9 Canal Street, City Centre', size:'Small', price:9.85, status:'Pending', eta:'Awaiting driver', dist:'3.1 mi', timing:'Within 2 hours', times:['13:41','','','',''] },
-        { id:'SWD-739214', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-MK', from:'14 King Street, City Centre', to:'208 Oxford Road, Fallowfield', size:'Small', price:12.60, status:'In Transit', eta:'14:35', dist:'3.4 mi', timing:'ASAP', times:['13:52','13:57','14:06','14:11',''] },
+        { id:'SWD-902317', customer:'Noah Williams', phone:'07700 900 831', driverId:null, from:'Unit 4, Northern Quarter', to:'88 Deansgate, City Centre', size:'Medium', vehicle:'Car / Small Van', service:'Direct', value:140, pin:'4821', price:14.20, status:'Pending', eta:'Awaiting driver', dist:'2.8 mi', timing:'ASAP', times:['13:58','','','',''] },
+        { id:'SWD-895204', customer:'Sofia Reyes', phone:'07700 900 274', driverId:null, from:'221 Wilmslow Road, Rusholme', to:'9 Canal Street, City Centre', size:'Small', vehicle:'Motorbike', service:'Direct', value:25, price:9.85, status:'Pending', eta:'Awaiting driver', dist:'3.1 mi', timing:'Within 2 hours', times:['13:41','','','',''] },
+        { id:'SWD-739214', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-MK', from:'14 King Street, City Centre', to:'208 Oxford Road, Fallowfield', size:'Small', vehicle:'Car / Small Van', service:'Direct', value:60, price:12.60, status:'In Transit', eta:'14:35', dist:'3.4 mi', timing:'ASAP', times:['13:52','13:57','14:06','14:11',''] },
         { id:'SWD-884120', customer:"James O'Brien", phone:'07700 900 655', driverId:'DRV-PS', from:'Media City, Salford Quays', to:'402 Wilmslow Road, Didsbury', size:'Medium', price:11.40, status:'Picked Up', eta:'14:52', dist:'6.2 mi', timing:'ASAP', times:['13:20','13:26','13:44','',''] },
         { id:'SWD-881077', customer:'Chen Wei', phone:'07700 900 193', driverId:'DRV-TA', from:'55 Whitworth Street, City Centre', to:'17 Lapwing Lane, West Didsbury', size:'Document', price:8.90, status:'Assigned', eta:'15:05', dist:'4.6 mi', timing:'Scheduled 14:30', times:['13:12','13:19','','',''] },
         { id:'SWD-879340', customer:'Fatima Noor', phone:'07700 900 508', driverId:'DRV-LD', from:'730 Wilmslow Road, Didsbury', to:'28 Burton Road, Withington', size:'Large', price:16.75, status:'In Transit', eta:'14:41', dist:'2.2 mi', timing:'ASAP', times:['12:58','13:03','13:15','13:22',''] },
-        { id:'SWD-875512', customer:'Olivia Grant', phone:'07700 900 726', driverId:'DRV-SL', from:'3 Exchange Square, City Centre', to:'119 Palatine Road, Didsbury', size:'Small', price:12.30, status:'Delivered', eta:'Delivered 12:04', dist:'5.1 mi', timing:'ASAP', times:['11:12','11:18','11:29','11:38','12:04'] },
+        { id:'SWD-875512', customer:'Olivia Grant', phone:'07700 900 726', driverId:'DRV-SL', from:'3 Exchange Square, City Centre', to:'119 Palatine Road, Didsbury', size:'Small', price:12.30, status:'Delivered', eta:'Delivered 12:04', dist:'5.1 mi', timing:'ASAP', times:['11:12','11:18','11:29','11:38','12:04'], recipient:'O. Grant', podTime:'12:04' },
         { id:'SWD-872290', customer:'Noah Williams', phone:'07700 900 831', driverId:'DRV-TA', from:'88 Deansgate, City Centre', to:'Unit 4, Northern Quarter', size:'Document', price:7.65, status:'Delivered', eta:'Delivered 11:47', dist:'1.9 mi', timing:'Within 2 hours', times:['10:52','10:57','11:08','11:19','11:47'] },
         { id:'SWD-868914', customer:"James O'Brien", phone:'07700 900 655', driverId:'DRV-PS', from:'9 St Ann\'s Square, City Centre', to:'Media City, Salford Quays', size:'Small', price:10.05, status:'Delivered', eta:'Delivered 10:58', dist:'3.8 mi', timing:'ASAP', times:['10:02','10:08','10:17','10:31','10:58'] },
         { id:'SWD-861003', customer:'Chen Wei', phone:'07700 900 193', driverId:null, from:'55 Whitworth Street, City Centre', to:'2 Spinningfields, City Centre', size:'Small', price:9.40, status:'Cancelled', eta:'Cancelled', dist:'0.8 mi', timing:'ASAP', times:['09:14','','','',''] },
-        { id:'SWD-730455', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-LD', from:'14 King Street, City Centre', to:'6 Lapwing Lane, West Didsbury', size:'Medium', price:15.20, status:'Delivered', eta:'Delivered yesterday', dist:'5.4 mi', timing:'ASAP', times:['16:02','16:09','16:21','16:33','16:58'] },
+        { id:'SWD-730455', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-LD', from:'14 King Street, City Centre', to:'6 Lapwing Lane, West Didsbury', size:'Medium', price:15.20, status:'Delivered', eta:'Delivered yesterday', dist:'5.4 mi', timing:'ASAP', times:['16:02','16:09','16:21','16:33','16:58'], recipient:'A. Carter', podTime:'16:58', rating:5, tip:2 },
         { id:'SWD-715508', customer:'Amelia Carter', phone:'07700 900 412', driverId:'DRV-SL', from:'208 Oxford Road, Fallowfield', to:'14 King Street, City Centre', size:'Document', price:8.40, status:'Delivered', eta:'Delivered Mon', dist:'3.4 mi', timing:'Within 2 hours', times:['09:31','09:36','09:48','10:02','10:26'] }
       ];
       const orderById = id => ORDERS.find(o => o.id === id);
+      const SIZE2VEH = { 'Document':'Motorbike', 'Small':'Motorbike', 'Medium':'Car / Small Van', 'Large':'Large Van' };
+      ORDERS.forEach(o => { o.service = o.service || 'Direct'; o.stops = o.stops || []; o.vehicle = o.vehicle || SIZE2VEH[o.size] || 'Car / Small Van'; o.value = o.value || 0; });
 
       const CUSTOMERS = [
         { name:'Amelia Carter', initials:'AC', ac:'a2', email:'amelia.carter@example.co.uk', phone:'07700 900 412', orders:12, spent:186.40, last:'Today, 13:52', status:'Active' },
@@ -1189,6 +1357,8 @@
       function renderMaps() {
         $('#heroMap').innerHTML = streetSVG('M104 186 C 150 165, 175 150, 214 130 S 280 112, 296 102') +
           pinHTML(26, 62, 'var(--blue)', 'pin', '') + pinHTML(74, 34, 'var(--ink)', 'check', '') + driverMarker(43, 52, true);
+        const bm = $('#bookMap'); if (bm) bm.innerHTML = streetSVG('M104 186 C 150 165, 175 150, 214 130 S 280 112, 296 102') +
+          pinHTML(26, 62, 'var(--blue)', 'pin', 'Pickup') + pinHTML(74, 34, 'var(--ink)', 'check', 'Drop-off');
         $('#trackMap').innerHTML = streetSVG('M58 232 C 120 196, 148 156, 214 130 S 316 84, 344 58') +
           pinHTML(14, 78, 'var(--blue)', 'pin', 'Pickup') + pinHTML(86, 19, 'var(--ink)', 'check', 'Drop-off') + driverMarker(43, 52, true);
         $('#jobMap').innerHTML = streetSVG('M58 232 C 120 196, 148 156, 214 130 S 316 84, 344 58') +
@@ -1250,7 +1420,7 @@
       }
 
       /* ---------------- view / role switching ---------------- */
-      const TITLES = { overview:'Operations overview', orders:'Order management', drivers:'Driver management', customers:'Customer management', assign:'Delivery assignments', analytics:'Analytics & revenue', anotifs:'Notification centre', settings:'Platform settings' };
+      const TITLES = { overview:'Operations overview', orders:'Order management', drivers:'Driver management', customers:'Customer management', business:'Business accounts & integrations', assign:'Delivery assignments', analytics:'Analytics & revenue', anotifs:'Notification centre', settings:'Platform settings' };
       function showView(name) {
         $$('.view').forEach(v => v.classList.toggle('on', v.id === 'view-' + name));
         $$('.role-switch button').forEach(b => b.classList.toggle('on', b.dataset.role === name));
@@ -1314,6 +1484,7 @@
         $$('#custNav button').forEach(b => b.classList.toggle('on', b.dataset.custNav === screen));
         $('#custBody').scrollTop = 0;
         if (screen === 'track') renderTracking();
+        if (screen === 'confirm') renderMatch();
         if (screen === 'orders') renderCustOrders();
         if (screen === 'home') renderCustHome();
         if (screen === 'notifs') renderCustNotifs();
@@ -1347,39 +1518,153 @@
         ).join('');
         $('#custBellDot').style.display = CUST_NOTIFS.some(n => n.unread) ? '' : 'none';
       }
+      let rateVal = 0, tipVal = 0;
+      function renderMatch() {
+        const o = orderById(trackId); if (!o) return;
+        const searching = $('#matchSearching'), found = $('#matchFound');
+        if (!searching || !found) return;
+        if (o.driverId) {
+          const d = driverById(o.driverId);
+          searching.style.display = 'none'; found.style.display = 'block';
+          const av = $('#mfAvatar'); av.textContent = d.initials; av.className = 'avatar ' + d.ac; av.style.cssText = 'width:52px;height:52px;font-size:1rem';
+          $('#mfName').textContent = d.name + ' is your courier';
+          $('#mfMeta').innerHTML = d.vehicle + ' · <span class="stars">★★★★★</span> ' + d.rating + ' · ' + d.trips + ' trips';
+        } else { searching.style.display = 'block'; found.style.display = 'none'; }
+      }
+      function renderTrackMap(o) {
+        let mx = 43, my = 52, show = true;
+        if (o.status === 'Pending' || o.status === 'Cancelled') show = false;
+        else if (o.status === 'Assigned') { mx = 24; my = 66; }
+        else if (o.status === 'Picked Up') { mx = 47; my = 47; }
+        else if (o.status === 'In Transit') { mx = 64; my = 33; }
+        else if (o.status === 'Delivered') { mx = 84; my = 21; }
+        $('#trackMap').innerHTML = streetSVG('M58 232 C 120 196, 148 156, 214 130 S 316 84, 344 58') +
+          pinHTML(14, 78, 'var(--blue)', 'pin', 'Pickup') + pinHTML(86, 19, 'var(--ink)', 'check', 'Drop-off') +
+          (show ? driverMarker(mx, my, false) : '');
+      }
       function renderTracking() {
         const o = orderById(trackId) || orderById('SWD-739214');
         const d = o.driverId ? driverById(o.driverId) : null;
         $('#trkId').textContent = o.id;
         const b = $('#trkBadge'); b.textContent = o.status; b.className = 'badge ' + (STATUS_CLS[o.status] || 'b-assigned');
+        renderTrackMap(o);
         $('#trkTimeline').innerHTML = timelineHTML(o);
-        $('#trkRoute').innerHTML = routeHTML(o) + '<div class="oc-meta"><span>' + icon('box', 'ic sm') + o.size + ' parcel</span><span>' + icon('pound', 'ic sm') + '£' + o.price.toFixed(2) + '</span><span>' + icon('route', 'ic sm') + o.dist + '</span></div>';
+        $('#trkRoute').innerHTML = routeHTML(o) + '<div class="oc-meta"><span>' + icon('truck', 'ic sm') + (o.vehicle || o.size) + '</span><span>' + icon('pound', 'ic sm') + '£' + o.price.toFixed(2) + '</span><span>' + icon('route', 'ic sm') + o.dist + '</span>' + (o.service && o.service !== 'Direct' ? '<span>' + icon('list', 'ic sm') + o.service + (o.stops && o.stops.length ? ' · ' + o.stops.length + ' stops' : '') + '</span>' : '') + '</div>';
         if (o.status === 'Delivered') { $('#trkEtaBig').textContent = 'Delivered'; $('#trkEtaSub').textContent = 'This parcel has been delivered'; $('#trkMins').textContent = 'Done'; }
-        else if (o.status === 'Pending') { $('#trkEtaBig').textContent = 'Finding your driver…'; $('#trkEtaSub').textContent = 'We are matching you with a nearby courier'; $('#trkMins').textContent = '—'; }
-        else { $('#trkEtaBig').textContent = 'Arriving by ' + o.eta; $('#trkEtaSub').textContent = (d ? d.name.split(' ')[0] : 'Your driver') + ' is on the way · ' + o.dist + ' route'; $('#trkMins').textContent = '12 min'; }
+        else if (o.status === 'Pending') { $('#trkEtaBig').textContent = 'Finding your courier…'; $('#trkEtaSub').textContent = 'We are matching you with a nearby courier'; $('#trkMins').textContent = '—'; }
+        else if (o.status === 'Cancelled') { $('#trkEtaBig').textContent = 'Cancelled'; $('#trkEtaSub').textContent = 'This delivery was cancelled'; $('#trkMins').textContent = '—'; }
+        else { $('#trkEtaBig').textContent = 'Arriving by ' + o.eta; $('#trkEtaSub').textContent = (d ? d.name.split(' ')[0] : 'Your courier') + ' is on the way · ' + o.dist + ' route'; $('#trkMins').textContent = '12 min'; }
+        /* separate pickup / drop-off ETAs */
+        const pkS = $('#trkEtaPickupSub'), drS = $('#trkEtaDropSub');
+        if (o.status === 'Delivered') { $('#trkEtaPickup').textContent = 'Collected'; pkS.textContent = o.times[2] ? 'Picked up at ' + o.times[2] : 'Picked up'; $('#trkEtaDrop').textContent = o.podTime || o.times[4] || 'Delivered'; drS.textContent = 'Delivered'; }
+        else if (o.status === 'Picked Up' || o.status === 'In Transit') { $('#trkEtaPickup').textContent = 'Collected'; pkS.textContent = o.times[2] ? 'Picked up at ' + o.times[2] : 'Picked up'; $('#trkEtaDrop').textContent = o.eta; drS.textContent = 'On schedule'; }
+        else if (o.status === 'Assigned') { $('#trkEtaPickup').textContent = '~12 min'; pkS.textContent = 'Courier heading to pickup'; $('#trkEtaDrop').textContent = o.eta; drS.textContent = 'Estimated'; }
+        else { $('#trkEtaPickup').textContent = '—'; pkS.textContent = 'Waiting for a courier'; $('#trkEtaDrop').textContent = '—'; drS.textContent = 'Calculated once matched'; }
+        /* courier card */
+        if (d) {
+          const av = $('#trkDrvAvatar'); av.textContent = d.initials; av.className = 'avatar ' + d.ac; av.style.cssText = 'width:50px;height:50px;font-size:1rem';
+          $('#trkDrvName').textContent = d.name;
+          $('#trkDrvMeta').innerHTML = d.vehicle + ' · <span class="stars">★★★★★</span> ' + d.rating + ' (' + d.trips + ' trips)';
+          $('#trkCallBtn').dataset.toast = 'Calling ' + d.name.split(' ')[0] + '… (demo)';
+          $('#trkMsgBtn').dataset.toast = 'Message sent to ' + d.name.split(' ')[0] + ' (demo)';
+          $('#trkCallBtn').style.display = ''; $('#trkMsgBtn').style.display = '';
+        } else {
+          const av = $('#trkDrvAvatar'); av.textContent = '?'; av.className = 'avatar'; av.style.cssText = 'width:50px;height:50px;font-size:1rem';
+          $('#trkDrvName').textContent = 'Finding your courier…';
+          $('#trkDrvMeta').textContent = 'Your courier will appear here as soon as one accepts the job.';
+          $('#trkCallBtn').style.display = 'none'; $('#trkMsgBtn').style.display = 'none';
+        }
+        /* PIN + share link */
+        const pinBox = $('#trkPin');
+        if (o.pin && o.status !== 'Delivered' && o.status !== 'Cancelled') { pinBox.style.display = 'flex'; $('#trkPinCode').textContent = o.pin; } else pinBox.style.display = 'none';
+        $('#trkShareLink').textContent = 'swiftdrop.example/track/' + o.id;
+        /* photo proof of delivery */
+        const pod = $('#trkPod');
+        if (o.status === 'Delivered') { pod.style.display = 'block'; $('#podWhen').textContent = 'Delivered at ' + (o.podTime || o.times[4] || '—'); $('#podWho').textContent = 'Received by ' + (o.recipient || 'the recipient'); $('#podPinOk').style.display = o.pin ? 'inline-flex' : 'none'; }
+        else pod.style.display = 'none';
+        /* rating prompt */
+        const rate = $('#trkRate'), rated = $('#trkRated');
+        if (o.status === 'Delivered' && !o.rating) {
+          rate.style.display = 'block'; rated.style.display = 'none';
+          rateVal = 0; tipVal = 0;
+          $$('#rateStars button').forEach(x => x.classList.remove('on'));
+          $$('#tipRow .tip-chip').forEach((x, i) => x.classList.toggle('on', i === 0));
+        } else if (o.status === 'Delivered' && o.rating) {
+          rate.style.display = 'none'; rated.style.display = 'block';
+          $('#trkRatedTxt').textContent = 'You rated this delivery ' + o.rating + ' ★' + (o.tip ? ' and added a £' + o.tip.toFixed(2) + ' tip for ' + (d ? d.name.split(' ')[0] : 'your courier') + '.' : '.');
+        } else { rate.style.display = 'none'; rated.style.display = 'none'; }
       }
 
-      /* booking + quote */
-      let bkSize = { name:'Small', mult:1.35 }, bkTiming = 'ASAP';
-      function quoteCalc() {
+      /* booking + quote — vehicle tiers with upfront fixed prices */
+      const TIERS = [
+        { id:'bike', name:'Bike', icon:'bolt', dims:'Parcels up to 40 × 30 × 30 cm', price:d => 7.50, eta:d => Math.round(20 + d * 3.2) },
+        { id:'moto', name:'Motorbike', icon:'nav', dims:'Parcels up to 50 × 40 × 40 cm', price:d => 7.85, eta:d => Math.round(16 + d * 2.6) },
+        { id:'car', name:'Car / Small Van', icon:'truck', dims:'Parcels up to 120 × 80 × 80 cm', price:d => Math.round((10.20 + Math.min(2.05, d * 0.34)) * 100) / 100, eta:d => Math.round(18 + d * 2.8) },
+        { id:'lvan', name:'Large Van', icon:'truck', dims:'Loads up to 300 × 180 × 160 cm', price:d => 19.00, eta:d => Math.round(26 + d * 3.4) },
+        { id:'luton', name:'Luton Van', icon:'truck', dims:'Loads up to 400 × 200 × 200 cm', price:d => 26.50, eta:d => Math.round(32 + d * 3.8) }
+      ];
+      let bkService = 'Direct', bkTier = TIERS[2];
+      function currentDist() {
         const from = $('#bkFrom').value.trim(), to = $('#bkTo').value.trim();
-        if (from.length < 4 || to.length < 4) {
-          $('#qPrice').textContent = '£0.00'; $('#qDist').textContent = '—'; $('#qEta').textContent = '—'; $('#qEtaTop').textContent = 'ETA —';
-          $('#qSvc').textContent = 'Same-day · ' + bkSize.name + ' parcel'; return null;
-        }
+        if (from.length < 4 || to.length < 4) return null;
         let hash = 0; const s = (from + '|' + to).toLowerCase();
         for (let i = 0; i < s.length; i++) hash = (hash * 31 + s.charCodeAt(i)) >>> 0;
-        const dist = 1.6 + (hash % 82) / 10;
-        let price = (4.50 + dist * 1.85) * bkSize.mult;
-        if (bkTiming === 'ASAP') price *= 1.12;
-        const mins = Math.round(24 + dist * 4.4 + (bkTiming === 'Within 2 hours' ? 55 : 0));
-        const etaTxt = bkTiming === 'Scheduled' ? 'Pickup at ' + ($('#bkTime').value || '16:30') : 'Delivered in ~' + mins + ' min';
+        return 1.6 + (hash % 82) / 10;
+      }
+      function stopInputs() { return $$('#stopsList .stop-input'); }
+      function stopCount() { return bkService === 'Multi-drop' ? stopInputs().length : 0; }
+      function renderTierPrices(dist) {
+        const d0 = dist == null ? 3 : dist;
+        $('#tierList').innerHTML = TIERS.map(t =>
+          '<button type="button" class="tier-row' + (t.id === bkTier.id ? ' on' : '') + '" data-tier="' + t.id + '">' +
+          '<span class="t-ic">' + icon(t.icon) + '</span>' +
+          '<span class="t-main"><span class="t-name">' + t.name + '</span><span class="t-sub">' + t.dims + '</span></span>' +
+          '<span><span class="t-price">£' + t.price(d0).toFixed(2) + '</span><span class="t-eta">~' + t.eta(d0) + ' min</span></span></button>'
+        ).join('');
+      }
+      function renumberStops() {
+        $$('#stopsList .stop-row').forEach((r, i) => {
+          r.querySelector('.stop-n').textContent = i + 1;
+          r.querySelector('.stop-input').placeholder = 'Stop ' + (i + 1) + ' address';
+        });
+        const n = stopInputs().length, ro = $('#routeOrder');
+        if (n) {
+          ro.style.display = 'block';
+          ro.textContent = 'Optimised route: Pickup → ' + stopInputs().map((_, i) => 'Stop ' + (i + 1)).join(' → ') + ' → Drop-off · order chosen to minimise total distance (demo)';
+        } else ro.style.display = 'none';
+      }
+      function addStop() {
+        const list = $('#stopsList');
+        if (list.children.length >= 4) { toast('Up to 4 extra stops in this demo'); return; }
+        const row = document.createElement('div');
+        row.className = 'stop-row';
+        row.innerHTML = '<span class="stop-n"></span><input class="input stop-input" autocomplete="off" /><button type="button" class="stop-del" aria-label="Remove stop">' + icon('x', 'ic sm') + '</button>';
+        list.appendChild(row);
+        row.querySelector('.stop-input').addEventListener('input', quoteCalc);
+        row.querySelector('.stop-del').addEventListener('click', () => { row.remove(); renumberStops(); quoteCalc(); });
+        renumberStops(); quoteCalc();
+      }
+      function quoteCalc() {
+        const dist = currentDist();
+        renderTierPrices(dist);
+        const val = parseFloat($('#bkValue').value) || 0;
+        const pinOn = val > 100;
+        $('#pinNote').style.display = pinOn ? 'flex' : 'none';
+        if (dist == null) {
+          $('#qPrice').textContent = '£0.00'; $('#qDist').textContent = '—'; $('#qEta').textContent = '—'; $('#qEtaPickup').textContent = '—'; $('#qEtaTop').textContent = 'ETA —';
+          $('#qSvc').textContent = bkTier.name + ' · ' + bkService; return null;
+        }
+        const stops = stopCount();
+        const price = bkTier.price(dist) + stops * 3.50;
+        const etaDrop = bkTier.eta(dist) + stops * 6;
+        const etaPickup = Math.max(6, Math.round(etaDrop * 0.35));
         $('#qPrice').textContent = '£' + price.toFixed(2);
-        $('#qDist').textContent = dist.toFixed(1) + ' miles';
-        $('#qEta').textContent = etaTxt;
-        $('#qEtaTop').textContent = bkTiming === 'Scheduled' ? 'SCHEDULED' : 'ETA ~' + mins + ' MIN';
-        $('#qSvc').textContent = 'Same-day · ' + bkSize.name + ' parcel · ' + bkTiming;
-        return { dist, price, etaTxt };
+        $('#qDist').textContent = dist.toFixed(1) + ' miles' + (stops ? ' · ' + stops + ' extra stops' : '');
+        $('#qEtaPickup').textContent = '~' + etaPickup + ' min';
+        $('#qEta').textContent = bkService === 'Scheduled' ? 'Pickup at ' + ($('#bkTime').value || '16:30') + ' · same-day delivery' : '~' + etaDrop + ' min';
+        $('#qEtaTop').textContent = bkService === 'Scheduled' ? 'SCHEDULED' : 'ETA ~' + etaDrop + ' MIN';
+        $('#qSvc').textContent = bkTier.name + ' · ' + bkService;
+        return { dist, price, etaDrop, etaPickup };
       }
       function fieldValid(input, errEl, ok) {
         input.classList.toggle('err', !ok);
@@ -1389,6 +1674,7 @@
 
       /* ================= DRIVER APP ================= */
       let drvOnline = true, currentJobId = 'SWD-739214', jobStage = 3, todayEarned = 86.40, todayJobs = 7;
+      let collectedPhoto = false, podPhoto = false, tipsWeek = 6.50;
       const DRIVER_STAGES = ['Accepted', 'Arrived at Pickup', 'Picked Up', 'In Transit', 'Delivered'];
 
       function drvGo(screen) {
@@ -1401,16 +1687,21 @@
       }
       function taskCard(o, offer) {
         const d = o.dist || '—';
+        const earn = o.price * 0.7;
+        const mins = Math.round(10 + parseFloat(o.dist || 3) * 3);
         return '<div class="card order-card" style="cursor:default">' +
           '<span class="oc-top"><span class="oc-id">' + o.id + '</span>' + (offer ? '<span class="badge b-pending">New offer</span>' : badge(o.status)) + '</span>' +
           routeHTML(o) +
-          '<span class="oc-meta"><span>' + icon('route', 'ic sm') + d + '</span><span>' + icon('pound', 'ic sm') + 'You earn £' + (o.price * 0.7).toFixed(2) + '</span><span>' + icon('box', 'ic sm') + o.size + '</span></span>' +
+          (offer ? '<div class="earn-hero"><div style="flex:1"><div class="eh-l">YOU EARN · UPFRONT</div><div class="eh-v">£' + earn.toFixed(2) + '</div></div><div style="text-align:right;font-size:.78rem;font-weight:700;opacity:.92">Fare £' + o.price.toFixed(2) + '<br/>' + d + ' · ~' + mins + ' min</div></div>' : '') +
+          '<span class="oc-meta"><span>' + icon('route', 'ic sm') + d + '</span><span>' + icon('pound', 'ic sm') + (offer ? 'Fare £' + o.price.toFixed(2) : 'You earn £' + earn.toFixed(2)) + '</span><span>' + icon('truck', 'ic sm') + (o.vehicle || o.size) + '</span>' + (o.service && o.service !== 'Direct' ? '<span>' + icon('list', 'ic sm') + o.service + '</span>' : '') + (o.pin ? '<span>' + icon('shield', 'ic sm') + 'PIN on delivery · £' + o.value + ' parcel</span>' : '') + '</span>' +
           '<span style="display:flex;gap:8px;margin-top:13px">' +
           (offer ? '<button class="btn btn-green" style="flex:1;padding:13px" data-accept-job="' + o.id + '">Accept job</button><button class="btn btn-ghost" style="flex:1;padding:13px" data-decline-job="' + o.id + '">Decline</button>'
                  : '<button class="btn btn-primary" style="flex:1;padding:13px" data-open-job="' + o.id + '">View job &amp; route</button>') +
           '</span></div>';
       }
       function renderTasks() {
+        $('#drvTodayEarn').textContent = '£' + todayEarned.toFixed(2);
+        $('#drvTodayJobs').textContent = todayJobs;
         $('#drvOfflineState').style.display = drvOnline ? 'none' : 'block';
         if (!drvOnline) { $('#drvTasks').innerHTML = ''; return; }
         const mine = ORDERS.filter(o => o.driverId === 'DRV-MK' && ['Assigned','Picked Up','In Transit'].includes(o.status));
@@ -1431,14 +1722,16 @@
         const o = orderById(id);
         jobStage = stageFromStatus(o);
         $('#jobId').textContent = o.id;
-        $('#jobCust').textContent = 'For ' + o.customer + ' · ' + o.size + ' parcel · ' + o.timing;
+        $('#jobCust').textContent = 'For ' + o.customer + ' · ' + (o.vehicle || o.size) + ' · ' + (o.service || 'Direct') + ' · ' + o.timing;
         $('#jobRoute').innerHTML = routeHTML(o);
         $('#jobContact').textContent = o.customer + ' · ' + o.phone;
         $('#jobDist').textContent = o.dist + ' route';
         $('#jobEta').textContent = '~' + Math.round(10 + parseFloat(o.dist) * 3) + ' min';
         $('#pickupLbl').textContent = o.id;
-        const sizeKg = { 'Document':'up to 1 kg', 'Small':'up to 5 kg', 'Medium':'up to 15 kg', 'Large':'up to 30 kg' };
-        $('#pickupCheck').innerHTML = 'Check the parcel matches the order — <b>' + o.size + ' parcel, ' + (sizeKg[o.size] || '') + '</b>, sealed and labelled <span class="mono">' + o.id + '</span>.';
+        $('#pickupCheck').innerHTML = 'Check the parcel matches the order — <b>' + (o.vehicle || o.size) + '</b>, sealed and labelled <span class="mono">' + o.id + '</span>.' + (o.pin ? ' This is a high-value parcel (£' + o.value + ') — a collection photo is required, and the recipient must give you the delivery PIN.' : '');
+        collectedPhoto = false;
+        $('#collectPhotoBtn').textContent = 'Take collection photo (demo)';
+        $('#collectPhotoTxt').innerHTML = '<b style="color:var(--ink-2)">Collection photo</b><div style="font-size:.8rem">Tap to capture the parcel at pickup (demo placeholder).</div>';
         updateJobUI();
         drvGo('job');
       }
@@ -1466,12 +1759,13 @@
       }
       function renderEarnings() {
         $('#weekTotal').textContent = '£' + (412.80 + Math.max(0, todayEarned - 86.40)).toFixed(2);
+        $('#weekTips').textContent = '£' + tipsWeek.toFixed(2);
         barChart($('#earnChart'), [
           { l:'Mon', v:52 }, { l:'Tue', v:61 }, { l:'Wed', v:48 }, { l:'Thu', v:70 }, { l:'Fri', v:57 }, { l:'Sat', v:72 }, { l:'Sun', v:Math.round(todayEarned) }
         ], { w:340, h:150, money:true, color:'var(--green)' });
         const done = ORDERS.filter(o => o.driverId === 'DRV-MK' && o.status === 'Delivered');
         $('#drvCompleted').innerHTML = done.length ? done.map(o =>
-          '<div class="card" style="padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:11px"><span class="fc-ic" style="width:36px;height:36px;background:var(--green-soft);color:var(--green)">' + icon('checkc', 'ic sm') + '</span><div style="flex:1;min-width:0"><b style="font-size:.88rem" class="mono">' + o.id + '</b><div style="font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + o.to + '</div></div><b style="color:var(--green)">+£' + (o.price * 0.7).toFixed(2) + '</b></div>'
+          '<div class="card" style="padding:13px 15px;margin-bottom:9px;display:flex;align-items:center;gap:11px"><span class="fc-ic" style="width:36px;height:36px;background:var(--green-soft);color:var(--green)">' + icon('checkc', 'ic sm') + '</span><div style="flex:1;min-width:0"><b style="font-size:.88rem" class="mono">' + o.id + '</b><div style="font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + o.to + '</div></div><div style="text-align:right"><b style="color:var(--green)">+£' + (o.price * 0.7).toFixed(2) + '</b>' + (o.tip ? '<div style="font-size:.74rem;color:var(--muted);font-weight:700">incl. £' + o.tip.toFixed(2) + ' tip</div>' : '') + '</div></div>'
         ).join('') : '<div class="empty-state"><span class="es-ic">' + icon('wallet', 'ic lg') + '</span><h3>No completed jobs yet</h3><p>Finished deliveries will show up here.</p></div>';
         $('#drvTodayEarn').textContent = '£' + todayEarned.toFixed(2);
         $('#drvTodayJobs').textContent = todayJobs;
@@ -1551,6 +1845,12 @@
         let driverBlock;
         if (d) {
           driverBlock = '<div style="display:flex;gap:12px;align-items:center;background:var(--surface-2);border-radius:13px;padding:13px"><span class="avatar ' + d.ac + '" style="width:44px;height:44px">' + d.initials + '</span><div style="flex:1"><b>' + d.name + '</b><div style="font-size:.8rem;color:var(--muted)">' + d.vehicle + ' · ★ ' + d.rating + '</div></div><span class="badge ' + (d.state === 'busy' ? 'b-transit' : 'b-online') + '">' + (d.state === 'busy' ? 'On this job' : 'Online') + '</span></div>';
+          if (!['Delivered', 'Cancelled'].includes(o.status)) {
+            const others = DRIVERS.filter(x => x.state === 'online' && x.id !== d.id);
+            driverBlock += others.length
+              ? '<label style="font-size:.8rem;font-weight:700;color:var(--ink-2);display:block;margin:14px 0 6px">Reassign to another courier</label><div style="display:flex;gap:8px"><select class="select" id="omReassignSel" style="flex:1">' + others.map(x => '<option value="' + x.id + '">' + x.name + ' · ' + x.zone + '</option>').join('') + '</select><button class="btn btn-ghost" data-reassign-btn="' + o.id + '">Reassign</button></div>'
+              : '<p style="color:var(--muted);font-size:.85rem;margin:12px 0 0">No other couriers are free to take over this job right now.</p>';
+          }
         } else if (o.status === 'Pending') {
           const free = DRIVERS.filter(x => x.state === 'online');
           driverBlock = '<label style="font-size:.8rem;font-weight:700;color:var(--ink-2);display:block;margin-bottom:6px">Assign a driver</label><div style="display:flex;gap:8px"><select class="select" id="omAssignSel" style="flex:1">' + free.map(x => '<option value="' + x.id + '">' + x.name + ' · ' + x.zone + '</option>').join('') + '</select><button class="btn btn-primary" data-assign-btn="' + o.id + '" data-assign-sel="omAssignSel">Assign</button></div>';
@@ -1558,8 +1858,10 @@
           driverBlock = '<p style="color:var(--muted);font-size:.9rem;margin:0">No driver was assigned to this order.</p>';
         }
         openModal(
-          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">' + badge(o.status) + '<span class="badge b-assigned">' + o.size + ' parcel</span><span class="badge b-transit">£' + o.price.toFixed(2) + '</span><span class="badge b-pending">ETA ' + o.eta + '</span></div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">' + badge(o.status) + '<span class="badge b-assigned">' + (o.vehicle || o.size) + '</span>' + (o.service ? '<span class="badge b-pending">' + o.service + '</span>' : '') + (o.pin ? '<span class="badge b-pending">PIN required · £' + o.value + '</span>' : '') + '<span class="badge b-transit">£' + o.price.toFixed(2) + '</span><span class="badge b-pending">ETA ' + o.eta + '</span></div>' +
           '<div class="card" style="padding:16px;margin-bottom:14px;box-shadow:none">' + routeHTML(o) + '</div>' +
+          (o.stops && o.stops.length ? '<h4 style="margin:0 0 8px;font-size:.95rem">Stops (optimised order)</h4><p style="margin:0 0 16px;color:var(--ink-2);font-size:.9rem">' + o.stops.map((s, i) => 'Stop ' + (i + 1) + ': ' + s).join('<br/>') + '</p>' : '') +
+          (o.status === 'Delivered' ? '<h4 style="margin:0 0 8px;font-size:.95rem">Proof of delivery</h4><p style="margin:0 0 16px;color:var(--ink-2);font-size:.9rem">Photo captured at the doorstep · Received by ' + (o.recipient || 'the recipient') + (o.podTime ? ' at ' + o.podTime : '') + (o.pin ? ' · PIN verified' : '') + (o.rating ? ' · Customer rated ' + o.rating + ' ★' + (o.tip ? ' with a £' + o.tip.toFixed(2) + ' tip' : '') : '') + '</p>' : '') +
           '<h4 style="margin:0 0 8px;font-size:.95rem">Customer</h4><p style="margin:0 0 16px;color:var(--ink-2);font-size:.9rem">' + o.customer + ' · ' + o.phone + '</p>' +
           '<h4 style="margin:0 0 8px;font-size:.95rem">Driver</h4><div style="margin-bottom:16px">' + driverBlock + '</div>' +
           '<h4 style="margin:0 0 12px;font-size:.95rem">Delivery timeline</h4><div class="timeline">' + timelineHTML(o) + '</div>'
@@ -1584,10 +1886,23 @@
         if (!o || !d) return;
         o.driverId = d.id; o.status = 'Assigned'; o.eta = 'Within the hour'; o.times[1] = 'Now';
         d.state = 'busy'; d.job = o.id;
-        renderAdminAll();
+        renderAdminAll(); renderTasks();
         if ($('#orderModal').classList.contains('open')) openOrderModal(orderId);
         if (o.customer === 'Amelia Carter') renderCustHome();
+        renderMatch();
         toast(o.id + ' assigned to ' + d.name);
+      }
+      function doReassign(orderId) {
+        const sel = document.getElementById('omReassignSel');
+        if (!sel) { toast('No courier is free to take over this job'); return; }
+        const o = orderById(orderId), nd = driverById(sel.value);
+        if (!o || !nd) return;
+        const old = o.driverId ? driverById(o.driverId) : null;
+        if (old) { old.state = 'online'; old.job = null; }
+        o.driverId = nd.id; nd.state = 'busy'; nd.job = o.id;
+        renderAdminAll(); openOrderModal(orderId); renderMatch(); renderTasks();
+        if (o.customer === 'Amelia Carter') renderCustHome();
+        toast(o.id + ' reassigned to ' + nd.name);
       }
 
       /* ================= events ================= */
@@ -1601,7 +1916,7 @@
         const cn = e.target.closest('[data-cust-nav]');
         if (cn) { custGo(cn.dataset.custNav); return; }
         const dn = e.target.closest('[data-drv-nav]');
-        if (dn) { drvGo(dn.dataset.drvNav); return; }
+        if (dn) { if (dn.dataset.drvNav === 'job' && orderById(currentJobId)) openJob(currentJobId); else drvGo(dn.dataset.drvNav); return; }
         const to = e.target.closest('[data-track-open]');
         if (to) { trackId = to.dataset.trackOpen; custGo('track'); return; }
         const oj = e.target.closest('[data-open-job]');
@@ -1611,13 +1926,15 @@
           const o = orderById(aj.dataset.acceptJob), me = driverById('DRV-MK');
           o.driverId = 'DRV-MK'; o.status = 'Assigned'; o.times[1] = 'Now'; o.eta = 'Within the hour';
           me.state = 'busy'; me.job = o.id;
-          renderTasks(); renderAdminAll(); toast('Job ' + o.id + ' accepted — nice one!');
+          renderTasks(); renderAdminAll(); renderMatch(); toast('Job ' + o.id + ' accepted — nice one!');
           return;
         }
         const dj = e.target.closest('[data-decline-job]');
         if (dj) { const card = dj.closest('.order-card'); if (card) card.remove(); toast('Offer declined — it will be reassigned'); return; }
         const ab = e.target.closest('[data-assign-btn]');
         if (ab) { doAssign(ab.dataset.assignBtn, ab.dataset.assignSel); return; }
+        const rb = e.target.closest('[data-reassign-btn]');
+        if (rb) { doReassign(rb.dataset.reassignBtn); return; }
         const td = e.target.closest('[data-toggle-driver]');
         if (td) {
           const d = driverById(td.dataset.toggleDriver);
@@ -1645,35 +1962,51 @@
       $('#logoHome').addEventListener('click', e => { e.preventDefault(); showView('home'); });
 
       /* customer: booking */
-      $$('#sizeGrid .size-opt').forEach(b => b.addEventListener('click', () => {
-        $$('#sizeGrid .size-opt').forEach(x => x.classList.remove('on')); b.classList.add('on');
-        bkSize = { name: b.dataset.size, mult: parseFloat(b.dataset.mult) }; quoteCalc();
+      $$('#svcSeg button').forEach(b => b.addEventListener('click', () => {
+        $$('#svcSeg button').forEach(x => x.classList.remove('on')); b.classList.add('on');
+        bkService = b.dataset.service;
+        $('#schedField').style.display = bkService === 'Scheduled' ? 'block' : 'none';
+        $('#stopsWrap').style.display = bkService === 'Multi-drop' ? 'block' : 'none';
+        $('#svcDesc').textContent = bkService === 'Direct' ? 'Point-to-point — your courier travels straight from pickup to drop-off.'
+          : bkService === 'Multi-drop' ? 'One courier, several stops — we optimise the stop order to minimise the route.'
+          : 'Pick a pickup time slot — your courier is booked in and arrives within it.';
+        if (bkService === 'Multi-drop' && !$('#stopsList').children.length) { addStop(); addStop(); }
+        quoteCalc();
       }));
-      $$('#timingSeg button').forEach(b => b.addEventListener('click', () => {
-        $$('#timingSeg button').forEach(x => x.classList.remove('on')); b.classList.add('on');
-        bkTiming = b.dataset.timing; $('#schedField').style.display = bkTiming === 'Scheduled' ? 'block' : 'none'; quoteCalc();
-      }));
-      ['bkFrom', 'bkTo', 'bkTime'].forEach(id => $('#' + id).addEventListener('input', quoteCalc));
+      $('#tierList').addEventListener('click', e => {
+        const row = e.target.closest('[data-tier]'); if (!row) return;
+        bkTier = TIERS.find(t => t.id === row.dataset.tier) || bkTier;
+        quoteCalc();
+      });
+      $('#addStopBtn').addEventListener('click', addStop);
+      ['bkFrom', 'bkTo', 'bkTime', 'bkValue'].forEach(id => $('#' + id).addEventListener('input', quoteCalc));
       $('#bookForm').addEventListener('submit', e => {
         e.preventDefault();
         const okFrom = fieldValid($('#bkFrom'), $('#errFrom'), $('#bkFrom').value.trim().length >= 4);
         const okTo = fieldValid($('#bkTo'), $('#errTo'), $('#bkTo').value.trim().length >= 4);
         if (!okFrom || !okTo) { toast('Please check the highlighted fields'); return; }
+        if (bkService === 'Multi-drop') {
+          const bad = stopInputs().some(i => i.value.trim().length < 4);
+          stopInputs().forEach(i => i.classList.toggle('err', i.value.trim().length < 4));
+          if (bad) { toast('Add an address for each stop'); return; }
+        }
         const q = quoteCalc(); if (!q) return;
         const btn = $('#bookSubmit'); btn.disabled = true; btn.textContent = 'Booking your courier…';
         setTimeout(() => {
           btn.disabled = false; btn.textContent = 'Confirm booking';
           let num; do { num = 'SWD-' + Math.floor(100000 + Math.random() * 900000); } while (orderById(num));
-          const o = { id: num, customer: 'Amelia Carter', phone: '07700 900 412', driverId: null, from: $('#bkFrom').value.trim(), to: $('#bkTo').value.trim(), size: bkSize.name, price: Math.round(q.price * 100) / 100, status: 'Pending', eta: 'Awaiting driver', dist: q.dist.toFixed(1) + ' mi', timing: bkTiming === 'Scheduled' ? 'Scheduled ' + ($('#bkTime').value || '16:30') : bkTiming, times: ['Now', '', '', '', ''] };
+          const stops = bkService === 'Multi-drop' ? stopInputs().map(i => i.value.trim()) : [];
+          const val = parseFloat($('#bkValue').value) || 0;
+          const o = { id: num, customer: 'Amelia Carter', phone: '07700 900 412', driverId: null, from: $('#bkFrom').value.trim(), to: $('#bkTo').value.trim(), size: bkTier.name, vehicle: bkTier.name, service: bkService, stops: stops, value: val, pin: val > 100 ? String(Math.floor(1000 + Math.random() * 9000)) : null, price: Math.round(q.price * 100) / 100, status: 'Pending', eta: 'Awaiting driver', dist: q.dist.toFixed(1) + ' mi', timing: bkService === 'Scheduled' ? 'Scheduled ' + ($('#bkTime').value || '16:30') : bkService === 'Multi-drop' ? 'Multi-drop · ' + stops.length + ' stops' : 'Direct', times: ['Now', '', '', '', ''] };
           ORDERS.unshift(o);
           trackId = num;
           $('#cfId').textContent = num;
           $('#cfRoute').innerHTML = routeHTML(o);
-          $('#cfEta').textContent = q.etaTxt; $('#cfPrice').textContent = '£' + o.price.toFixed(2); $('#cfSize').textContent = o.size + ' parcel';
+          $('#cfEta').textContent = bkService === 'Scheduled' ? 'Pickup at ' + ($('#bkTime').value || '16:30') : 'Delivered in ~' + q.etaDrop + ' min'; $('#cfPrice').textContent = '£' + o.price.toFixed(2); $('#cfSize').textContent = o.vehicle + ' · ' + o.service;
           $('#bkNotes').value = '';
-          CUST_NOTIFS.unshift({ icon:'box', color:'var(--blue)', bg:'var(--blue-soft)', title:'Booking confirmed · ' + num, body:'We are finding a driver for your ' + o.size.toLowerCase() + ' parcel', time:'Just now', unread:true });
-          renderAdminAll(); renderCustHome();
-          custGo('confirm');
+          CUST_NOTIFS.unshift({ icon:'box', color:'var(--blue)', bg:'var(--blue-soft)', title:'Booking confirmed · ' + num, body:'We are finding a courier for your ' + o.vehicle + ' delivery', time:'Just now', unread:true });
+          renderAdminAll(); renderCustHome(); renderTasks();
+          custGo('confirm'); renderMatch();
           toast('Booking confirmed — ' + num);
         }, REDUCED ? 60 : 900);
       });
@@ -1684,6 +2017,25 @@
         ordersFilter = b.dataset.ofilter; renderCustOrders();
       }));
       $('#markReadBtn').addEventListener('click', () => { CUST_NOTIFS.forEach(n => n.unread = false); renderCustNotifs(); toast('All notifications marked as read'); });
+
+      /* customer: tracking extras — copy link, rating + tip */
+      $('#trkCopyBtn').addEventListener('click', () => toast('Tracking link copied (demo) — anyone with it can follow this delivery'));
+      $$('#rateStars button').forEach(b => b.addEventListener('click', () => {
+        rateVal = parseInt(b.dataset.star, 10);
+        $$('#rateStars button').forEach(x => x.classList.toggle('on', parseInt(x.dataset.star, 10) <= rateVal));
+      }));
+      $$('#tipRow .tip-chip').forEach(b => b.addEventListener('click', () => {
+        tipVal = parseFloat(b.dataset.tip);
+        $$('#tipRow .tip-chip').forEach(x => x.classList.toggle('on', x === b));
+      }));
+      $('#rateSubmit').addEventListener('click', () => {
+        const o = orderById(trackId); if (!o) return;
+        if (!rateVal) { toast('Tap a star rating first'); return; }
+        o.rating = rateVal; o.tip = tipVal;
+        if (o.driverId === 'DRV-MK' && tipVal > 0) { todayEarned += tipVal; tipsWeek += tipVal; $('#drvTodayEarn').textContent = '£' + todayEarned.toFixed(2); }
+        renderTracking();
+        toast('Thanks — rated ' + rateVal + ' stars' + (tipVal ? ' with a £' + tipVal.toFixed(2) + ' tip' : ''));
+      });
 
       /* customer: auth */
       let authMode = 'login';
@@ -1751,21 +2103,52 @@
       $('#jobProgressBtn').addEventListener('click', () => {
         if (jobStage === 0) { jobStage = 1; updateJobUI(); toast('Arrival confirmed — collect the parcel'); }
         else if (jobStage === 2) { jobStage = 3; syncOrderStatus(); updateJobUI(); toast('In transit — head to the drop-off'); }
-        else if (jobStage === 3) { $('#podId').textContent = currentJobId; drvGo('complete'); }
+        else if (jobStage === 3) {
+          const o = orderById(currentJobId);
+          $('#podId').textContent = currentJobId;
+          podPhoto = false;
+          $('#podPhotoBtn').textContent = 'Take photo (demo)';
+          $('#podPhotoTxt').innerHTML = '<b style="color:var(--ink-2)">No photo yet</b><div style="font-size:.8rem">A doorstep photo is required to complete the job.</div>';
+          $('#podName').value = ''; $('#podPin').value = '';
+          $('#podName').classList.remove('err'); $('#podPin').classList.remove('err');
+          const pf = $('#podPinField');
+          if (o && o.pin) { pf.style.display = 'block'; $('#podPinHint').textContent = o.pin; } else pf.style.display = 'none';
+          drvGo('complete');
+        }
+      });
+      $('#collectPhotoBtn').addEventListener('click', () => {
+        collectedPhoto = true;
+        $('#collectPhotoBtn').textContent = 'Photo captured ✓';
+        $('#collectPhotoTxt').innerHTML = '<b style="color:var(--green)">Photo captured</b><div style="font-size:.8rem">Parcel at pickup · just now (demo placeholder)</div>';
+        toast('Collection photo saved (demo)');
+      });
+      $('#podPhotoBtn').addEventListener('click', () => {
+        podPhoto = true;
+        $('#podPhotoBtn').textContent = 'Photo captured ✓';
+        $('#podPhotoTxt').innerHTML = '<b style="color:var(--green)">Photo captured</b><div style="font-size:.8rem">Parcel at the door · just now (demo placeholder)</div>';
+        toast('Delivery photo saved (demo)');
       });
       $('#confirmPickupBtn').addEventListener('click', () => {
-        jobStage = 2; syncOrderStatus(); updateJobUI(); toast('Parcel collected ✓');
+        if (!collectedPhoto) { toast('Take the collection photo first — it is your proof of pickup (demo step)'); return; }
+        const o = orderById(currentJobId);
+        if (o) o.times[2] = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        jobStage = 2; syncOrderStatus(); updateJobUI(); toast('Parcel collected — photo proof saved ✓');
       });
       $('#confirmDeliveryBtn').addEventListener('click', () => {
         if (!fieldValid($('#podName'), $('#errPodName'), $('#podName').value.trim().length >= 2)) return;
         const o = orderById(currentJobId);
+        if (o.pin && !fieldValid($('#podPin'), $('#errPodPin'), $('#podPin').value.trim() === o.pin)) { toast('Delivery PIN does not match — job not completed'); return; }
+        if (!podPhoto) { toast('Take the photo proof of delivery first (demo step)'); return; }
+        o.recipient = $('#podName').value.trim();
+        o.podTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        o.times[4] = o.podTime;
         jobStage = 4; syncOrderStatus(); updateJobUI();
         const earn = o.price * 0.7;
         todayEarned += earn; todayJobs += 1;
         const me = driverById('DRV-MK'); me.state = 'online'; me.job = null; me.earned = todayEarned; me.jobsToday = todayJobs;
         $('#doneEarn').textContent = '£' + earn.toFixed(2);
         $('#doneId').textContent = o.id;
-        if (o.customer === 'Amelia Carter') CUST_NOTIFS.unshift({ icon:'checkc', color:'var(--green)', bg:'var(--green-soft)', title:'Delivered · ' + o.id, body:'Signed for by ' + $('#podName').value.trim(), time:'Just now', unread:true });
+        if (o.customer === 'Amelia Carter') CUST_NOTIFS.unshift({ icon:'checkc', color:'var(--green)', bg:'var(--green-soft)', title:'Delivered · ' + o.id, body:'Received by ' + o.recipient + ' · photo proof of delivery saved', time:'Just now', unread:true });
         renderAdminAll(); drvGo('done');
         toast('Delivery completed — £' + earn.toFixed(2) + ' earned');
       });
